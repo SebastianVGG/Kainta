@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_perfil"
+            android:title="Perfil" />
+        <item
+            android:id="@+id/nav_configuracion"
+            android:title="Configuracion" />
+        <item
+            android:id="@+id/nav_calificanos"
+            android:title="Calificanos" />
+        <item
+            android:id="@+id/nav_contactanos"
+            android:title="Contactanos" />
+    </group>
+</menu>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center|top"
+    tools:context=".AccountActivity">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/txtCrearCuenta"
+        android:hint="Crear Cuenta"
+        android:fontFamily="@font/madeleina"
+        android:textColorHint="@color/secondaryTextColor"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="15dp"
+        android:textSize="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:hint="Nombre"
+                android:fontFamily="@font/madeleina"
+                android:textColorHint="@color/secondaryTextColor"
+                android:layout_margin="5dp"
+                android:textSize="22dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/editApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:ems="10"
+                android:background="@drawable/custom_edit"
+                android:fontFamily="@font/madeleina"
+                android:hint="Nombre"
+                android:textColorHint="@color/secondaryTextColor" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:hint="Apellidos"
+                android:fontFamily="@font/madeleina"
+                android:textColorHint="@color/secondaryTextColor"
+                android:layout_margin="5dp"
+                android:textSize="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/editNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/madeleina"
+                android:hint="Nombre"
+                android:textColorHint="@color/secondaryTextColor" />
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnCrearCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/primaryColor"
+        android:fontFamily="@font/madeleina"
+        android:hint="Crear Cuenta"
+        android:textColorHint="@color/secondaryTextColor"
+        android:textSize="16sp" />
+
+
+
+</LinearLayout>

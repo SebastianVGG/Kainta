@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "510384051038",
+    "project_id": "kainta-001",
+    "storage_bucket": "kainta-001.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510384051038:android:7456d0fdfbfe13a69335cf",
+        "android_client_info": {
+          "package_name": "com.app.kainta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "510384051038-2el3p7mr4jbcorv0doaheijoj3je6svk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCegSHsA8NG8qNlU6rB56_Xnf9-A8yDpEo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "510384051038-2el3p7mr4jbcorv0doaheijoj3je6svk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
