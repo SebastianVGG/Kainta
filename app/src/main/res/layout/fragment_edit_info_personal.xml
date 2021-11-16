@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.perfil.login.EditInfoPersonalFragment">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/editNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_margin="15dp"
+            android:hint="Nombre"
+            android:background="@drawable/rounded_border"
+            android:textColorHint="@color/secondaryTextColor" />
+
+        <EditText
+            android:id="@+id/editTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_margin="15dp"
+            android:background="@drawable/rounded_border"
+            android:hint="Teléfono"
+            android:textColorHint="@color/secondaryTextColor" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAceptar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/secondaryColor"
+        android:fontFamily="@font/madeleina"
+        android:hint="Aceptar"
+        android:textColorHint="@color/secondaryTextColor"
+        android:textSize="16sp" />
+
+</LinearLayout>

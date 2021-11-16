@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/drawable/rounded_border.xml" value="0.20925925925925926" />
+        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_config_login.xml" value="0.1634963768115942" />
+        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_config_login_info.xml" value="0.16032608695652173" />
+        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_edit_info_personal.xml" value="0.16032608695652173" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/drawable/custom_edit.xml" value="0.3828125" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/drawable/toolbar_dropshadow.xml" value="0.3828125" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/activity_account.xml" value="0.2907608695652174" />

@@ -4,48 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.perfil.login.ConfigLoginInfoFragment">
-
-    <LinearLayout
-        android:id="@+id/layoutNombre"
-        android:orientation="vertical"
-        android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/madeleina"
-            android:text="Nuevo nombre"
-            android:textColor="@color/secondaryTextColor"
-            android:textSize="32dp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/editNombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_marginTop="15dp"
-            android:hint="Nuevo nombre"
-            android:textColorHint="@color/secondaryTextColor" />
-
-        <Button
-            android:id="@+id/btnNombre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:fontFamily="@font/madeleina"
-            android:hint="Aceptar"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="16sp" />
-
-    </LinearLayout>
+    tools:context=".ui.perfil.login.ConfigLoginEmailPassFragment">
 
     <LinearLayout
         android:id="@+id/layoutCorreo"
@@ -71,6 +30,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/madeleina"
             android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_border"
             android:hint="Correo actual"
             android:textColorHint="@color/secondaryTextColor" />
 
@@ -201,46 +161,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutTelefono"
-        android:orientation="vertical"
-        android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/madeleina"
-            android:text="Nuevo teléfono"
-            android:textColor="@color/secondaryTextColor"
-            android:textSize="32dp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/editTelefono"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_marginTop="15dp"
-            android:hint="Teléfono"
-            android:textColorHint="@color/secondaryTextColor" />
-
-        <Button
-            android:id="@+id/btnTelefono"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:fontFamily="@font/madeleina"
-            android:hint="Aceptar"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="16sp" />
-
-    </LinearLayout>
 
 
 </LinearLayout>

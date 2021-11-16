@@ -1,6 +1,5 @@
 package com.app.kainta.ui.perfil
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,21 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
-import com.app.kainta.ProviderType
 import com.app.kainta.R
 import com.app.kainta.databinding.FragmentConfigLoginBinding
-import com.app.kainta.databinding.FragmentFillAccountBinding
-import com.app.kainta.ui.login.FillAccountFragment
-import com.app.kainta.ui.perfil.login.ConfigLoginInfoFragment
 import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.lang.Exception
 
 
 class ConfigLoginFragment : Fragment() {
