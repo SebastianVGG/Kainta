@@ -8,114 +8,20 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contrainRegistroLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        >
-
-        <FrameLayout
-            android:id="@+id/frameRegistroLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|top"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/logo" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/madeleina"
-            android:text="Iniciar Sesión"
-            android:textColor="@color/secondaryTextColor"
-            android:textSize="32dp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/editUsuario"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:fontFamily="@font/madeleina"
-            android:hint="Usuario o Correo electronico"
-            android:textColorHint="@color/secondaryTextColor" />
+            android:theme="@style/Theme.Kainta.AppBarOverlay">
 
-        <EditText
-            android:id="@+id/editContrasena"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:fontFamily="@font/madeleina"
-            android:hint="Contraseña"
-            android:textColorHint="@color/secondaryTextColor" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/Theme.Kainta.PopupOverlay" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/madeleina"
-            android:text="Olvidé la contraseña"
-            android:textColor="@color/primaryDarkColor"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <Button
-            android:id="@+id/btnIniciarSesion"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_margin="15dp"
-            android:backgroundTint="@color/primaryColor"
-            android:fontFamily="@font/madeleina"
-            android:hint="Iniciar sesión"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/btnCrearCuenta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:fontFamily="@font/madeleina"
-            android:hint="Crear cuenta"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/madeleina"
-            android:text="ó"
-            android:textColor="@color/secondaryTextColor"
-            android:textSize="16dp"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnIniciarSesionGoogle"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@color/white"
-            android:drawableStart="@drawable/icon_google"
-            android:drawablePadding="15dp"
-            android:fontFamily="@font/madeleina"
-            android:hint="Iniciar sesión con Google"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="20dp" />
-
-    </LinearLayout>
+        <include layout="@layout/content_login" />
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.app.kainta.ui.destacado
+package com.app.kainta.ui.home
 
 import android.content.Intent
 import android.os.Bundle

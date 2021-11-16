@@ -4,9 +4,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.app.kainta.ui.destacado.DestacadoFragment
-import com.app.kainta.ui.nuevo.NuevoFragment
-import com.app.kainta.ui.recomendado.RecomendadoFragment
+import com.app.kainta.ui.home.DestacadoFragment
+import com.app.kainta.ui.home.NuevoFragment
+import com.app.kainta.ui.home.RecomendadoFragment
 
 
 class VPAdapter (fragmentManager : FragmentManager, lifecylce : Lifecycle): FragmentStateAdapter(fragmentManager, lifecylce) {

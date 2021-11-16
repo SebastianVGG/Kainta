@@ -1,4 +1,4 @@
-package com.app.kainta.ui.search
+package com.app.kainta.ui.home.search
 
 import android.os.Bundle
 import android.view.*

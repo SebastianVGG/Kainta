@@ -1,4 +1,4 @@
-package com.app.kainta.ui.nuevo
+package com.app.kainta.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

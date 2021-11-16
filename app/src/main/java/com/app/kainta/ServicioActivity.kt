@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.app.kainta.databinding.ActivityServicioBinding
 import org.json.JSONObject
+import java.lang.Exception
 
 class ServicioActivity : AppCompatActivity() {
 
@@ -26,7 +27,10 @@ class ServicioActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        jsonServicio = JSONObject(intent.getStringExtra("jsonServicio"))
+        try{
+            jsonServicio = JSONObject(intent.getStringExtra("jsonServicio"))
+        }catch (e : Exception){""}
+
 
 
     }

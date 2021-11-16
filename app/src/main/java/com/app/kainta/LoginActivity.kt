@@ -4,25 +4,33 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.app.kainta.databinding.ActivityLoginBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import com.app.kainta.ui.login.LoginFragment
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private val GOOGLE_SING_IN = 100
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.Theme_Kainta)
+        setTheme(R.style.Theme_Kainta_NoActionBar)
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+
+        val navController = findNavController(R.id.nav_host_fragment_content_login)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
         //Setup
         setup()
@@ -46,77 +54,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
     private fun setup(){
-        title = "Iniciar Sesión"
 
-        //Crear cuenta BASIC
 
-        binding.btnCrearCuenta.setOnClickListener {
-
-            val accountIntent = Intent(this, AccountActivity::class.java).apply {
-                putExtra("email", true)
-                putExtra("google", false)
-            }
-            startActivity(accountIntent)
-
-            /*if(binding.editUsuario.text.isNotEmpty() && binding.editContrasena.text.isNotEmpty()){
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                    binding.editUsuario.text.toString(),
-                    binding.editContrasena.text.toString()
-                ).addOnCompleteListener {
-                    if(it.isSuccessful){
-                        showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
-                    }else{
-                        showAlert()
-                    }
-                }
-
-            }*/
         }
-
-        //Iniciar sesion BASIC
-
-        binding.btnIniciarSesion.setOnClickListener {
-            if(binding.editUsuario.text.isNotEmpty() && binding.editContrasena.text.isNotEmpty()){
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                    binding.editUsuario.text.toString(),
-                    binding.editContrasena.text.toString()
-                ).addOnCompleteListener {
-                    if(it.isSuccessful){
-                        showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
-                    }else{
-                        showAlert()
-                    }
-                }
-
-            }
-        }
-
-        //Iniciar sesion GOOGLE
-
-        binding.btnIniciarSesionGoogle.setOnClickListener {
-
-            val googleConfig = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id_))
-                .requestEmail()
-                .build()
-
-            val googleClient = GoogleSignIn.getClient(this, googleConfig)
-            googleClient.signOut()
-
-            startActivityForResult(googleClient.signInIntent, GOOGLE_SING_IN)
-        }
-
-    }
-
-    private fun showAlert(){
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Error")
-        builder.setMessage("Se ha producido un error autenticando al usuario")
-        builder.setPositiveButton("Aceptar",null)
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
-    }
 
     private fun showHome(email : String, provider : ProviderType){
 
@@ -128,38 +70,28 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == GOOGLE_SING_IN){
 
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_activity_login, menu)
+        return true
+    }
 
-            try {
-                val account = task.getResult(ApiException::class.java)
-
-                if(account != null){
-
-                    //Se recuperan credenciales de Google
-
-                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-
-                    //Se inicia sesion en firebase con la credencial de Google
-
-                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
-                        if(it.isSuccessful){
-                            showHome(account.email ?: "", ProviderType.GOOGLE)
-                        }else{
-                            showAlert()
-                        }
-                    }
-
-                }
-            }catch (e: ApiException){
-                showAlert()
-            }
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_login)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 
 }

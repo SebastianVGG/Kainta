@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.perfil.login.ConfigLoginInfoFragment">
+
+    <LinearLayout
+        android:id="@+id/layoutNombre"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/madeleina"
+            android:text="Nuevo nombre"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="32dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_marginTop="15dp"
+            android:hint="Nuevo nombre"
+            android:textColorHint="@color/secondaryTextColor" />
+
+        <Button
+            android:id="@+id/btnNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/secondaryColor"
+            android:fontFamily="@font/madeleina"
+            android:hint="Aceptar"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutCorreo"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/madeleina"
+            android:text="Correo actual"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editCorreoActual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_marginTop="15dp"
+            android:hint="Correo actual"
+            android:textColorHint="@color/secondaryTextColor" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/madeleina"
+            android:text="Contraseña"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editPassActual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_marginTop="15dp"
+            android:hint="Coloque su contraseña"
+            android:textColorHint="@color/secondaryTextColor" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/madeleina"
+            android:text="Nuevo correo"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_marginTop="15dp"
+            android:hint="Nuevo correo"
+            android:textColorHint="@color/secondaryTextColor" />
+
+        <Button
+            android:id="@+id/btnCorreo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/secondaryColor"
+            android:fontFamily="@font/madeleina"
+            android:hint="Aceptar"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutPass"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/madeleina"
+            android:text="Nueva contraseña"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="32dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/madeleina"
+            android:text="Correo actual"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editCorreoActualPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_marginTop="15dp"
+            android:hint="Correo actual"
+            android:textColorHint="@color/secondaryTextColor" />
+
+
+        <EditText
+            android:id="@+id/editPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_marginTop="15dp"
+            android:hint="Contraseña actual"
+            android:textColorHint="@color/secondaryTextColor" />
+
+        <EditText
+            android:id="@+id/editNuevaPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_marginTop="15dp"
+            android:hint="Nueva contraseña"
+            android:textColorHint="@color/secondaryTextColor" />
+
+        <Button
+            android:id="@+id/btnPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/secondaryColor"
+            android:fontFamily="@font/madeleina"
+            android:hint="Aceptar"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutTelefono"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/madeleina"
+            android:text="Nuevo teléfono"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="32dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madeleina"
+            android:layout_marginTop="15dp"
+            android:hint="Teléfono"
+            android:textColorHint="@color/secondaryTextColor" />
+
+        <Button
+            android:id="@+id/btnTelefono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/secondaryColor"
+            android:fontFamily="@font/madeleina"
+            android:hint="Aceptar"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

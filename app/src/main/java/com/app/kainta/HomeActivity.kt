@@ -1,33 +1,30 @@
 package com.app.kainta
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.widget.SearchView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.app.kainta.adaptadores.VPAdapter
 import com.app.kainta.databinding.ActivityHomeBinding
 import com.app.kainta.models.InformacionPersonalModel
 import com.app.kainta.ui.InformacionPersonalViewModel
-import com.app.kainta.ui.search.SearchFragment
+import com.app.kainta.ui.home.search.SearchFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 enum class ProviderType{
@@ -37,10 +34,9 @@ enum class ProviderType{
 
 class HomeActivity : AppCompatActivity() {
 
-
-
     private lateinit var binding: ActivityHomeBinding
     private lateinit var infoPersonalViewModel: InformacionPersonalViewModel
+    private lateinit var appBarConfiguration: AppBarConfiguration
     //private lateinit var vmlGeneral: General_ViewModel
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var drawer_Layout : DrawerLayout
@@ -52,7 +48,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        close_home = this
 
         //SE CREA LA TOOLBAR--------------------
         setSupportActionBar(binding.toolbar)
@@ -173,77 +168,10 @@ class HomeActivity : AppCompatActivity() {
             email,
             provider
         )
+        infoPersonalViewModel.mldInfoPersonal.value = informacionPersonal
 
         textEmail.text = email
 
-        val db = Firebase.firestore
-
-        val docRef = db.collection("users")
-        docRef.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w(TAG, "_________Listen failed.--------------------", e)
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                Log.d(TAG, "-----------------------Current data: ${snapshot}----------------------------")
-            } else {
-                Log.d(TAG, "--------------Current data: null----------------------------")
-            }
-        }
-
-        db.collection("users")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    println("${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents.", exception)
-            }
-
-
-        val user = Firebase.auth.currentUser
-        val profileUpdates = userProfileChangeRequest {
-            displayName = "Sebas"
-            photoUri = Uri.parse("https://example.com/jane-q-user/profile.jpg")
-        }
-
-        user!!.updateProfile(profileUpdates)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    println("SE ACTUALIZO CORRECTAMENTE")
-                }
-            }
-
-
-        if (user != null) {
-            println("El usuario inició sesión")
-            user?.let {
-
-                // Name, email address, and profile photo Url
-                val name = user.displayName
-                val email = user.email
-                val photoUrl = user.photoUrl
-
-                // Check if user's email is verified
-                val emailVerified = user.isEmailVerified
-
-                // The user's ID, unique to the Firebase project. Do NOT use this value to
-                // authenticate with your backend server, if you have one. Use
-                // FirebaseUser.getToken() instead.
-                val uid = user.uid
-
-                println("NOMBRE: "+ name)
-                println("EMAIL: "+ email)
-                println("PHOTOURL: "+ photoUrl)
-                println("EMAILVERIFIED: "+ emailVerified)
-                println("USER ID: "+ uid)
-            }
-        } else {
-            println("El usuario NO inició sesión")
-        }
 
 
 

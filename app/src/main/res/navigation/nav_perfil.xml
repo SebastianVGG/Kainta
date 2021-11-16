@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_perfil"
+    app:startDestination="@id/perfilFragment">
+
+    <fragment
+        android:id="@+id/perfilFragment"
+        android:name="com.app.kainta.ui.perfil.PerfilFragment"
+        android:label="fragment_perfil"
+        tools:layout="@layout/fragment_perfil" >
+        <action
+            android:id="@+id/action_perfilFragment_to_configLoginFragment"
+            app:destination="@id/configLoginFragment" />
+        <action
+            android:id="@+id/action_perfilFragment_to_configDireccionesFragment"
+            app:destination="@id/configDireccionesFragment" />
+        <action
+            android:id="@+id/action_perfilFragment_to_configPerfilFragment"
+            app:destination="@id/configPerfilFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editarDireccionFragment"
+        android:name="com.app.kainta.ui.perfil.direcciones.EditarDireccionFragment"
+        android:label="fragment_editar_direccion"
+        tools:layout="@layout/fragment_editar_direccion" />
+
+    <fragment
+        android:id="@+id/nuevaDireccionFragment"
+        android:name="com.app.kainta.ui.perfil.direcciones.NuevaDireccionFragment"
+        android:label="fragment_nueva_direccion"
+        tools:layout="@layout/fragment_nueva_direccion" />
+    <fragment
+        android:id="@+id/configDireccionesFragment"
+        android:name="com.app.kainta.ui.perfil.ConfigDireccionesFragment"
+        android:label="fragment_config_direcciones"
+        tools:layout="@layout/fragment_config_direcciones" >
+        <action
+            android:id="@+id/action_configDireccionesFragment_to_editarDireccionFragment"
+            app:destination="@id/editarDireccionFragment" />
+        <action
+            android:id="@+id/action_configDireccionesFragment_to_nuevaDireccionFragment"
+            app:destination="@id/nuevaDireccionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/configLoginFragment"
+        android:name="com.app.kainta.ui.perfil.ConfigLoginFragment"
+        android:label="fragment_config_login"
+        tools:layout="@layout/fragment_config_login" >
+        <action
+            android:id="@+id/action_configLoginFragment_to_configLoginInfoFragment"
+            app:destination="@id/configLoginInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/configLoginInfoFragment"
+        android:name="com.app.kainta.ui.perfil.login.ConfigLoginInfoFragment"
+        android:label="fragment_config_login_info"
+        tools:layout="@layout/fragment_config_login_info" />
+    <fragment
+        android:id="@+id/configPerfilFragment"
+        android:name="com.app.kainta.ui.perfil.ConfigPerfilFragment"
+        android:label="fragment_config_perfil"
+        tools:layout="@layout/fragment_config_perfil" />
+</navigation>

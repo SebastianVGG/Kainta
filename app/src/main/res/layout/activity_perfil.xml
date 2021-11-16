@@ -7,59 +7,20 @@
     android:orientation="vertical"
     tools:context=".PerfilActivity">
 
-    <LinearLayout
-        android:background="@color/primaryDarkColor"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="160dp">
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Kainta.AppBarOverlay">
 
-        <ImageView
-            android:src="@color/secondaryDarkColor"
-            android:layout_width="110dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:layout_height="110dp"/>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Kainta.PopupOverlay" />
 
-        <TextView
-            android:id="@+id/fragmentPerfil_textCorreo"
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:text="CORREO" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/fragmentPerfil_textNombre"
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:text="Nombre" />
-
-        <Button
-            android:id="@+id/btnCerrarSesion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:fontFamily="@font/madeleina"
-            android:hint="Cerrar sesión"
-            android:layout_gravity="center"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
+    <include layout="@layout/content_perfil" />
 
 </LinearLayout>

@@ -18,6 +18,12 @@
         <item name="subtitleTextAppearance">@color/primaryTextColor</item>
     </style>
 
+    <style name="Theme.Kainta.NoActionBar_Login" parent="Theme.Kainta">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
 
 
 
