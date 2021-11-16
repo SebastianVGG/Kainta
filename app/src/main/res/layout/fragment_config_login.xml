@@ -41,7 +41,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:textStyle="bold"
-                    android:text="Nombre" />
+                    android:textSize="16dp"
+                    android:text="Información personal" />
 
                 <TextView
                     android:id="@+id/txtNombre"
@@ -50,12 +51,27 @@
                     android:layout_margin="5dp"
                     android:text="Nombre" />
 
+                <TextView
+                    android:id="@+id/txtCiudad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Ubicacion" />
+
+                <TextView
+                    android:id="@+id/txtTelefono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Telefono" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_gravity="end"
+                android:layout_gravity="end|center"
                 android:layout_margin="10dp"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -165,58 +181,6 @@
 
                 <Button
                     android:id="@+id/btnPass"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/secondaryColor"
-                    android:fontFamily="@font/madeleina"
-                    android:hint="Modificar"
-                    android:textColorHint="@color/secondaryTextColor"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_gravity="start"
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:textStyle="bold"
-                    android:text="Telefono" />
-
-                <TextView
-                    android:id="@+id/txtTelefono"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Telefono" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_gravity="end"
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/btnTelefono"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/secondaryColor"

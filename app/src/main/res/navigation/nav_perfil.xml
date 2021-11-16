@@ -24,21 +24,13 @@
         android:id="@+id/editarDireccionFragment"
         android:name="com.app.kainta.ui.perfil.direcciones.EditarDireccionFragment"
         android:label="fragment_editar_direccion"
-        tools:layout="@layout/fragment_editar_direccion" >
-        <action
-            android:id="@+id/action_editarDireccionFragment_to_configDireccionesFragment"
-            app:destination="@id/configDireccionesFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_editar_direccion" />
 
     <fragment
         android:id="@+id/nuevaDireccionFragment"
         android:name="com.app.kainta.ui.perfil.direcciones.NuevaDireccionFragment"
         android:label="fragment_nueva_direccion"
-        tools:layout="@layout/fragment_nueva_direccion" >
-        <action
-            android:id="@+id/action_nuevaDireccionFragment_to_configDireccionesFragment"
-            app:destination="@id/configDireccionesFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_nueva_direccion" />
     <fragment
         android:id="@+id/configDireccionesFragment"
         android:name="com.app.kainta.ui.perfil.ConfigDireccionesFragment"
@@ -59,6 +51,9 @@
         <action
             android:id="@+id/action_configLoginFragment_to_configLoginInfoFragment"
             app:destination="@id/configLoginInfoFragment" />
+        <action
+            android:id="@+id/action_configLoginFragment_to_editInfoPersonalFragment"
+            app:destination="@id/editInfoPersonalFragment" />
     </fragment>
     <fragment
         android:id="@+id/configLoginInfoFragment"
@@ -70,4 +65,9 @@
         android:name="com.app.kainta.ui.perfil.ConfigPerfilFragment"
         android:label="fragment_config_perfil"
         tools:layout="@layout/fragment_config_perfil" />
+    <fragment
+        android:id="@+id/editInfoPersonalFragment"
+        android:name="com.app.kainta.ui.perfil.login.EditInfoPersonalFragment"
+        android:label="fragment_edit_info_personal"
+        tools:layout="@layout/fragment_edit_info_personal" />
 </navigation>

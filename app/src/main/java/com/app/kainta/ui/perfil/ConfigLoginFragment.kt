@@ -42,9 +42,7 @@ class ConfigLoginFragment : Fragment() {
         setInfo()
 
         binding.btnNombre.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("motivo", "nombre")
-            findNavController().navigate(R.id.action_configLoginFragment_to_configLoginInfoFragment, bundle)
+            findNavController().navigate(R.id.action_configLoginFragment_to_editInfoPersonalFragment)
         }
 
         binding.btnCorreo.setOnClickListener {
@@ -58,13 +56,6 @@ class ConfigLoginFragment : Fragment() {
             bundle.putString("motivo", "pass")
             findNavController().navigate(R.id.action_configLoginFragment_to_configLoginInfoFragment, bundle)
         }
-
-        binding.btnTelefono.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("motivo", "telefono")
-            findNavController().navigate(R.id.action_configLoginFragment_to_configLoginInfoFragment, bundle)
-        }
-
 
     }
 
@@ -95,16 +86,16 @@ class ConfigLoginFragment : Fragment() {
                     }
 
                     binding.txtNombre.text = document.get("nombre") as CharSequence?
-                    binding.txtCorreo.text =  email
-                    binding.txtPass.text = "***********"
+                    binding.txtCiudad.text = document.getString("ciudad")
                     if(document.contains("telefono")){
                         val telefono : Long? = document.getLong("telefono")
                         binding.txtTelefono.text = telefono.toString()
-                        binding.btnTelefono.text = "Modificar"
                     }else{
-                        binding.txtTelefono.text = "No existe un teléfono registrado"
-                        binding.btnTelefono.text = "Agregar"
+                        binding.txtTelefono.text = "Teléfono sin registrar"
                     }
+                    binding.txtCorreo.text =  email
+                    binding.txtPass.text = "***********"
+
 
                     progressBar.visibility = View.GONE
                     binding.layout.visibility = View.VISIBLE

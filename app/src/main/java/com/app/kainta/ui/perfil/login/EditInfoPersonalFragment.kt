@@ -46,11 +46,13 @@ class EditInfoPersonalFragment : Fragment() {
 
         val email: String = user.currentUser?.email.toString()
 
-        //Boton modificar nombre
         binding.btnAceptar.setOnClickListener {
 
             val telefono = binding.editTelefono.text.toString().toLongOrNull()
-
+            val nombre = binding.editNombre.text.toString()
+            val bibliografia = binding.editBibliografia.text.toString()
+            val ciudad = binding.editCiudad.text.toString()
+            val
 
             val data = hashMapOf(
                 "nombre" to binding.editNombre.text.toString(),
