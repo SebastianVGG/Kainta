@@ -26,21 +26,22 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/menuServicios"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Servicios">
+        android:layout_height="wrap_content">
 
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Auto complete"
             android:inputType="none"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/AddTrabajo"
+        android:id="@+id/btnAddTrabajo"
+        android:visibility="invisible"
         android:text="Agregar trabajo"
         android:layout_marginTop="5dp"
         android:layout_gravity="center"

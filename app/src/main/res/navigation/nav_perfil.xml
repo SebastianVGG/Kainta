@@ -93,5 +93,14 @@
         android:id="@+id/addServicioFragment"
         android:name="com.app.kainta.ui.perfil.servicios.AddServicioFragment"
         android:label="fragment_add_servicio"
-        tools:layout="@layout/fragment_add_servicio" />
+        tools:layout="@layout/fragment_add_servicio" >
+        <action
+            android:id="@+id/action_addServicioFragment_to_addTrabajoFragment"
+            app:destination="@id/addTrabajoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTrabajoFragment"
+        android:name="com.app.kainta.ui.perfil.servicios.AddTrabajoFragment"
+        android:label="fragment_add_trabajo"
+        tools:layout="@layout/fragment_add_trabajo" />
 </navigation>
