@@ -51,7 +51,7 @@ class PerfilFragment : Fragment() {
         }
 
         binding.cardServicios.setOnClickListener {
-            //replaceFragment(ConfigServiciosFragment())
+            findNavController().navigate(R.id.action_perfilFragment_to_configServiciosFragment)
         }
 
         //Cerrar sesion

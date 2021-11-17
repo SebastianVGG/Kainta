@@ -16,13 +16,12 @@
 
     <LinearLayout
         android:id="@+id/layout"
-        android:visibility="gone"
+
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/txtNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -45,7 +44,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddServicio"
-        android:visibility="gone"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

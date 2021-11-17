@@ -24,11 +24,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <Spinner
-        android:id="@+id/spinnerServicios"
-        android:layout_margin="15dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/menuServicios"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="Servicios">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/AddTrabajo"
