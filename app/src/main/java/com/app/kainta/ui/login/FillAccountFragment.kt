@@ -44,47 +44,47 @@ class FillAccountFragment : Fragment() {
         //Boton crear cuenta
         binding.btnCrearCuenta.setOnClickListener {
 
-            val nombre = binding.editNombre.text
-            val apellidos = binding.editApellidos.text
+            val nombre = binding.editNombre.text  .toString()
+            val telefono = binding.editTelefono.text.toString()
+            val bibliografia = binding.editBibliografia.text.toString()
+            val ciudad = binding.editCiudad.text.toString()
 
             if(
-                nombre.isNotEmpty() &&
-                apellidos.isNotEmpty()
+                nombre.isNotEmpty()
             ){
 
             //Colocando datos en la base de datos
-            newUser(nombre.toString(),apellidos.toString(),email.toString())
-
-            showHome( email , ProviderType.BASIC)
+            newUser(nombre,telefono,bibliografia,ciudad,email)
 
             }else showAlert()
         }
 
-        /*binding.back.setOnClickListener {
-            replaceFragment(LoginFragment())
-        }*/
-
-
     }
 
     //Creando nuevo usuario
-    private fun newUser(nombre : String, apellidos : String, email : String){
+    private fun newUser(nombre : String, telefono : String, bibliografia : String, ciudad : String, email : String){
+
         val db = Firebase.firestore
-
-
 
         val user = hashMapOf(
             "nombre" to nombre,
-            "apellidos" to apellidos,
+            "telefono" to telefono,
+            "bibliografia" to bibliografia,
+            "ciudad" to ciudad,
+            "facebook" to "",
+            "twitter" to "",
+            "instagram" to "",
+            "youtube" to "",
+            "web" to "",
             "email" to email,
             "provider" to provider
         )
 
         db.collection("usuario")
             .document(email)
-            .set(user, SetOptions.merge())
+            .set(user)
             .addOnSuccessListener { documentReference ->
-
+                showHome( email , ProviderType.BASIC)
             }
             .addOnFailureListener { e ->
                 showAlert()

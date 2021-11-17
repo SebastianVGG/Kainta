@@ -8,15 +8,6 @@
     android:gravity="center|top"
     tools:context=".ui.login.CreateFragment">
 
-    <Button
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_margin="5dp"
-        android:backgroundTint="#00FFFFFF"
-        app:icon="@drawable/ic_back_24" />
-
     <ImageView
         android:layout_width="100dp"
         android:layout_height="70dp"
@@ -34,147 +25,93 @@
         android:layout_height="wrap_content"/>
 
     <LinearLayout
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
+        android:layout_margin="25dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
 
-            <TextView
-                android:hint="Nombre"
-                android:fontFamily="@font/madeleina"
-                android:textColorHint="@color/secondaryTextColor"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/editNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:ems="10"
                 android:fontFamily="@font/madeleina"
-                android:hint="Nombre"
+                android:layout_margin="15dp"
+                android:hint="Nombre completo"
+                android:background="@drawable/rounded_border"
                 android:textColorHint="@color/secondaryTextColor" />
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:hint="Apellidos"
-                android:fontFamily="@font/madeleina"
-                android:textColorHint="@color/secondaryTextColor"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
             <EditText
-                android:id="@+id/editApellidos"
+                android:id="@+id/editBibliografia"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_height="50dp"
                 android:fontFamily="@font/madeleina"
-                android:hint="Apellidos"
+                android:layout_margin="15dp"
+                android:hint="Bibliografía"
+                android:background="@drawable/rounded_border"
                 android:textColorHint="@color/secondaryTextColor" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:hint="Correo"
+            <EditText
+                android:id="@+id/editCiudad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/madeleina"
-                android:textColorHint="@color/secondaryTextColor"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_margin="15dp"
+                android:hint="Ciudad"
+                android:background="@drawable/rounded_border"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:background="@drawable/rounded_border"
+                android:hint="Teléfono"
+                android:textColorHint="@color/secondaryTextColor" />
 
             <EditText
                 android:id="@+id/editEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:fontFamily="@font/madeleina"
-                android:hint="Correo"
+                android:layout_margin="15dp"
+                android:background="@drawable/rounded_border"
+                android:hint="Correo electrónico"
                 android:textColorHint="@color/secondaryTextColor" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:hint="Contraseña"
-                android:fontFamily="@font/madeleina"
-                android:textColorHint="@color/secondaryTextColor"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
             <EditText
                 android:id="@+id/editPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:background="@drawable/rounded_border"
                 android:hint="Contraseña"
                 android:textColorHint="@color/secondaryTextColor" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:hint="Repite la contraseña"
-                android:fontFamily="@font/madeleina"
-                android:textColorHint="@color/secondaryTextColor"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
             <EditText
                 android:id="@+id/editPass2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:background="@drawable/rounded_border"
                 android:hint="Repite la contraseña"
                 android:textColorHint="@color/secondaryTextColor" />
+
 
         </LinearLayout>
 
 
-
-    </LinearLayout>
+        </LinearLayout>
 
     <Button
         android:id="@+id/btnCrearCuenta"
@@ -187,6 +124,4 @@
         android:textColorHint="@color/secondaryTextColor"
         android:textSize="16sp" />
 
-
-
-</LinearLayout>
+    </LinearLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -33,8 +33,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginEnd="0dp"
                 android:layout_marginTop="50dp"
+                android:layout_marginEnd="0dp"
                 android:clickable="true"
                 android:src="@mipmap/ic_launcher_round" />
 
@@ -68,6 +68,15 @@
                 android:hint="Nombre"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="26dp" />
+            <TextView
+                android:id="@+id/txtCiudad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/madeleina"
+                android:hint="Ciudad"
+                android:textColorHint="@color/secondaryTextColor"
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/txtDescripcion"
@@ -82,31 +91,107 @@
                 android:textSize="22dp" />
 
             <TextView
-                android:id="@+id/txtCalificacion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/madeleina"
-                android:hint="Calificación"
+                android:hint="Redes sociales"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="22dp" />
 
+            <TextView
+                android:id="@+id/txtRedesSociales"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/madeleina"
+                android:text="No hay redes sociales registradas"
+                android:textColorHint="@color/secondaryTextColor"
+                android:textSize="22dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageFacebook"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:src="@drawable/facebook_48" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageTwitter"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/twitter_48" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageInstagram"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/instagram_48" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageYoutube"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/youtube_48" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageWeb"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/web_48" />
+
+            </LinearLayout>
+
+
             <Button
-                android:id="@+id/btnFoto"
+                android:id="@+id/btnEditarInfo"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/secondaryDarkColor"
                 android:fontFamily="@font/madeleina"
-                android:hint="Mensaje"
+                android:hint="Editar"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+
+            android:id="@+id/recyclerServicios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
-
-
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddServicio"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_baseline_add_30"
+        android:layout_gravity="end|bottom" />
+</FrameLayout>

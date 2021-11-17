@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import com.app.kainta.R
 import com.app.kainta.databinding.FragmentConfigLoginEmailPassBinding
@@ -23,6 +24,7 @@ class EditInfoPersonalFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var user : FirebaseAuth
     private lateinit var db : FirebaseFirestore
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +33,8 @@ class EditInfoPersonalFragment : Fragment() {
 
         _binding = FragmentEditInfoPersonalBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        progressBar = binding.progressBar
 
         user = Firebase.auth
         db = Firebase.firestore
@@ -48,19 +52,30 @@ class EditInfoPersonalFragment : Fragment() {
 
         binding.btnAceptar.setOnClickListener {
 
-            val telefono = binding.editTelefono.text.toString().toLongOrNull()
+            val telefono = binding.editTelefono.text.toString()
             val nombre = binding.editNombre.text.toString()
             val bibliografia = binding.editBibliografia.text.toString()
             val ciudad = binding.editCiudad.text.toString()
-            val
+            val facebook = binding.editFacebook.text.toString()
+            val twitter = binding.editTwitter.text.toString()
+            val instagram = binding.editInstagram.text.toString()
+            val youtube = binding.editYoutube.text.toString()
+            val web = binding.editPaginaWeb.text.toString()
 
             val data = hashMapOf(
-                "nombre" to binding.editNombre.text.toString(),
-                "telefono" to telefono
+                "nombre" to nombre,
+                "telefono" to telefono,
+                "bibliografia" to bibliografia,
+                "ciudad" to ciudad,
+                "facebook" to facebook,
+                "twitter" to twitter,
+                "instagram" to instagram,
+                "youtube" to youtube,
+                "web" to web
             )
 
             db.collection("usuario").document(email)
-                .set(data, SetOptions.merge())
+                .update(data as Map<String, Any>)
                 .addOnCompleteListener {
 
                     if (it.isSuccessful) showAlert(
@@ -74,6 +89,40 @@ class EditInfoPersonalFragment : Fragment() {
 
                 }
         }
+
+        llenarCampos()
+
+    }
+
+    private fun llenarCampos() {
+
+        val email: String = user.currentUser?.email.toString()
+
+        db.collection("usuario").document(email)
+            .get()
+            .addOnCompleteListener {
+                if(it.isSuccessful){
+                    binding.editNombre.setText(it.result.data?.get("nombre").toString())
+                    binding.editBibliografia.setText(it.result.data?.get("bibliografia").toString())
+                    binding.editTelefono.setText(it.result.data?.get("telefono").toString())
+                    binding.editCiudad.setText(it.result.data?.get("ciudad").toString())
+                    binding.editFacebook.setText(it.result.data?.get("facebook").toString())
+                    binding.editTwitter.setText(it.result.data?.get("twitter").toString())
+                    binding.editInstagram.setText(it.result.data?.get("instagram").toString())
+                    binding.editYoutube.setText(it.result.data?.get("youtube").toString())
+                    binding.editPaginaWeb.setText(it.result.data?.get("web").toString())
+
+                    progressBar.visibility = View.GONE
+                    binding.layout.visibility = View.VISIBLE
+
+                }else{
+                    showAlert(
+                        "Error",
+                        (it.exception as FirebaseAuthException).message.toString())
+                    progressBar.visibility = View.GONE
+                    binding.layout.visibility = View.VISIBLE
+                }
+            }
 
     }
 

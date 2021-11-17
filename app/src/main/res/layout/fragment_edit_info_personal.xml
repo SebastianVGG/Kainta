@@ -6,130 +6,147 @@
     android:orientation="vertical"
     tools:context=".ui.perfil.login.EditInfoPersonalFragment">
 
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_margin="15dp"
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/editNombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_margin="15dp"
-            android:hint="Nombre"
-            android:background="@drawable/rounded_border"
-            android:textColorHint="@color/secondaryTextColor" />
-
-        <EditText
-            android:id="@+id/editBibliografia"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:fontFamily="@font/madeleina"
-            android:layout_margin="15dp"
-            android:hint="Bibliografía"
-            android:background="@drawable/rounded_border"
-            android:textColorHint="@color/secondaryTextColor" />
-
-        <EditText
-            android:id="@+id/editCiudad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_margin="15dp"
-            android:hint="Ciudad"
-            android:background="@drawable/rounded_border"
-            android:textColorHint="@color/secondaryTextColor" />
-
-        <EditText
-            android:id="@+id/editTelefono"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_margin="15dp"
-            android:background="@drawable/rounded_border"
-            android:hint="Teléfono"
-            android:textColorHint="@color/secondaryTextColor" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="Redes sociales"
-            android:layout_margin="15dp"
-            android:textSize="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/editFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_margin="15dp"
-            android:hint="Facebook"
-            android:background="@drawable/rounded_border"
-            android:textColorHint="@color/secondaryTextColor" />
-
-        <EditText
-            android:id="@+id/editTwitter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_margin="15dp"
-            android:hint="Twitter"
-            android:background="@drawable/rounded_border"
-            android:textColorHint="@color/secondaryTextColor" />
-
-        <EditText
-            android:id="@+id/editInstagram"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_margin="15dp"
-            android:hint="Instagram"
-            android:background="@drawable/rounded_border"
-            android:textColorHint="@color/secondaryTextColor" />
-
-        <EditText
-            android:id="@+id/editYoutube"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_margin="15dp"
-            android:background="@drawable/rounded_border"
-            android:hint="Youtube"
-            android:textColorHint="@color/secondaryTextColor" />
-
-        <EditText
-            android:id="@+id/editPaginaWeb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/madeleina"
-            android:layout_margin="15dp"
-            android:background="@drawable/rounded_border"
-            android:hint="Sitio web personal"
-            android:textColorHint="@color/secondaryTextColor" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btnAceptar"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/secondaryColor"
-        android:fontFamily="@font/madeleina"
-        android:hint="Aceptar"
-        android:textColorHint="@color/secondaryTextColor"
-        android:textSize="16sp" />
+        android:indeterminate="true"
+        android:indeterminateTint="@color/primaryDarkColor"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:hint="Nombre"
+                android:background="@drawable/rounded_border"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editBibliografia"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:hint="Bibliografía"
+                android:background="@drawable/rounded_border"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editCiudad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:hint="Ciudad"
+                android:background="@drawable/rounded_border"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:background="@drawable/rounded_border"
+                android:hint="Teléfono"
+                android:textColorHint="@color/secondaryTextColor" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Redes sociales"
+                android:layout_margin="15dp"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/editFacebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:hint="Facebook"
+                android:background="@drawable/rounded_border"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editTwitter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:hint="Twitter"
+                android:background="@drawable/rounded_border"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editInstagram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:hint="Instagram"
+                android:background="@drawable/rounded_border"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editYoutube"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:background="@drawable/rounded_border"
+                android:hint="Youtube"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editPaginaWeb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:background="@drawable/rounded_border"
+                android:hint="Sitio web personal"
+                android:textColorHint="@color/secondaryTextColor" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnAceptar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/secondaryColor"
+            android:fontFamily="@font/madeleina"
+            android:hint="Aceptar"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

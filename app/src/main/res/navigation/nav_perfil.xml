@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_perfilFragment_to_configPerfilFragment"
             app:destination="@id/configPerfilFragment" />
+        <action
+            android:id="@+id/action_perfilFragment_to_configServiciosFragment"
+            app:destination="@id/configServiciosFragment" />
     </fragment>
     <fragment
         android:id="@+id/editarDireccionFragment"
@@ -64,10 +67,31 @@
         android:id="@+id/configPerfilFragment"
         android:name="com.app.kainta.ui.perfil.ConfigPerfilFragment"
         android:label="fragment_config_perfil"
-        tools:layout="@layout/fragment_config_perfil" />
+        tools:layout="@layout/fragment_config_perfil" >
+        <action
+            android:id="@+id/action_configPerfilFragment_to_editInfoPersonalFragment"
+            app:destination="@id/editInfoPersonalFragment" />
+        <action
+            android:id="@+id/action_configPerfilFragment_to_addServicioFragment"
+            app:destination="@id/addServicioFragment" />
+    </fragment>
     <fragment
         android:id="@+id/editInfoPersonalFragment"
         android:name="com.app.kainta.ui.perfil.login.EditInfoPersonalFragment"
         android:label="fragment_edit_info_personal"
         tools:layout="@layout/fragment_edit_info_personal" />
+    <fragment
+        android:id="@+id/configServiciosFragment"
+        android:name="com.app.kainta.ui.perfil.ConfigServiciosFragment"
+        android:label="fragment_config_servicios"
+        tools:layout="@layout/fragment_config_servicios" >
+        <action
+            android:id="@+id/action_configServiciosFragment_to_addServicioFragment"
+            app:destination="@id/addServicioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addServicioFragment"
+        android:name="com.app.kainta.ui.perfil.servicios.AddServicioFragment"
+        android:label="fragment_add_servicio"
+        tools:layout="@layout/fragment_add_servicio" />
 </navigation>

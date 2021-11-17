@@ -40,9 +40,11 @@ class CreateFragment : Fragment() {
         //Boton crear cuenta
         binding.btnCrearCuenta.setOnClickListener {
 
-            val nombre = binding.editNombre.text
-            val apellidos = binding.editApellidos.text
-            val email = binding.editEmail.text
+            val nombre = binding.editNombre.text.toString()
+            val telefono = binding.editTelefono.text.toString()
+            val bibliografia = binding.editBibliografia.text.toString()
+            val ciudad = binding.editCiudad.text.toString()
+            val email = binding.editEmail.text.toString()
             val pass = binding.editPass.text
             val pass2 = binding.editPass2.text
 
@@ -50,19 +52,18 @@ class CreateFragment : Fragment() {
 
             if(
                 nombre.isNotEmpty() &&
-                apellidos.isNotEmpty() &&
                 email.isNotEmpty() &&
                 pass.isNotEmpty() &&
                 pass2.isNotEmpty()
             ){
                 if(pass.toString() == pass2.toString()){
                         FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                            email.toString(),
+                            email,
                             pass.toString()
                         ).addOnCompleteListener {
                             if(it.isSuccessful){
                                 //Colocando datos en la base de datos
-                                newUser(nombre.toString(),apellidos.toString(),email.toString())
+                                newUser(nombre,telefono,bibliografia,ciudad,email)
 
                                 showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
 
@@ -82,23 +83,32 @@ class CreateFragment : Fragment() {
     }
 
     //Creando nuevo usuario
-    private fun newUser(nombre : String, apellidos : String, email : String){
+    private fun newUser(nombre : String, telefono : String, bibliografia : String, ciudad : String, email : String){
+
         val db = Firebase.firestore
 
         val user = hashMapOf(
             "nombre" to nombre,
-            "apellidos" to apellidos,
+            "telefono" to telefono,
+            "bibliografia" to bibliografia,
+            "ciudad" to ciudad,
+            "facebook" to "",
+            "twitter" to "",
+            "instagram" to "",
+            "youtube" to "",
+            "web" to "",
             "email" to email,
+            "provider" to "BASIC"
         )
 
         db.collection("usuario")
             .document(email)
             .set(user)
             .addOnSuccessListener { documentReference ->
-
+                showHome( email , ProviderType.BASIC)
             }
             .addOnFailureListener { e ->
-                showAlert(e.message.toString())
+                showAlert( e.toString())
             }
     }
 

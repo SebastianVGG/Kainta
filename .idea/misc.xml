@@ -3,10 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/drawable/rounded_border.xml" value="0.20925925925925926" />
-        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_config_login.xml" value="0.1634963768115942" />
-        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_config_login_info.xml" value="0.16032608695652173" />
-        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_edit_info_personal.xml" value="0.16032608695652173" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/drawable/custom_edit.xml" value="0.3828125" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/drawable/toolbar_dropshadow.xml" value="0.3828125" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/activity_account.xml" value="0.2907608695652174" />
@@ -18,22 +14,30 @@
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/activity_servicio.xml" value="0.3220108695652174" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/adapter_direcciones.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/adapter_general.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/adapter_perfil_servicios.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/adapter_search.xml" value="0.15185185185185185" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/content_login.xml" value="0.1" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/content_perfil.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/dialog_camera_gallery.xml" value="0.24242424242424243" />
+        <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_add_servicio.xml" value="0.3125" />
+        <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_add_trabajo.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_config_direcciones.xml" value="0.3220108695652174" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_config_login.xml" value="0.33" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_config_login_info.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_config_perfil.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_config_servicios.xml" value="0.3125" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_configuracion.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_create.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_destacado.xml" value="0.1" />
+        <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_edit_info_personal.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_editar_direccion.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_exist.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_fill_account.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_google.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_google_account.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_home.xml" value="0.2028985507246377" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_mostrar_servicio.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_nueva_direccion.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_nuevo.xml" value="0.1" />
         <entry key="..\:/Users/Sebasti{/AndroidStudioProjects/Kainta/app/src/main/res/layout/fragment_perfil.xml" value="0.1" />

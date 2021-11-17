@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.perfil.servicios.AddServicioFragment">
+
+<TextView
+    android:text="Creando un nuevo servicio"
+    android:layout_gravity="center|top"
+    android:layout_marginTop="20dp"
+    android:textSize="24dp"
+    android:textColor="@color/black"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+
+    <TextView
+        android:text="Selecciona el servicio que ofreces"
+        android:layout_gravity="start"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/spinnerServicios"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/AddTrabajo"
+        android:text="Agregar trabajo"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

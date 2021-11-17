@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.core.net.toUri
@@ -57,9 +58,9 @@ class ConfigPerfilFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private lateinit var progress: ProgressDialog
-    private lateinit var bitmap : Bitmap
-    private lateinit var dialog : Dialog
-    private lateinit var progressBar : ProgressBar
+    private lateinit var bitmap: Bitmap
+    private lateinit var dialog: Dialog
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,54 +89,124 @@ class ConfigPerfilFragment : Fragment() {
     private fun setup() {
 
 
-
         db.collection("usuario").document(user.currentUser?.email!!).get()
             .addOnCompleteListener {
-                if (it.result.contains("url")) {
-                    context?.let { context ->
-                        Glide.with(context)
-                            .load(it.result.getString("url"))
-                            .apply(RequestOptions().override(300, 300))
-                            .listener(object : RequestListener<Drawable> {
-                                override fun onLoadFailed(
-                                    e: GlideException?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    progressBar.visibility = View.GONE
-                                    binding.layout.visibility = View.VISIBLE
-                                    return false
-                                }
 
-                                override fun onResourceReady(
-                                    resource: Drawable?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    dataSource: DataSource?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    progressBar.visibility = View.GONE
-                                    binding.layout.visibility = View.VISIBLE
-                                    return false
-                                }
+                if (it.isSuccessful) {
 
-                            })
-                            .into(binding.imageviewPerfil)
+                    binding.txtNombre.text = it.result.get("nombre").toString()
+                    binding.txtCiudad.text = it.result.get("ciudad").toString()
+                    binding.txtDescripcion.text = it.result.get("bibliografia").toString()
 
+                    if (!(it.result.get("facebook").toString() != "" ||
+                                it.result.get("twitter").toString() != "" ||
+                                it.result.get("instagram").toString() != "" ||
+                                it.result.get("youtube").toString() != "" ||
+                                it.result.get("web").toString() != ""
+                                )
+                    )
+                        binding.txtRedesSociales.visibility = View.VISIBLE
+
+                    if (it.result.get("facebook").toString() != "")
+                        binding.imageFacebook.visibility = View.VISIBLE
+
+                    if (it.result.get("twitter").toString() != "")
+                        binding.imageTwitter.visibility = View.VISIBLE
+
+                    if (it.result.get("instagram").toString() != "")
+                        binding.imageInstagram.visibility = View.VISIBLE
+
+                    if (it.result.get("youtube").toString() != "")
+                        binding.imageYoutube.visibility = View.VISIBLE
+
+                    if (it.result.get("web").toString() != "")
+                        binding.imageWeb.visibility = View.VISIBLE
+
+
+                    if (it.result.contains("url")) {
+                        context?.let { context ->
+                            Glide.with(context)
+                                .load(it.result.getString("url"))
+                                .apply(RequestOptions().override(300, 300))
+                                .listener(object : RequestListener<Drawable> {
+                                    override fun onLoadFailed(
+                                        e: GlideException?,
+                                        model: Any?,
+                                        target: Target<Drawable>?,
+                                        isFirstResource: Boolean
+                                    ): Boolean {
+                                        progressBar.visibility = View.GONE
+                                        binding.layout.visibility = View.VISIBLE
+                                        binding.btnAddServicio.visibility =
+                                            View.VISIBLE
+                                        return false
+                                    }
+
+                                    override fun onResourceReady(
+                                        resource: Drawable?,
+                                        model: Any?,
+                                        target: Target<Drawable>?,
+                                        dataSource: DataSource?,
+                                        isFirstResource: Boolean
+                                    ): Boolean {
+                                        progressBar.visibility = View.GONE
+                                        binding.layout.visibility = View.VISIBLE
+                                        binding.btnAddServicio.visibility =
+                                            View.VISIBLE
+                                        return false
+                                    }
+
+                                })
+                                .into(binding.imageviewPerfil)
+                        }
+                    } else {
+                        progressBar.visibility = View.GONE
+                        binding.layout.visibility = View.VISIBLE
+                        binding.btnAddServicio.visibility = View.VISIBLE
                     }
-                }else{
-                    progressBar.visibility = View.GONE
-                    binding.layout.visibility = View.VISIBLE
+
+                } else {
+                    showAlert(
+                        "Error",
+                        (it.exception as FirebaseAuthException).message.toString()
+                    )
                 }
+
+
+            }.addOnFailureListener {
+                showAlert(
+                    "Error",
+                    (it as FirebaseAuthException).message.toString()
+                )
+                progressBar.visibility = View.GONE
+                binding.layout.visibility = View.VISIBLE
+                binding.btnAddServicio.visibility = View.VISIBLE
             }
 
-        binding.imageviewPerfil.setOnClickListener(object : View.OnClickListener {
+        binding.imageviewPerfil.setOnClickListener(object :
+            View.OnClickListener {
             override fun onClick(v: View?) {
                 showDialog()
             }
         })
 
+        binding.btnEditarInfo.setOnClickListener {
+            findNavController().navigate(R.id.action_configPerfilFragment_to_editInfoPersonalFragment)
+        }
+
+        binding.btnAddServicio.setOnClickListener{
+            findNavController().navigate(R.id.action_configPerfilFragment_to_addServicioFragment)
+        }
+
+    }
+
+    private fun showAlert(titulo: String, mensaje: String) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(titulo)
+        builder.setMessage(mensaje)
+        builder.setPositiveButton("Aceptar", null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     private fun showDialog() {
@@ -144,22 +215,25 @@ class ConfigPerfilFragment : Fragment() {
 
         dialog.setContentView(R.layout.dialog_camera_gallery)
 
-        dialog.findViewById<ImageButton>(R.id.btnGallery).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                requestPermission()
-            }
-        })
-        dialog.findViewById<ImageButton>(R.id.btnPhoto).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                requestCamera.launch(android.Manifest.permission.CAMERA)
-            }
-        })
+        dialog.findViewById<ImageButton>(R.id.btnGallery)
+            .setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    requestPermission()
+                }
+            })
+        dialog.findViewById<ImageButton>(R.id.btnPhoto)
+            .setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    requestCamera.launch(android.Manifest.permission.CAMERA)
+                }
+            })
 
-        dialog.findViewById<ImageButton>(R.id.btn_close).setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                dialog.dismiss()
-            }
-        })
+        dialog.findViewById<ImageButton>(R.id.btn_close)
+            .setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    dialog.dismiss()
+                }
+            })
 
         dialog.show()
 
@@ -206,7 +280,8 @@ class ConfigPerfilFragment : Fragment() {
                     //Tomamos el url de Descarga
                     val downloadUri = task.result
                     //Se actualiza base de datos para colocar la url del usuario
-                    db.collection("usuario").document(user.currentUser?.email!!)
+                    db.collection("usuario")
+                        .document(user.currentUser?.email!!)
                         .update(
                             mapOf(
                                 "url" to downloadUri.toString(),
@@ -219,11 +294,20 @@ class ConfigPerfilFragment : Fragment() {
                             context?.let {
                                 Glide.with(it)
                                     .load(downloadUri.toString())
-                                    .apply(RequestOptions().override(300, 300))
+                                    .apply(
+                                        RequestOptions().override(
+                                            300,
+                                            300
+                                        )
+                                    )
                                     .into(binding.imageviewPerfil)
                             }
 
-                            Toast.makeText(context, "Correcto", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Correcto",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                         }.addOnFailureListener { e ->
                             Toast.makeText(
@@ -236,7 +320,8 @@ class ConfigPerfilFragment : Fragment() {
                 } else {
                     if (progress.isShowing)
                         progress.dismiss()
-                    Toast.makeText(context, "Mal", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Mal", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -277,7 +362,11 @@ class ConfigPerfilFragment : Fragment() {
         if (it) {
             pickPhotoFromGallery()
         } else {
-            Toast.makeText(context, "Se necesitan permisos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "Se necesitan permisos",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -292,37 +381,40 @@ class ConfigPerfilFragment : Fragment() {
 //TOMAR FOTOS
 
     //PERMISOS
-    private val requestCamera = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+    private val requestCamera =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
 
-        dialog.dismiss()
+            dialog.dismiss()
 
-        if (it)
-            takePhoto()
-        else
-            Toast.makeText(
-                context,
-                "NOOOO",
-                Toast.LENGTH_SHORT
-            ).show()
-    }
-
+            if (it)
+                takePhoto()
+            else
+                Toast.makeText(
+                    context,
+                    "NOOOO",
+                    Toast.LENGTH_SHORT
+                ).show()
+        }
 
 
     //FUNCION PARA TOMAR FOTOS INTENT
     private fun takePhoto() {
 
-        val intent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
+        val intent =
+            Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
         startForActivityCamera.launch(intent)
 
     }
 
     //CUANDO SE TERMINA DE TOMAR FOTO HACE LO SIGUIENTE
-    private val startForActivityCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-        if (activityResult.resultCode == Activity.RESULT_OK) {
+    private val startForActivityCamera =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            if (activityResult.resultCode == Activity.RESULT_OK) {
 
-            //FOTO
+                //FOTO
                 try {
-                    bitmap = activityResult.data?.extras?.get("data") as Bitmap
+                    bitmap =
+                        activityResult.data?.extras?.get("data") as Bitmap
                     val data = bitmapToFile(bitmap)
                     progress = ProgressDialog(context)
                     progress.setTitle("Subeidno arcivo...")
@@ -356,7 +448,8 @@ class ConfigPerfilFragment : Fragment() {
                             //Tomamos el url de Descarga
                             val downloadUri = task.result
                             //Se actualiza base de datos para colocar la url del usuario
-                            db.collection("usuario").document(user.currentUser?.email!!)
+                            db.collection("usuario")
+                                .document(user.currentUser?.email!!)
                                 .update(
                                     mapOf(
                                         "url" to downloadUri.toString(),
@@ -369,11 +462,20 @@ class ConfigPerfilFragment : Fragment() {
                                     context?.let {
                                         Glide.with(it)
                                             .load(downloadUri.toString())
-                                            .apply(RequestOptions().override(300, 300))
+                                            .apply(
+                                                RequestOptions().override(
+                                                    300,
+                                                    300
+                                                )
+                                            )
                                             .into(binding.imageviewPerfil)
                                     }
 
-                                    Toast.makeText(context, "Correcto", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Correcto",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
                                 }.addOnFailureListener { e ->
                                     Toast.makeText(
@@ -390,28 +492,35 @@ class ConfigPerfilFragment : Fragment() {
                         }
                     }
 
-                }catch (e :Exception){Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show()}
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        e.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
-        }else{
-            Toast.makeText(
-                context,
-                "Error el resultado no es OK",
-                Toast.LENGTH_SHORT
-            ).show()
+            } else {
+                Toast.makeText(
+                    context,
+                    "Error el resultado no es OK",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
-    }
 
     private fun bitmapToFile(bitmap: Bitmap): Uri { // File name like "image.png"
         val wrapper = ContextWrapper(requireContext())
         var file = wrapper.getDir("Images", Context.MODE_PRIVATE)
-        file = File(file,"${UUID.randomUUID()}.jpg")
+        file = File(file, "${UUID.randomUUID()}.jpg")
         val stream: OutputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG,25,stream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream)
         stream.flush()
         stream.close()
         return file.toUri()
     }
 }
+
 
 
 

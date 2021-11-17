@@ -6,16 +6,7 @@
     android:orientation="vertical"
     android:gravity="center|top"
     tools:context=".ui.login.FillAccountFragment">
-
-    <Button
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_margin="5dp"
-        android:backgroundTint="#00FFFFFF"
-        android:icon="@drawable/ic_back_24" />
-
+    
     <ImageView
         android:layout_width="100dp"
         android:layout_height="70dp"
@@ -33,67 +24,58 @@
         android:layout_height="wrap_content"/>
 
     <LinearLayout
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
+        android:layout_margin="25dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:hint="Nombre"
-                android:fontFamily="@font/madeleina"
-                android:textColorHint="@color/secondaryTextColor"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/editNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:ems="10"
                 android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
                 android:hint="Nombre"
+                android:background="@drawable/rounded_border"
                 android:textColorHint="@color/secondaryTextColor" />
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:hint="Apellidos"
-                android:fontFamily="@font/madeleina"
-                android:textColorHint="@color/secondaryTextColor"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
             <EditText
-                android:id="@+id/editApellidos"
+                android:id="@+id/editBibliografia"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:hint="Bibliografía"
+                android:background="@drawable/rounded_border"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editCiudad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:fontFamily="@font/madeleina"
-                android:hint="Apellidos"
+                android:layout_margin="15dp"
+                android:hint="Ciudad"
+                android:background="@drawable/rounded_border"
+                android:textColorHint="@color/secondaryTextColor" />
+
+            <EditText
+                android:id="@+id/editTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/madeleina"
+                android:layout_margin="15dp"
+                android:background="@drawable/rounded_border"
+                android:hint="Teléfono"
                 android:textColorHint="@color/secondaryTextColor" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 

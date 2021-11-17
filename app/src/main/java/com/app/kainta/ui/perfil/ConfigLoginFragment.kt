@@ -88,7 +88,7 @@ class ConfigLoginFragment : Fragment() {
                     binding.txtNombre.text = document.get("nombre") as CharSequence?
                     binding.txtCiudad.text = document.getString("ciudad")
                     if(document.contains("telefono")){
-                        val telefono : Long? = document.getLong("telefono")
+                        val telefono : String = document.getString("telefono").toString()
                         binding.txtTelefono.text = telefono.toString()
                     }else{
                         binding.txtTelefono.text = "Teléfono sin registrar"
