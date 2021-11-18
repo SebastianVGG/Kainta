@@ -13,7 +13,7 @@ import org.json.JSONObject
 class PerfilServiciosAdapter (
     val context: Context,
     val layoutResource: Int,
-    var jsonArrayObjetos: JSONArray,
+    var stringArray: ArrayList<String>,
     var listener : OnItemClickListener
 
 ) : RecyclerView.Adapter<PerfilServiciosAdapter.ServicioVH>() {
@@ -24,28 +24,28 @@ class PerfilServiciosAdapter (
     }
 
     override fun onBindViewHolder(holder: ServicioVH, position: Int) {
-        val nuevoObjeto = jsonArrayObjetos.getJSONObject(position)
-        holder.bind(nuevoObjeto)
+        val nuevoString = stringArray[position]
+        holder.bind(nuevoString)
     }
 
     override fun getItemCount(): Int {
-        return jsonArrayObjetos.length()
+        return stringArray.size
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item: JSONObject?)
+        fun onItemClick(item: String)
     }
 
     inner class ServicioVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //----------------BIND--------------------------
-        fun bind(jsonObjeto: JSONObject) {
+        fun bind(servicioNombre: String) {
             val nombre = itemView.findViewById<TextView>(R.id.adapterNombre)
 
-            nombre.text = jsonObjeto.getString("nombre")
+            nombre.text = servicioNombre
 
             itemView.setOnClickListener(View.OnClickListener {
-                listener.onItemClick(jsonObjeto)
+                listener.onItemClick(servicioNombre)
             })
 
         }

@@ -60,7 +60,7 @@ class AddServicioFragment : Fragment(), AdapterView.OnItemClickListener {
 
         binding.btnAddTrabajo.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("servicio",servicio)
+            bundle.putString("servicio",servicio.lowercase())
             findNavController().navigate(R.id.action_addServicioFragment_to_addTrabajoFragment, bundle)
         }
 

@@ -90,8 +90,13 @@ class ConfigDireccionesFragment : Fragment() {
                     binding.recyclerDirecciones.adapter = adaptador
                     binding.recyclerDirecciones.layoutManager = LinearLayoutManager(requireContext())
 
+                    binding.progressBar.visibility = View.GONE
+                    binding.layout.visibility = View.VISIBLE
+
                 }else{
                     binding.txtEmptyDirecciones.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                    binding.layout.visibility = View.VISIBLE
                 }
 
             }

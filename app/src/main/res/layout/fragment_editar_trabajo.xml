@@ -13,7 +13,7 @@
         android:layout_marginTop="25dp"
         android:layout_gravity="center"
         android:textSize="24dp"
-        android:text="Agregar trabajo realizado" />
+        android:text="Editar trabajo realizado" />
 
     <EditText
         android:id="@+id/editTitulo"
@@ -29,21 +29,40 @@
         android:layout_margin="5dp"
         android:hint="Descripcion" />
 
-    <Button
-        android:id="@+id/btnAddFotos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/secondaryColor"
-        android:hint="Agregar fotos"
-        android:textColorHint="@color/secondaryTextColor"
-        android:textSize="16sp" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerImages"
-        android:layout_margin="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp" />
+
+    <FrameLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnAddFotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:backgroundTint="@color/secondaryColor"
+            android:hint="Agregar fotos"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnEliminarFotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/secondaryColor"
+            android:enabled="false"
+            android:hint="Eliminar fotos"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="16sp" />
+
+
+    </FrameLayout>
 
     <Button
         android:id="@+id/btnAceptar"
