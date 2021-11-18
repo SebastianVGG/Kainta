@@ -39,11 +39,15 @@
         android:textColorHint="@color/secondaryTextColor"
         android:textSize="16sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerImages"
-        android:layout_margin="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerImages"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"/>
+
+
+
 
     <Button
         android:id="@+id/btnAceptar"
@@ -55,4 +59,11 @@
         android:textColorHint="@color/secondaryTextColor"
         android:textSize="16sp" />
 
+
+    <ProgressBar
+        android:id="@+id/progessBar"
+        android:indeterminate="true"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

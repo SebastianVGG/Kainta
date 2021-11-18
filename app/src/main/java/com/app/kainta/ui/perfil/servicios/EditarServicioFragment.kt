@@ -25,6 +25,14 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import org.json.JSONArray
 import org.json.JSONObject
+import androidx.annotation.NonNull
+
+import com.google.android.gms.tasks.OnFailureListener
+
+import com.google.android.gms.tasks.OnSuccessListener
+
+
+
 
 class EditarServicioFragment : Fragment() {
     private var _binding: FragmentEditarServicioBinding? = null
@@ -94,10 +102,24 @@ class EditarServicioFragment : Fragment() {
 
                                     val bundle = Bundle()
                                     bundle.putString("jsonTrabajo", item.toString())
+                                    bundle.putString("servicio", servicio)
                                     findNavController().navigate(R.id.action_editarServicioFragment_to_editarTrabajoFragment, bundle)
 
                                 }else{
-dfdfdf eliminar imagenes
+
+                                    val storageRef = storage.reference
+
+                                    for (i in 0 until jsonTrabajo.length()-2){
+                                        val spaceRef =
+                                            storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/" +
+                                                    "$servicio/trabajos/" +
+                                                    "${jsonTrabajo.getString("titulo")}/${jsonTrabajo.getString("titulo")}$i")
+
+                                            spaceRef.delete()
+                                        .addOnFailureListener {
+                                            showAlert("Error", (it as FirebaseAuthException).message.toString()) }
+                                    }
+
                                     db.collection("usuario").document(user.currentUser?.email!!)
                                         .collection("servicios").document(servicio)
                                         .collection("trabajos").document(item!!.getString("titulo")).delete()
@@ -105,13 +127,20 @@ dfdfdf eliminar imagenes
                                             showAlert("Correcto", "Se eliminó el trabajo")
                                         }
                                         .addOnFailureListener { e -> showAlert("Error", (e as FirebaseAuthException).message.toString()) }
-
                                 }
                             }
                         })
 
                     binding.recyclerTrabajos.adapter = adaptador
                     binding.recyclerTrabajos.layoutManager = LinearLayoutManager(requireContext())
+
+                    binding.btnAgregarTrabajo.setOnClickListener {
+                        val bundle = Bundle()
+                        bundle.putString("servicio",servicio.lowercase())
+                        bundle.putBoolean("nuevo",false)
+                        findNavController().navigate(R.id.action_editarServicioFragment_to_addTrabajoFragment, bundle)
+
+                    }
                 }
 
         }catch(e:Exception){

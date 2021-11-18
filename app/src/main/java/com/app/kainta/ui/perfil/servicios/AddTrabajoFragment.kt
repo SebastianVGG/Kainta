@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.app.kainta.R
 import com.app.kainta.adaptadores.ServiciosImagesAdapter
 import com.app.kainta.adaptadores.ServiciosImagesURLAdapter
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
@@ -38,6 +39,7 @@ class AddTrabajoFragment : Fragment() {
     private var _binding: FragmentAddTrabajoBinding? = null
     private val binding get() = _binding!!
     private lateinit var servicio : String
+    private var nuevoServicio : Boolean = true
     private lateinit var user : FirebaseAuth
     private lateinit var db : FirebaseFirestore
     private lateinit var storage: FirebaseStorage
@@ -63,7 +65,10 @@ class AddTrabajoFragment : Fragment() {
 
 
         servicio = arguments?.getString("servicio").toString()
-
+        try {
+            if(arguments?.containsKey("nuevo") as Boolean)
+            nuevoServicio = arguments?.getBoolean("nuevo") as Boolean
+        }catch (e : Exception){}
 
         setup()
 
@@ -98,7 +103,7 @@ class AddTrabajoFragment : Fragment() {
 
         binding.btnAceptar.setOnClickListener {
 
-
+            binding.progessBar.visibility = View.VISIBLE
             val titulo = binding.editTitulo.text.toString()
             val descripcion = binding.editDescripcion.text.toString()
 
@@ -131,53 +136,63 @@ class AddTrabajoFragment : Fragment() {
                             }
                         }
                         spaceRef.downloadUrl
-                    }.addOnCompleteListener { task ->
+                    }
+                        .addOnCompleteListener { task ->
 
                         if (task.isSuccessful) {
                             //Tomamos el url de Descarga
                             val downloadUri = task.result
                             listURLS.add(downloadUri.toString())
-                            //Se actualiza base de datos para colocar la url del usuario
-                            db.collection("usuario").document(user.currentUser?.email!!)
-                                .collection("servicios").document(servicio)
-                                .collection("trabajos").document(titulo)
-                                .set(
-                                    mapOf(
-                                        "url$i" to downloadUri.toString(),
-                                        "titulo" to titulo,
-                                        "descripcion" to descripcion
-                                    ), SetOptions.merge()
-                                )
-                                .addOnFailureListener { e ->
-                                    Toast.makeText(
-                                        context,
-                                        (e as FirebaseAuthException).message.toString(),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+
+                            if(listURLS.size == mArrayUri.size) {
+                                for (j in 0 until mArrayUri.size) {
+                                    //Se actualiza base de datos para colocar la url del usuario
+                                    db.collection("usuario").document(user.currentUser?.email!!)
+                                        .collection("servicios").document(servicio)
+                                        .collection("trabajos").document(titulo)
+                                        .set(
+                                            mapOf(
+                                                "url$j" to listURLS[j],
+                                                "titulo" to titulo,
+                                                "descripcion" to descripcion
+                                            ), SetOptions.merge()
+                                        )
+                                        .addOnFailureListener { e ->
+                                            Toast.makeText(
+                                                context,
+                                                (e as FirebaseAuthException).message.toString(),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                 }
+                                binding.progessBar.visibility = View.INVISIBLE
+                            }
+
 
                         } else {
-                            Toast.makeText(context, "Mal", Toast.LENGTH_SHORT)
-                                .show()
+                            showAlert("Error", (task.exception as FirebaseException).message.toString())
                         }
                     }
 
                 }
 
-                db.collection("usuario").document(user.currentUser?.email!!)
-                    .collection("servicios").document(servicio)
-                    .set(
-                        mapOf(
-                            "nombre" to servicio
-                        ))
-                    .addOnFailureListener { e ->
-                        Toast.makeText(
-                            context,
-                            (e as FirebaseAuthException).message.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
 
+
+                if(nuevoServicio){
+                    db.collection("usuario").document(user.currentUser?.email!!)
+                        .collection("servicios").document(servicio)
+                        .set(
+                            mapOf(
+                                "nombre" to servicio
+                            ), SetOptions.merge())
+                        .addOnFailureListener { e ->
+                            Toast.makeText(
+                                context,
+                                (e as FirebaseAuthException).message.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }
             }catch (e : Exception){
                 Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT)
                     .show()
