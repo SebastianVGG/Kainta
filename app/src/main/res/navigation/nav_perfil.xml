@@ -74,6 +74,9 @@
         <action
             android:id="@+id/action_configPerfilFragment_to_addServicioFragment"
             app:destination="@id/addServicioFragment" />
+        <action
+            android:id="@+id/action_configPerfilFragment_to_editarServicioFragment"
+            app:destination="@id/editarServicioFragment" />
     </fragment>
     <fragment
         android:id="@+id/editInfoPersonalFragment"

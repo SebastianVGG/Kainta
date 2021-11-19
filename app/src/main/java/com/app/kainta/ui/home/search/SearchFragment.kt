@@ -13,7 +13,11 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.app.kainta.HomeActivity
+import com.app.kainta.mvc.QueryServicioViewModel
 
 
 class SearchFragment : Fragment() {
@@ -22,6 +26,7 @@ class SearchFragment : Fragment() {
     private lateinit var jsonArray : JSONArray
     private lateinit var jsonArrayCopia : JSONArray
     private lateinit var adaptador : GeneralAdapter
+    private lateinit var model : QueryServicioViewModel
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var drawer_Layout : DrawerLayout
     private val binding get() = _binding!!
@@ -48,16 +53,27 @@ class SearchFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
+
+        model = ViewModelProvider(requireActivity()).get(QueryServicioViewModel::class.java)
         return binding.root
 
 
     }
 
 
+    //Funcion para remplazar un fragmento
+    private fun replaceFragment(fragment: Fragment){
+
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.container_mainn, fragment)
+        fragmentTransaction.commit()
+    }
+
     //SE INFLAN LOS ITEMS DEL TOOLBAR
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_fragment_search, menu)
-        /*val search = menu.findItem(R.id.nav_fragment_search)
+        val search = menu.findItem(R.id.nav_search_search)
         val searchView : SearchView = search?.actionView as SearchView
         searchView.maxWidth = Integer.MAX_VALUE
         searchView.queryHint = "Buscar"
@@ -66,28 +82,21 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 //  vmlGeneral.mldGeneral.postValue(query)
                 //replaceFragment(GeneralFragment(),"Buscando "+query)
+                model.mldQueryServicio.value = query
+                replaceFragment(SearchQueryFragment())
 
                 return false
             }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                //adaptador.filter.filter(newText)
+            override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
-        })*/
+        })
 
     }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //get item id to handle item clicks
-        val id = item!!.itemId
-        //handle item clicks
-        if (id == R.id.nav_search_search){
-            //do your action here, im just showing toast
-            Toast.makeText(activity, "Settings", Toast.LENGTH_SHORT).show()
-        }
-
         return super.onOptionsItemSelected(item)
     }
 

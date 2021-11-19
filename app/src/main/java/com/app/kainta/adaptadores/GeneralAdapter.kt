@@ -39,15 +39,15 @@ class GeneralAdapter (
     inner class SearchVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //----------------BIND--------------------------
-        fun bind(jsonObjeto: JSONObject) {
-            val servicio = itemView.findViewById<TextView>(R.id.cardServicio)
+        fun bind(jsonUsuario: JSONObject) {
+            val nombre = itemView.findViewById<TextView>(R.id.cardServicio)
 
-            servicio.text = jsonObjeto.getString("nombre")
+            servicio.text = jsonUsuario.getString("nombre")
 
 
 
             itemView.setOnClickListener(View.OnClickListener {
-                listener.onItemClick(jsonObjeto)
+                listener.onItemClick(jsonUsuario)
             })
 
         }

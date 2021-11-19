@@ -43,17 +43,12 @@ class EditarTrabajoAdapter (
         //----------------BIND--------------------------
         fun bind(jsonTrabajo: JSONObject) {
 
-            val btnEditar = itemView.findViewById<Button>(R.id.btnAdapterEditar)
             val btnEliminar = itemView.findViewById<Button>(R.id.btnAdapterEliminar)
             val nombre = itemView.findViewById<TextView>(R.id.adapterNombre)
             val descripcion = itemView.findViewById<TextView>(R.id.adapterDescripcion)
 
             nombre.text = jsonTrabajo.getString("titulo")
             descripcion.text = jsonTrabajo.getString("descripcion")
-
-            btnEditar.setOnClickListener {
-                listener.onItemClick(jsonTrabajo, true)
-            }
 
             btnEliminar.setOnClickListener {
                 listener.onItemClick(jsonTrabajo, false)

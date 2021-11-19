@@ -24,7 +24,7 @@
         android:id="@+id/recyclerTrabajos"
         android:layout_margin="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="350dp"/>
 
     <Button
         android:id="@+id/btnAgregarTrabajo"
@@ -33,6 +33,16 @@
         android:layout_gravity="center"
         android:backgroundTint="@color/secondaryColor"
         android:hint="Agregar Trabajo"
+        android:textColorHint="@color/secondaryTextColor"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnEliminarServicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/secondaryColor"
+        android:hint="Eliminar servicio"
         android:textColorHint="@color/secondaryTextColor"
         android:textSize="16sp" />
 

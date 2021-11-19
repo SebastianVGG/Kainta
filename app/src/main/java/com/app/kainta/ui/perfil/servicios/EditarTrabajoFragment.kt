@@ -82,7 +82,6 @@ class EditarTrabajoFragment : Fragment() {
             binding.editTitulo.setText(jsonTrabajo.getString("titulo").toString())
             binding.editDescripcion.setText(jsonTrabajo.getString("descripcion").toString())
 
-
     }
 
     private fun showAlert(titulo : String,mensaje : String){

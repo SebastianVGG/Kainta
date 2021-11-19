@@ -1,9 +1,9 @@
-package com.app.kainta.ui
+package com.app.kainta.mvc
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class InformacionPersonalViewModel : ViewModel() {
+class QueryServicioViewModel : ViewModel() {
 
     val mldQueryServicio = MutableLiveData<String>()
 

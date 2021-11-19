@@ -1,5 +1,6 @@
 package com.app.kainta.ui.perfil
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -26,7 +27,9 @@ import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.R
+import com.app.kainta.adaptadores.PerfilServiciosAdapter
 import com.app.kainta.databinding.FragmentConfigPerfilBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -47,6 +50,7 @@ import com.google.firebase.storage.ktx.storageMetadata
 import java.io.*
 import java.lang.Exception
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 
@@ -60,6 +64,8 @@ class ConfigPerfilFragment : Fragment() {
     private lateinit var progress: ProgressDialog
     private lateinit var bitmap: Bitmap
     private lateinit var dialog: Dialog
+    private lateinit var serviciosArray : ArrayList<String>
+    private lateinit var adaptador : PerfilServiciosAdapter
     private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
@@ -189,6 +195,69 @@ class ConfigPerfilFragment : Fragment() {
                 showDialog()
             }
         })
+
+
+        //ADAPTADOR DE SERVICIOS
+        try{
+            serviciosArray = ArrayList()
+
+            db.collection("usuario").document(user.currentUser?.email!!)
+                .collection("servicios")
+                .get()
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        context,
+                        (e as FirebaseAuthException).message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .addOnCompleteListener { documents ->
+                    if(documents.isSuccessful)
+                        if(!documents.result.isEmpty){
+                            for ( document in documents.result){
+                                serviciosArray.add(document.data["nombre"] as String)
+                                println(document.data["nombre"] as String)
+                            }
+
+                            //Adaptador
+                            adaptador = PerfilServiciosAdapter(
+                                binding.root.context,
+                                R.layout.adapter_perfil_servicios,
+                                serviciosArray, object : PerfilServiciosAdapter.OnItemClickListener {
+                                    @SuppressLint("ResourceType")
+                                    override fun onItemClick(servicioNombre: String) {
+
+                                        val bundle = Bundle()
+                                        bundle.putString("servicioNombre", servicioNombre)
+                                        findNavController().navigate(R.id.action_configPerfilFragment_to_editarServicioFragment, bundle)
+                                    }
+                                })
+
+                            binding.recyclerServicios.adapter = adaptador
+                            binding.recyclerServicios.layoutManager = LinearLayoutManager(requireContext())
+
+                            binding.progressBar.visibility = View.GONE
+                            binding.layout.visibility = View.VISIBLE
+                            binding.btnAddServicio.visibility =
+                                View.VISIBLE
+
+                        }else{
+                            binding.progressBar.visibility = View.GONE
+                            binding.layout.visibility = View.VISIBLE
+                            binding.btnAddServicio.visibility =
+                                View.VISIBLE
+                        }
+                }
+        }catch(e:Exception){Toast.makeText(
+            context,
+            "No hay registros de servicios",
+            Toast.LENGTH_SHORT
+
+        ).show()}
+
+
+
+
 
         binding.btnEditarInfo.setOnClickListener {
             findNavController().navigate(R.id.action_configPerfilFragment_to_editInfoPersonalFragment)

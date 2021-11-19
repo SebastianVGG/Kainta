@@ -14,18 +14,14 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.app.kainta.adaptadores.VPAdapter
 import com.app.kainta.databinding.ActivityHomeBinding
-import com.app.kainta.models.InformacionPersonalModel
+import com.app.kainta.models.QueryServicioModel
 import com.app.kainta.ui.InformacionPersonalViewModel
 import com.app.kainta.ui.home.search.SearchFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 enum class ProviderType{
     BASIC,
@@ -164,12 +160,10 @@ class HomeActivity : AppCompatActivity() {
 
         val textEmail = viewNavHeader.findViewById<TextView>(R.id.navHeaderCorreo)
 
-        val informacionPersonal = InformacionPersonalModel(
+        val informacionPersonal = QueryServicioModel(
             email,
             provider
         )
-        infoPersonalViewModel.mldInfoPersonal.value = informacionPersonal
-
         textEmail.text = email
 
 
@@ -202,9 +196,16 @@ class HomeActivity : AppCompatActivity() {
     //Funcion para item seleccionado ---------NO IMPORTA
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if(toggle.onOptionsItemSelected(item)){
-
+        if(toggle.onOptionsItemSelected(item))
             return true
+
+        when(item.itemId){
+            R.id.nav_inicio_add -> {
+                val activityIntent = Intent(this, PerfilActivity::class.java).apply {
+                    putExtra("fromHome", true)
+                }
+                startActivity(activityIntent)
+            }
         }
 
         return super.onOptionsItemSelected(item)

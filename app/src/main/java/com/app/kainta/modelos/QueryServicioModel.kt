@@ -1,6 +1,6 @@
 package com.app.kainta.models
 
-data class InformacionPersonalModel(
+data class QueryServicioModel(
     val email: String,
     val provider: String
 )

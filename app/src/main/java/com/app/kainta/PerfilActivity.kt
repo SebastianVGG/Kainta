@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -31,7 +32,10 @@ class PerfilActivity : AppCompatActivity() {
     }
 
     private fun setup(){
-
+        val fromHome = intent.getBooleanExtra("fromHome", false)
+            if(fromHome){
+                findNavController(R.id.nav_host_fragment_content_perfil).navigate(R.id.action_perfilFragment_to_configServiciosFragment)
+        }
     }
 
 

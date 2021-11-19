@@ -98,22 +98,19 @@ class EditarServicioFragment : Fragment() {
                         jsonTrabajos, object : EditarTrabajoAdapter.OnItemClickListener {
                             override fun onItemClick(item: JSONObject?, editar: Boolean) {
 
-                                if(editar){
-
-                                    val bundle = Bundle()
+                                   /* val bundle = Bundle()
                                     bundle.putString("jsonTrabajo", item.toString())
                                     bundle.putString("servicio", servicio)
                                     findNavController().navigate(R.id.action_editarServicioFragment_to_editarTrabajoFragment, bundle)
-
-                                }else{
+                                    */
 
                                     val storageRef = storage.reference
 
-                                    for (i in 0 until jsonTrabajo.length()-2){
+                                    for (i in 0 until (item?.length()?.minus(2) ?: 0)){
                                         val spaceRef =
                                             storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/" +
                                                     "$servicio/trabajos/" +
-                                                    "${jsonTrabajo.getString("titulo")}/${jsonTrabajo.getString("titulo")}$i")
+                                                    "${item!!.getString("titulo")}/${item.getString("titulo")}$i")
 
                                             spaceRef.delete()
                                         .addOnFailureListener {
@@ -128,7 +125,6 @@ class EditarServicioFragment : Fragment() {
                                         }
                                         .addOnFailureListener { e -> showAlert("Error", (e as FirebaseAuthException).message.toString()) }
                                 }
-                            }
                         })
 
                     binding.recyclerTrabajos.adapter = adaptador
@@ -150,7 +146,25 @@ class EditarServicioFragment : Fragment() {
             Toast.LENGTH_SHORT
         ).show()}
 
-    }
+        binding.btnEliminarServicio.setOnClickListener {
+
+            db.collection("usuario").document(user.currentUser?.email!!)
+                .collection("servicios").document(servicio)
+                .delete()
+                .addOnSuccessListener {db.collection("servicios").document(servicio)
+                    .collection("usuario").document(user.currentUser?.email!!)
+                    .delete()
+                    .addOnSuccessListener {
+                        showAlert("Correcto", "Se eliminó el servicio")
+                        requireActivity().onBackPressedDispatcher
+                    }
+                    }.addOnFailureListener { e -> showAlert("Error", (e as FirebaseAuthException).message.toString()) }
+                }
+
+
+        }
+
+
 
     private fun showAlert(titulo : String,mensaje : String){
         val builder = AlertDialog.Builder(requireContext())

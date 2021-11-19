@@ -66,7 +66,7 @@ class LoginFragment : Fragment() {
                         docRef.get()
                             .addOnSuccessListener { document ->
                                 if (document.exists()) {
-                                    if(document.contains("nombre") && document.contains("apellidos") && document.contains("email")){
+                                    if(document.contains("nombre") && document.contains("email")){
 
                                         val data = hashMapOf("provider" to "BASIC")
                                         val docProvider = db.collection("usuario").document(it.result.user?.email ?: "")
@@ -166,7 +166,7 @@ class LoginFragment : Fragment() {
                                 docRef.get()
                                 .addOnSuccessListener { document ->
                                     if (document.exists()) {
-                                        if(document.contains("nombre") && document.contains("apellidos") && document.contains("email")){
+                                        if(document.contains("nombre") && document.contains("email")){
 
                                             val data = hashMapOf("provider" to "GOOGLE")
                                             val docProvider = db.collection("usuario").document(account.email)

@@ -31,6 +31,10 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.google.firebase.storage.ktx.storageMetadata
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -165,6 +169,7 @@ class AddTrabajoFragment : Fragment() {
                                             ).show()
                                         }
                                 }
+                                requireActivity().onBackPressedDispatcher
                                 binding.progessBar.visibility = View.INVISIBLE
                             }
 
@@ -185,6 +190,33 @@ class AddTrabajoFragment : Fragment() {
                             mapOf(
                                 "nombre" to servicio
                             ), SetOptions.merge())
+                        .addOnSuccessListener {
+
+                            val sdf = SimpleDateFormat("dd/MM/yyyy")
+                            val currentDate = sdf.format(Date())
+
+                            db.collection("servicios").document(servicio)
+                                .collection("usuario").document(user.currentUser?.email!!)
+                                .set(
+                                    mapOf(
+                                        "correo" to user.currentUser?.email!!,
+                                        "fecha" to currentDate
+                                    ))
+                                .addOnSuccessListener {
+                                    db.collection("servicios").document(servicio)
+                                        .set(
+                                            mapOf(
+                                                "nombre" to servicio
+                                            ), SetOptions.merge())
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(
+                                        context,
+                                        (e as FirebaseAuthException).message.toString(),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                        }
                         .addOnFailureListener { e ->
                             Toast.makeText(
                                 context,

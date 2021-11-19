@@ -50,22 +50,10 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/btnAdapterEditar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginTop="15dp"
-                    android:backgroundTint="@color/secondaryColor"
-                    android:fontFamily="@font/madeleina"
-                    android:hint="Editar"
-                    android:textColorHint="@color/secondaryTextColor"
-                    android:textSize="16sp" />
-
-                <Button
                     android:id="@+id/btnAdapterEliminar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
+                    android:layout_gravity="center"
                     android:layout_marginTop="15dp"
                     android:backgroundTint="@color/secondaryColor"
                     android:fontFamily="@font/madeleina"
