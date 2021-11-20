@@ -51,6 +51,7 @@ class AddServicioFragment : Fragment(), AdapterView.OnItemClickListener {
     private fun setup() {
 
         val serviciosString = requireActivity().resources.getStringArray(R.array.spinner_servicios)
+        serviciosString.sort()
         val adapter = ArrayAdapter(requireContext(), R.layout.spinner_list_item, serviciosString)
 
         with(binding.menuServicios.editText as? AutoCompleteTextView){

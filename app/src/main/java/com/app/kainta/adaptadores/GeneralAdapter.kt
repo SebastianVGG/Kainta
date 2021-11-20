@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.*
 
 class GeneralAdapter (
     val context: Context,
@@ -50,8 +51,16 @@ class GeneralAdapter (
 
             val imagenURL = jsonUsuario.getString("url")
             servicio.text = jsonUsuario.getString("servicio").uppercase()
-            nombre.text = jsonUsuario.getString("nombre")
-            ciudad.text = jsonUsuario.getString("ciudad")
+            nombre.text = jsonUsuario.getString("nombre").replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            }
+            ciudad.text = jsonUsuario.getString("ciudad").replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            }
             context.let {
                 Glide.with(it)
                     .load(imagenURL)

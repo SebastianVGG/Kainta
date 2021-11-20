@@ -68,7 +68,7 @@ class AddTrabajoFragment : Fragment() {
         mArrayUri = ArrayList<Uri>()
 
 
-        servicio = arguments?.getString("servicio").toString()
+        servicio = arguments?.getString("servicio").toString().lowercase()
         try {
             if(arguments?.containsKey("nuevo") as Boolean)
             nuevoServicio = arguments?.getBoolean("nuevo") as Boolean

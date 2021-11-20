@@ -19,11 +19,23 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="spinner_servicios">
-        <item>Plomeria</item>
-        <item>Enfermeria</item>
+        <item>Plomero</item>
+        <item>Enfermera</item>
+        <item>Soldador</item>
+        <item>Jardinero</item>
+        <item>Carpintero</item>
+        <item>Albañil</item>
+        <item>Contador</item>
+        <item>Pintor</item>
+        <item>Vidriero</item>
+        <item>Maestro</item>
+        <item>Mecánico</item>
+        <item>Cerrajero</item>
+        <item>Barbero</item>
+        <item>Chofer</item>
+        <item>Informático</item>
         <item>Electricista</item>
-        <item>Jardineria</item>
-        <item>Carpinteria</item>
+        <item>Repostero</item>
     </string-array>
 
 

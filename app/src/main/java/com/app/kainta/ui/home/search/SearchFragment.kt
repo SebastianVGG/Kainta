@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.json.JSONObject
@@ -75,7 +76,7 @@ class SearchFragment : Fragment() {
         val adapterAutoComplete = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1, arrayServicios)
         val auto : AutoCompleteTextView = binding.autoComplete
 
-        auto.threshold = 3
+        auto.threshold = 1
         auto.setAdapter(adapterAutoComplete)
         auto.setOnItemClickListener { parent, view, position, id ->
 
@@ -179,11 +180,31 @@ class SearchFragment : Fragment() {
                                         }
                                     }
                             }
+                            db.collection("servicios").document(servicio)
+                                .get().addOnSuccessListener {
+                                    db.collection("servicios").document(servicio)
+                                        .set(mapOf(
+                                            "buscado" to (it.data?.get("buscado") as Long +1)
+                                        ), SetOptions.merge())
+                                }.addOnFailureListener {
+                                    Toast.makeText(context, "No se agrego el contador" , Toast.LENGTH_SHORT).show()
+                                }
+
 
                         }else{
                             binding.txtResultado.text = "No se encontraron resultados del servicio $servicio"
                             binding.progressBar.visibility = View.GONE
                             binding.txtResultado.visibility = View.VISIBLE
+
+                            db.collection("servicios").document(servicio)
+                                .get().addOnCompleteListener {
+                                    if(it.result.exists())
+                                    db.collection("servicios").document(servicio)
+                                        .set(mapOf(
+                                            "buscado" to (it.result.data?.get("buscado") as Long + 1)
+                                        ), SetOptions.merge())
+                                }
+
                         }
                     }
 

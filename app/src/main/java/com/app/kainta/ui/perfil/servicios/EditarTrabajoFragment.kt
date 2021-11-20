@@ -52,7 +52,7 @@ class EditarTrabajoFragment : Fragment() {
         storage = Firebase.storage
 
         jsonTrabajo = JSONObject(arguments?.getString("jsonTrabajo").toString())
-        servicio = arguments?.getString("servicio").toString()
+        servicio = arguments?.getString("servicio").toString().lowercase()
 
 
         setup()

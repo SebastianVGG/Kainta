@@ -4,21 +4,23 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.kainta.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.ArrayList
 
-class PerfilServiciosAdapter (
+class DestacadoFragmentAdapter (
     val context: Context,
     val layoutResource: Int,
-    var stringArray: ArrayList<String>,
+    var jsonArrayObjetos: JSONArray,
     var listener : OnItemClickListener
 
-) : RecyclerView.Adapter<PerfilServiciosAdapter.ServicioVH>() {
+) : RecyclerView.Adapter<DestacadoFragmentAdapter.ServicioVH>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServicioVH {
         val view = LayoutInflater.from(context).inflate(layoutResource, parent, false)
@@ -26,40 +28,32 @@ class PerfilServiciosAdapter (
     }
 
     override fun onBindViewHolder(holder: ServicioVH, position: Int) {
-        val nuevoString = stringArray[position]
-        holder.bind(nuevoString)
+        val nuevoObjeto = jsonArrayObjetos.getJSONObject(position)
+        holder.bind(nuevoObjeto)
     }
 
     override fun getItemCount(): Int {
-        return stringArray.size
+        return jsonArrayObjetos.length()
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item: String)
+        fun onItemClick(item: JSONObject?)
     }
 
     inner class ServicioVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //----------------BIND--------------------------
-        fun bind(servicioNombre: String) {
-            val nombre = itemView.findViewById<TextView>(R.id.adapterNombre)
+        fun bind(jsonServicio: JSONObject) {
 
-            nombre.text = servicioNombre.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
-                    Locale.getDefault()
-                ) else it.toString()
-            }
+
 
             itemView.setOnClickListener(View.OnClickListener {
-                listener.onItemClick(servicioNombre)
+                listener.onItemClick(jsonServicio)
             })
 
         }
 
     }
-
-
-
-
-
 }
+
+

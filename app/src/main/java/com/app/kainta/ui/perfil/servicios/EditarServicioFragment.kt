@@ -58,7 +58,7 @@ class EditarServicioFragment : Fragment() {
         db = Firebase.firestore
         storage = Firebase.storage
 
-        servicio = arguments?.getString("servicioNombre").toString()
+        servicio = arguments?.getString("servicioNombre").toString().lowercase()
 
         jsonTrabajos = JSONArray()
 
