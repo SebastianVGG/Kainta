@@ -3,9 +3,8 @@ package com.app.kainta.mvc
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class QueryServicioViewModel : ViewModel() {
+class UsuarioServicioViewModel : ViewModel() {
 
-    val mldQueryServicio = MutableLiveData<String>()
-
+    val mldUsuarioServicio = MutableLiveData<String>()
 
 }

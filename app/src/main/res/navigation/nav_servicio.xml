@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_servicio"
+    app:startDestination="@id/servicioFragment">
+
+    <fragment
+        android:id="@+id/servicioFragment"
+        android:name="com.app.kainta.ui.servicio.ServicioFragment"
+        android:label="fragment_servicio"
+        tools:layout="@layout/fragment_servicio" >
+        <action
+            android:id="@+id/action_servicioFragment_to_mostrarTrabajosFragment"
+            app:destination="@id/mostrarTrabajosFragment" />
+        <action
+            android:id="@+id/action_servicioFragment_to_solicitarServicioFragment"
+            app:destination="@id/solicitarServicioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mostrarTrabajosFragment"
+        android:name="com.app.kainta.ui.servicio.MostrarTrabajosFragment"
+        android:label="fragment_mostrar_trabajos"
+        tools:layout="@layout/fragment_mostrar_trabajos" >
+        <action
+            android:id="@+id/action_mostrarTrabajosFragment_to_mostrarTrabajoFragment"
+            app:destination="@id/mostrarTrabajoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mostrarTrabajoFragment"
+        android:name="com.app.kainta.ui.servicio.MostrarTrabajoFragment"
+        android:label="fragment_mostrar_trabajo"
+        tools:layout="@layout/fragment_mostrar_trabajo" />
+    <fragment
+        android:id="@+id/solicitarServicioFragment"
+        android:name="com.app.kainta.ui.servicio.SolicitarServicioFragment"
+        android:label="fragment_solicitar_servicio"
+        tools:layout="@layout/fragment_solicitar_servicio" />
+</navigation>

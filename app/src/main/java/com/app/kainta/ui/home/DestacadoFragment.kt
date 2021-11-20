@@ -44,52 +44,7 @@ class DestacadoFragment : Fragment() {
     //Setup
     private fun setup(){
 
-        val jsonLugares = """
-        [
-            {
-                "nombre": "Ixtapa",
-                "tipo": "Playa",
-                "numTipo": 0,
-                "actividades": ["Nadar", "Volley de Playa", "Parachute"]
-            },
-            {
-                "nombre": "Lago de Zirahuen",
-                "tipo":"Bosque, Lago",
-                "numTipo": 1,
-                "actividades": ["Tirolesa", "Rapel", "Senderismo", "Acampar"]
-            },
-            {
-                "nombre": "Morelia",
-                "tipo": "Ciudad",
-                "numTipo": 2,
-                "actividades": ["Recorrido colonial", "Recorrido de Leyendas"]
-            }
-        ]
-    """.trimIndent()
 
-        jsonArray = JSONArray(jsonLugares)
-        jsonArrayCopia = jsonArray
-
-        //Adaptador
-
-        adaptador = GeneralAdapter(binding.root.context,
-            R.layout.adapter_general,
-            jsonArray, object : GeneralAdapter.OnItemClickListener {
-                override fun onItemClick(servicio: JSONObject?) {
-
-                    //Abrir activity Servicio
-                    activity?.let{
-                        val servicioIntent = Intent(it, ServicioActivity::class.java).apply {
-                            putExtra("jsonServicio", servicio.toString())
-                        }
-                        it.startActivity(servicioIntent)
-                    }
-
-                }
-            })
-
-        binding.recyclerView.adapter = adaptador
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
 

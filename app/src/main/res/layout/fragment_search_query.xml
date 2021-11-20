@@ -18,30 +18,31 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"/>
 
-
-        <LinearLayout
-            android:id="@+id/layout"
-            android:orientation="vertical"
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/primaryDarkColor"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:indeterminateTint="@color/primaryDarkColor"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+            <TextView
+                android:id="@+id/txtResultado"
+                android:text="RESULTADO"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerSearch"
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="5dp"
+                android:visibility="gone"
                 android:layout_marginEnd="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-
-        </LinearLayout>
 
     </LinearLayout>
 

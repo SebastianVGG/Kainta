@@ -4,9 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.kainta.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -40,10 +43,26 @@ class GeneralAdapter (
 
         //----------------BIND--------------------------
         fun bind(jsonUsuario: JSONObject) {
-            val nombre = itemView.findViewById<TextView>(R.id.cardServicio)
+            val servicio = itemView.findViewById<TextView>(R.id.cardServicio)
+            val nombre = itemView.findViewById<TextView>(R.id.cardNombre)
+            val ciudad = itemView.findViewById<TextView>(R.id.cardCiudad)
+            val imagenPerfilURL = itemView.findViewById<ImageView>(R.id.imageviewPerfil)
 
-            servicio.text = jsonUsuario.getString("nombre")
-
+            val imagenURL = jsonUsuario.getString("url")
+            servicio.text = jsonUsuario.getString("servicio").uppercase()
+            nombre.text = jsonUsuario.getString("nombre")
+            ciudad.text = jsonUsuario.getString("ciudad")
+            context.let {
+                Glide.with(it)
+                    .load(imagenURL)
+                    .apply(
+                        RequestOptions().override(
+                            300,
+                            300
+                        )
+                    )
+                    .into(imagenPerfilURL)
+            }
 
 
             itemView.setOnClickListener(View.OnClickListener {

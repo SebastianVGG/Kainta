@@ -1,0 +1,172 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_account_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.servicio.ServicioFragment">
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/primaryDarkColor"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageviewPerfil"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="0dp"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center|top"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/madeleina"
+                android:hint="Nombre"
+                android:textColorHint="@color/secondaryTextColor"
+                android:textSize="26dp" />
+            <TextView
+                android:id="@+id/txtCiudad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/madeleina"
+                android:hint="Ciudad"
+                android:textColorHint="@color/secondaryTextColor"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/madeleina"
+                android:hint="Descripcion"
+                android:textColorHint="@color/secondaryTextColor"
+                android:textSize="22dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/madeleina"
+                android:hint="Redes sociales"
+                android:textColorHint="@color/secondaryTextColor"
+                android:textSize="22dp" />
+
+            <TextView
+                android:id="@+id/txtRedesSociales"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/madeleina"
+                android:text="No hay redes sociales registradas"
+                android:textColorHint="@color/secondaryTextColor"
+                android:textSize="22dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageFacebook"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:src="@drawable/facebook_48" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageTwitter"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/twitter_48" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageInstagram"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/instagram_48" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageYoutube"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/youtube_48" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageWeb"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/web_48" />
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btnMensaje"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="#919191"
+                android:enabled="false"
+                android:fontFamily="@font/madeleina"
+                android:hint="Mensaje"
+                android:textColorHint="@color/secondaryTextColor"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerServicios"
+            android:layout_marginTop="20dp"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

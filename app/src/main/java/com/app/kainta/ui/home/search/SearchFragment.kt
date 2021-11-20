@@ -1,36 +1,50 @@
 package com.app.kainta.ui.home.search
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.appcompat.widget.SearchView
 import com.app.kainta.R
 import com.app.kainta.adaptadores.GeneralAdapter
 import com.app.kainta.databinding.FragmentSearchBinding
 import org.json.JSONArray
-import android.view.MenuInflater
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.app.kainta.HomeActivity
-import com.app.kainta.mvc.QueryServicioViewModel
+import com.app.kainta.mvc.UsuarioServicioViewModel
+import android.view.LayoutInflater
+import android.view.inputmethod.EditorInfo
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.app.kainta.ServicioActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import org.json.JSONObject
+import kotlin.collections.ArrayList
 
 
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
-    private lateinit var jsonArray : JSONArray
-    private lateinit var jsonArrayCopia : JSONArray
-    private lateinit var adaptador : GeneralAdapter
-    private lateinit var model : QueryServicioViewModel
+    private lateinit var jsonUsuarios: JSONArray
+    private lateinit var listCorreos: ArrayList<String>
+    private lateinit var adaptador: GeneralAdapter
+    private lateinit var user: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+    private lateinit var model : UsuarioServicioViewModel
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var drawer_Layout : DrawerLayout
     private val binding get() = _binding!!
 
+    @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,8 +54,7 @@ class SearchFragment : Fragment() {
         setHasOptionsMenu(true)
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbarSearch)
-        binding.toolbarSearch.title = "Search fragment"
-
+        binding.toolbarSearch.title = ""
 
         drawer_Layout = binding.drawerLayout
 
@@ -52,24 +65,148 @@ class SearchFragment : Fragment() {
 
         (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        user = Firebase.auth
+        db = Firebase.firestore
 
+        model = ViewModelProvider(requireActivity()).get(UsuarioServicioViewModel::class.java)
 
-        model = ViewModelProvider(requireActivity()).get(QueryServicioViewModel::class.java)
+        val arrayServicios = resources.getStringArray(R.array.spinner_servicios)
+
+        val adapterAutoComplete = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1, arrayServicios)
+        val auto : AutoCompleteTextView = binding.autoComplete
+
+        auto.threshold = 3
+        auto.setAdapter(adapterAutoComplete)
+        auto.setOnItemClickListener { parent, view, position, id ->
+
+            val servicio = adapterAutoComplete.getItem(position)?.lowercase().toString()
+            if(servicio.isNotEmpty())
+            searchServicios(servicio)
+        }
+
+        auto.setOnKeyListener { v, keyCode, event ->
+            if (keyCode == EditorInfo.IME_ACTION_SEARCH ||
+                keyCode == EditorInfo.IME_ACTION_DONE ||
+                event.action == KeyEvent.ACTION_DOWN &&
+                event.keyCode == KeyEvent.KEYCODE_ENTER) {
+                val servicio = auto.text.toString().lowercase()
+                if(servicio.isNotEmpty())
+                searchServicios(servicio)
+            }
+            false
+
+        }
+
+        setup()
+
         return binding.root
 
 
     }
 
+    private fun searchServicios(servicio: String) {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.recyclerServicios.visibility = View.GONE
+        binding.txtResultado.visibility = View.GONE
 
-    //Funcion para remplazar un fragmento
-    private fun replaceFragment(fragment: Fragment){
+        listCorreos = ArrayList()
+        jsonUsuarios = JSONArray()
+        var jsonUsuario: JSONObject = JSONObject()
 
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container_mainn, fragment)
-        fragmentTransaction.commit()
+        try {
+            db.collection("servicios").document(servicio)
+                .collection("usuario")
+                .get()
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        context,
+                        (e as FirebaseAuthException).message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .addOnCompleteListener { documents ->
+                    if (documents.isSuccessful) {
+                        if(!documents.result.isEmpty){
+                            for (document in documents.result) {
+                                listCorreos.add(document.data["correo"] as String)
+                            }
+                            for (correo in listCorreos) {
+
+                                db.collection("usuario").document(correo)
+                                    .get()
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(
+                                            context,
+                                            (e as FirebaseAuthException).message.toString(),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                    .addOnCompleteListener { usuario ->
+                                        if (usuario.isSuccessful) {
+                                            jsonUsuario = JSONObject(usuario.result.data)
+                                            jsonUsuario.put("servicio", servicio)
+                                            jsonUsuarios.put(jsonUsuario)
+
+                                            if (jsonUsuarios.length() == listCorreos.size) {
+                                                //Adaptador
+                                                adaptador = GeneralAdapter(binding.root.context,
+                                                    R.layout.adapter_general,
+                                                    jsonUsuarios,
+                                                    object : GeneralAdapter.OnItemClickListener {
+                                                        override fun onItemClick(usuario : JSONObject?) {
+                                                            model.mldUsuarioServicio.postValue(usuario.toString())
+                                                            //Abrir activity Servicio
+                                                            activity?.let {
+                                                                val servicioIntent = Intent(
+                                                                    it,
+                                                                    ServicioActivity::class.java
+                                                                ).apply {
+                                                                    putExtra("usuario", usuario.toString())
+                                                                }
+                                                                it.startActivity(servicioIntent)
+                                                            }
+
+                                                        }
+                                                    })
+
+                                                binding.recyclerServicios.adapter = adaptador
+                                                binding.recyclerServicios.layoutManager =
+                                                    LinearLayoutManager(requireContext())
+
+                                                binding.progressBar.visibility = View.GONE
+                                                binding.recyclerServicios.visibility = View.VISIBLE
+                                            }
+                                        }
+                                    }
+                            }
+
+                        }else{
+                            binding.txtResultado.text = "No se encontraron resultados del servicio $servicio"
+                            binding.progressBar.visibility = View.GONE
+                            binding.txtResultado.visibility = View.VISIBLE
+                        }
+                    }
+
+
+                }
+        } catch (e: Exception) {
+            Toast.makeText(
+                context,
+                "No hay registros de servicios",
+                Toast.LENGTH_SHORT
+
+            ).show()
+        }
     }
 
+    private fun setup() {
+
+    }
+
+
+
+
+    /*
     //SE INFLAN LOS ITEMS DEL TOOLBAR
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_fragment_search, menu)
@@ -89,16 +226,14 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+
+
+
                 return false
             }
         })
 
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
-    }
+    }*/
 
     override fun onPrepareOptionsMenu(menu: Menu){
         super.onPrepareOptionsMenu(menu)

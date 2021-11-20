@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="ExtraText">
     tools:context="ui.search.SearchFragment">
 
     <LinearLayout
@@ -12,15 +13,68 @@
         android:orientation="vertical"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarSearch"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="#00552126"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleTextColor="@color/black" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="match_parent"/>
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoComplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableTintMode="src_atop"
+                    android:drawableStart="@drawable/ic_baseline_search_24"
+                    android:drawablePadding="5dp"
+                    android:singleLine="true"
+                    android:imeOptions="actionSearch"
+                    android:backgroundTint="#00545434"
+                    android:hint="Buscar" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"/>
+            android:indeterminate="true"
+            android:visibility="gone"
+            android:indeterminateTint="@color/primaryDarkColor"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerServicios"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
 
+        <TextView
+            android:id="@+id/txtResultado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
-
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_View"
