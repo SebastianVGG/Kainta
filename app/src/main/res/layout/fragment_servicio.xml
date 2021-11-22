@@ -143,22 +143,32 @@
             </LinearLayout>
 
 
+
             <Button
                 android:id="@+id/btnMensaje"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="#919191"
-                android:enabled="false"
                 android:fontFamily="@font/madeleina"
                 android:hint="Mensaje"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
+
         </LinearLayout>
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/madeleina"
+            android:hint="Servicios"
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="26dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerServicios"

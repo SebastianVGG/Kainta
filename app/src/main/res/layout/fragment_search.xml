@@ -22,34 +22,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="#00552126"
-
+                android:layout_gravity="center|top"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:titleTextColor="@color/black" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <View
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="match_parent"/>
+                app:titleTextColor="@color/black">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoComplete"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableTintMode="src_atop"
+                    android:backgroundTint="#00545434"
                     android:drawableStart="@drawable/ic_baseline_search_24"
                     android:drawablePadding="5dp"
-                    android:singleLine="true"
+                    android:drawableTintMode="src_atop"
+                    android:hint="Buscar..."
                     android:imeOptions="actionSearch"
-                    android:backgroundTint="#00545434"
-                    android:hint="Buscar" />
+                    android:singleLine="true"
+                    android:visibility="visible" />
 
-            </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
 
         </FrameLayout>
 

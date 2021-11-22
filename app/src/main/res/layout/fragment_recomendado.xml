@@ -4,12 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.RecomendadoFragment">
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="26dp"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:text="Fragmento Recomendado" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

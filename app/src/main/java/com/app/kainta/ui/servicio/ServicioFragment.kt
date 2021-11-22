@@ -30,12 +30,14 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import org.json.JSONObject
@@ -193,6 +195,7 @@ class ServicioFragment : Fragment() {
 
                                         val bundle = Bundle()
                                         bundle.putString("servicioNombre", servicioNombre)
+                                        bundle.putString("usuario", jsonUsuario.toString())
                                         findNavController().navigate(
                                             R.id.action_servicioFragment_to_mostrarTrabajosFragment,
                                             bundle
@@ -220,15 +223,13 @@ class ServicioFragment : Fragment() {
 
             ).show()
         }
-
-
-
-
-
-
-
         binding.btnMensaje.setOnClickListener {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
 
+                val token = task.result
+                val msg = getString(, token)
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            })
         }
 
     }

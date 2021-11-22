@@ -6,15 +6,6 @@
     android:orientation="vertical"
     tools:context=".ui.home.DestacadoFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="26dp"
-        android:layout_margin="5dp"
-        android:gravity="center|top"
-        android:textColor="@color/black"
-        android:text="Fragmento Destacado" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_margin="10dp"

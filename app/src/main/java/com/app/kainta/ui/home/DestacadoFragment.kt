@@ -13,6 +13,7 @@ import com.app.kainta.R
 import com.app.kainta.ServicioActivity
 import com.app.kainta.adaptadores.DestacadoFragmentAdapter
 import com.app.kainta.adaptadores.GeneralAdapter
+import com.app.kainta.adaptadores.HomeAdapter
 import com.app.kainta.adaptadores.PerfilServiciosAdapter
 import com.app.kainta.databinding.FragmentDestacadoBinding
 import com.app.kainta.mvc.UsuarioServicioViewModel
@@ -32,7 +33,7 @@ class DestacadoFragment : Fragment() {
     private var _binding: FragmentDestacadoBinding? = null
     private lateinit var jsonServicios: JSONArray
     private lateinit var jsonArrayCopia : JSONArray
-    private lateinit var adaptador : PerfilServiciosAdapter
+    private lateinit var adaptador : HomeAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var model : UsuarioServicioViewModel
     private val binding get() = _binding!!
@@ -60,17 +61,16 @@ class DestacadoFragment : Fragment() {
         val listServicios = ArrayList<String>()
 
 
-        db.collection("servicios").orderBy("busqueda")
+        db.collection("servicios").orderBy("buscado" , Query.Direction.DESCENDING).limit(5)
             .get().addOnCompleteListener {
                 if(it.isSuccessful){
-                    println(it.result.documents)
                     for(servicio in it.result.documents)
                     listServicios.add(servicio.data?.get("nombre") as String)
                     //Adaptador
-                    adaptador = PerfilServiciosAdapter(binding.root.context,
+                    adaptador = HomeAdapter(binding.root.context,
                         R.layout.adapter_general,
                         listServicios,
-                        object : PerfilServiciosAdapter.OnItemClickListener {
+                        object : HomeAdapter.OnItemClickListener {
                             override fun onItemClick(item: String) {
                                 model.mldUsuarioServicio.postValue(item)
                                 //Abrir activity Servicio
@@ -90,19 +90,10 @@ class DestacadoFragment : Fragment() {
                     binding.recyclerView.layoutManager =
                         LinearLayoutManager(requireContext())
 
-
-
                 }else{
                     Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT).show()
                 }
             }
-
-    }
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser) {
-            requireActivity().supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
-        }
     }
 
 }

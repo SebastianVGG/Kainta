@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.R
 import com.app.kainta.ServicioActivity
 import com.app.kainta.adaptadores.GeneralAdapter
+import com.app.kainta.adaptadores.HomeAdapter
+import com.app.kainta.adaptadores.PerfilServiciosAdapter
 import com.app.kainta.databinding.FragmentNuevoBinding
 import com.app.kainta.databinding.FragmentSearchBinding
 import com.app.kainta.mvc.UsuarioServicioViewModel
@@ -24,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.json.JSONArray
@@ -33,7 +36,7 @@ class NuevoFragment : Fragment() {
     private var _binding: FragmentNuevoBinding? = null
     private lateinit var jsonServicios: JSONArray
     private lateinit var listCorreos: ArrayList<String>
-    private lateinit var adaptador: GeneralAdapter
+    private lateinit var adaptador: HomeAdapter
     private lateinit var user: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var model : UsuarioServicioViewModel
@@ -64,16 +67,42 @@ class NuevoFragment : Fragment() {
     private fun setup() {
 
         jsonServicios = JSONArray()
+        var jsonServicio = JSONObject()
+        val listServicios = ArrayList<String>()
 
-        db.collection("servicios")
+
+        db.collection("servicios").orderBy("buscado" , Query.Direction.DESCENDING).limit(5)
             .get().addOnCompleteListener {
                 if(it.isSuccessful){
-                    jsonServicios.put(it.result.documents)
+                    for(servicio in it.result.documents)
+                        listServicios.add(servicio.data?.get("nombre") as String)
+                    //Adaptador
+                    adaptador = HomeAdapter(binding.root.context,
+                        R.layout.adapter_general,
+                        listServicios,
+                        object : HomeAdapter.OnItemClickListener {
+                            override fun onItemClick(item: String) {
+                                //Abrir activity Servicio
+                                activity?.let { act ->
+                                    val servicioIntent = Intent(
+                                        act,
+                                        ServicioActivity::class.java
+                                    ).apply {
+                                        putExtra("usuario", item.toString())
+                                    }
+                                    act.startActivity(servicioIntent)
+                                }
+                            }
+                        })
+
+                    binding.recyclerView.adapter = adaptador
+                    binding.recyclerView.layoutManager =
+                        LinearLayoutManager(requireContext())
+
                 }else{
                     Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT).show()
                 }
             }
-
 
       /*  val arrayServicios = resources.getStringArray(R.array.spinner_servicios)
         arrayServicios.sort()

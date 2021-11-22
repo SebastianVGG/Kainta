@@ -155,7 +155,6 @@ class SearchFragment : Fragment() {
                                                     jsonUsuarios,
                                                     object : GeneralAdapter.OnItemClickListener {
                                                         override fun onItemClick(usuario : JSONObject?) {
-                                                            model.mldUsuarioServicio.postValue(usuario.toString())
                                                             //Abrir activity Servicio
                                                             activity?.let {
                                                                 val servicioIntent = Intent(
