@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.viewpager.widget.PagerAdapter
 import com.app.kainta.adaptadores.VPAdapter
 import com.app.kainta.databinding.ActivityHomeBinding
 import com.app.kainta.models.QueryServicioModel
@@ -22,6 +23,10 @@ import com.app.kainta.ui.InformacionPersonalViewModel
 import com.app.kainta.ui.home.search.SearchFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayoutMediator
+import androidx.viewpager.widget.PagerAdapter.POSITION_NONE
+
+
+
 
 enum class ProviderType{
     BASIC,

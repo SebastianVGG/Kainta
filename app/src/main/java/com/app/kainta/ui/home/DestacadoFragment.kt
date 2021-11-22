@@ -57,12 +57,13 @@ class DestacadoFragment : Fragment() {
 
         jsonServicios = JSONArray()
         var jsonServicio = JSONObject()
-        var listServicios = ArrayList<String>()
+        val listServicios = ArrayList<String>()
 
 
-        db.collection("servicios").orderBy("busqueda", Query.Direction.DESCENDING).limit(5)
+        db.collection("servicios").orderBy("busqueda")
             .get().addOnCompleteListener {
                 if(it.isSuccessful){
+                    println(it.result.documents)
                     for(servicio in it.result.documents)
                     listServicios.add(servicio.data?.get("nombre") as String)
                     //Adaptador
@@ -97,4 +98,11 @@ class DestacadoFragment : Fragment() {
             }
 
     }
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser) {
+            requireActivity().supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
+        }
+    }
+
 }
