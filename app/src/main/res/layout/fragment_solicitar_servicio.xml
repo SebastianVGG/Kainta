@@ -1,14 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.servicio.SolicitarServicioFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/txtServicio"
+        android:text="Se solicta el servicio de "
+        android:layout_gravity="center|top"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-</FrameLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/editTitulo"
+            android:hint="Titulo"
+            android:layout_gravity="center|top"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editDescripcion"
+            android:hint="Descripcion"
+            android:layout_gravity="center|top"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+
+        <EditText
+            android:id="@+id/editFecha"
+            android:hint="Fecha"
+            android:layout_gravity="center|top"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/editHora"
+            android:hint="Hora estimada"
+            android:layout_gravity="center|top"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnDireccion"
+            android:hint="Elige tu direccion"
+            android:textColorHint="@color/black"
+            android:layout_gravity="center|top"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnSoliciarServicio"
+            android:hint="Solicitar servicio"
+            android:textColorHint="@color/black"
+            android:layout_gravity="center|top"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

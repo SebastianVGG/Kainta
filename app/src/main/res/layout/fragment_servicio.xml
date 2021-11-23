@@ -151,7 +151,7 @@
                 android:layout_marginTop="15dp"
                 android:backgroundTint="#919191"
                 android:fontFamily="@font/madeleina"
-                android:hint="Mensaje"
+                android:hint="Soliciar servicio"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="20dp"
                 android:textStyle="bold" />

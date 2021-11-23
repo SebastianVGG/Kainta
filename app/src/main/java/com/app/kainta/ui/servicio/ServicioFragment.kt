@@ -1,11 +1,11 @@
 package com.app.kainta.ui.servicio
 
 import android.annotation.SuppressLint
-import android.app.Dialog
-import android.app.ProgressDialog
-import android.graphics.Bitmap
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,14 +14,15 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.app.kainta.R
 import com.app.kainta.adaptadores.PerfilServiciosAdapter
-import com.app.kainta.databinding.FragmentConfigPerfilBinding
 import com.app.kainta.databinding.FragmentServicioBinding
 import com.app.kainta.mvc.UsuarioServicioViewModel
 import com.bumptech.glide.Glide
@@ -30,18 +31,24 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import org.json.JSONObject
 import java.lang.Exception
+import com.android.volley.VolleyError
+import com.android.volley.AuthFailureError
+
+import com.android.volley.toolbox.StringRequest
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceIdReceiver
+import com.google.firebase.iid.internal.FirebaseInstanceIdInternal
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 class ServicioFragment : Fragment() {
@@ -49,6 +56,7 @@ class ServicioFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var imagePicker: ImageView
     private lateinit var user: FirebaseAuth
+    private lateinit var nombre : String
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private lateinit var jsonUsuario : JSONObject
@@ -86,81 +94,86 @@ class ServicioFragment : Fragment() {
 
     private fun setup() {
 
-
-                if (jsonUsuario.length() != 0) {
-
-                    binding.txtNombre.text = jsonUsuario.getString("nombre").toString()
-                    binding.txtCiudad.text = jsonUsuario.getString("ciudad").toString()
-                    binding.txtDescripcion.text = jsonUsuario.getString("bibliografia").toString()
-
-                    if (!(jsonUsuario.getString("facebook").toString() != "" ||
-                                jsonUsuario.getString("twitter").toString() != "" ||
-                                jsonUsuario.getString("instagram").toString() != "" ||
-                                jsonUsuario.getString("youtube").toString() != "" ||
-                                jsonUsuario.getString("web").toString() != ""
-                                )
-                    )
-                        binding.txtRedesSociales.visibility = View.VISIBLE
-
-                    if (jsonUsuario.getString("facebook").toString() != "")
-                        binding.imageFacebook.visibility = View.VISIBLE
-
-                    if (jsonUsuario.getString("twitter").toString() != "")
-                        binding.imageTwitter.visibility = View.VISIBLE
-
-                    if (jsonUsuario.getString("instagram").toString() != "")
-                        binding.imageInstagram.visibility = View.VISIBLE
-
-                    if (jsonUsuario.getString("youtube").toString() != "")
-                        binding.imageYoutube.visibility = View.VISIBLE
-
-                    if (jsonUsuario.getString("web").toString() != "")
-                        binding.imageWeb.visibility = View.VISIBLE
+        db.collection("usuario").document(user.currentUser!!.email!!)
+            .get().addOnSuccessListener {
+                nombre = it.data?.get("nombre").toString()
+            }
 
 
-                    if (jsonUsuario.has("url")) {
-                        context?.let { context ->
-                            Glide.with(context)
-                                .load(jsonUsuario.getString("url"))
-                                .apply(RequestOptions().override(300, 300))
-                                .listener(object : RequestListener<Drawable> {
-                                    override fun onLoadFailed(
-                                        e: GlideException?,
-                                        model: Any?,
-                                        target: Target<Drawable>?,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        progressBar.visibility = View.GONE
-                                        binding.layout.visibility = View.VISIBLE
-                                        return false
-                                    }
+        if (jsonUsuario.length() != 0) {
 
-                                    override fun onResourceReady(
-                                        resource: Drawable?,
-                                        model: Any?,
-                                        target: Target<Drawable>?,
-                                        dataSource: DataSource?,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        progressBar.visibility = View.GONE
-                                        binding.layout.visibility = View.VISIBLE
-                                        return false
-                                    }
+            binding.txtNombre.text = jsonUsuario.getString("nombre").toString()
+            binding.txtCiudad.text = jsonUsuario.getString("ciudad").toString()
+            binding.txtDescripcion.text = jsonUsuario.getString("bibliografia").toString()
 
-                                })
-                                .into(binding.imageviewPerfil)
-                        }
-                    } else {
-                        progressBar.visibility = View.GONE
-                        binding.layout.visibility = View.VISIBLE
-                    }
+            if (!(jsonUsuario.getString("facebook").toString() != "" ||
+                        jsonUsuario.getString("twitter").toString() != "" ||
+                        jsonUsuario.getString("instagram").toString() != "" ||
+                        jsonUsuario.getString("youtube").toString() != "" ||
+                        jsonUsuario.getString("web").toString() != ""
+                        )
+            )
+                binding.txtRedesSociales.visibility = View.VISIBLE
 
-                } else {
-                    showAlert(
-                        "Error",
-                        "Error al cargar el usuario"
-                    )
+            if (jsonUsuario.getString("facebook").toString() != "")
+                binding.imageFacebook.visibility = View.VISIBLE
+
+            if (jsonUsuario.getString("twitter").toString() != "")
+                binding.imageTwitter.visibility = View.VISIBLE
+
+            if (jsonUsuario.getString("instagram").toString() != "")
+                binding.imageInstagram.visibility = View.VISIBLE
+
+            if (jsonUsuario.getString("youtube").toString() != "")
+                binding.imageYoutube.visibility = View.VISIBLE
+
+            if (jsonUsuario.getString("web").toString() != "")
+                binding.imageWeb.visibility = View.VISIBLE
+
+
+            if (jsonUsuario.has("url")) {
+                context?.let { context ->
+                    Glide.with(context)
+                        .load(jsonUsuario.getString("url"))
+                        .apply(RequestOptions().override(300, 300))
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                progressBar.visibility = View.GONE
+                                binding.layout.visibility = View.VISIBLE
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                progressBar.visibility = View.GONE
+                                binding.layout.visibility = View.VISIBLE
+                                return false
+                            }
+
+                        })
+                        .into(binding.imageviewPerfil)
                 }
+            } else {
+                progressBar.visibility = View.GONE
+                binding.layout.visibility = View.VISIBLE
+            }
+
+        } else {
+            showAlert(
+                "Error",
+                "Error al cargar el usuario"
+            )
+        }
 
         //ADAPTADOR DE SERVICIOS
         try {
@@ -181,7 +194,6 @@ class ServicioFragment : Fragment() {
                         if (!documents.result.isEmpty) {
                             for (document in documents.result) {
                                 serviciosArray.add(document.data["nombre"] as String)
-                                println(document.data["nombre"] as String)
                             }
 
                             //Adaptador
@@ -224,10 +236,13 @@ class ServicioFragment : Fragment() {
             ).show()
         }
         binding.btnMensaje.setOnClickListener {
-            val firebaseMessaging : FirebaseMessaging = FirebaseMessaging.getInstance()
-            firebaseMessaging.subscribeToTopic("")
-        }
 
+            val bundle = Bundle()
+            bundle.putString("jsonUsuario", jsonUsuario.toString())
+
+            findNavController().navigate(R.id.action_servicioFragment_to_solicitarServicioFragment, bundle)
+
+        }
     }
 
     private fun showAlert(titulo: String, mensaje: String) {

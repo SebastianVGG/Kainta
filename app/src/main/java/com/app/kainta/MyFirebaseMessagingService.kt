@@ -2,56 +2,82 @@ package com.app.kainta
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import androidx.core.app.NotificationManagerCompat
 
 import android.R
-import android.app.Notification
 import android.app.NotificationManager
 import android.app.NotificationChannel
+import android.app.PendingIntent
+import android.content.Context
+import androidx.core.app.NotificationCompat
+import kotlin.random.Random
+import android.content.Intent
 import android.os.Build
-import androidx.annotation.RequiresApi
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.collections.HashMap
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService(){
 
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
+        val prefs = getSharedPreferences(getString(com.app.kainta.R.string.user_token), Context.MODE_PRIVATE).edit()
+        prefs.putString("token", p0)
+        prefs.apply()
 
-        val tokenData = HashMap<String, Any>()
-        tokenData["token"] = p0
-        val firebase = FirebaseFirestore.getInstance()
-        firebase.collection("DeviceTokens").document()
-            .set(tokenData)
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        super.onMessageReceived(remoteMessage)
+    override fun onMessageReceived(p0: RemoteMessage) {
+        super.onMessageReceived(p0)
+
+        val from = p0.from
+
+        if(p0.data.isNotEmpty()){
+            val titulo = p0.data["titulo"].toString()
+            val detalle = p0.data["detalle"].toString()
+
+            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                versionMayor(titulo, detalle)
+            else
+                versionMayor()
 
 
-        val title: String? = remoteMessage.notification?.title
-        val text: String? = remoteMessage.notification?.body
-        val CHANNEL_ID = "HEADS_UP_NOTIFICATION"
+        }
 
-        val channel = NotificationChannel(
-            CHANNEL_ID,
-            "Heads Up Notification",
-            NotificationManager.IMPORTANCE_HIGH
-        )
-        getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
-        val notification: Notification.Builder = Notification.Builder(this, CHANNEL_ID)
-            .setContentTitle(title)
-            .setContentText(text)
+    }
+
+    private fun versionMayor() {
+    }
+
+
+    private fun versionMayor(titulo : String, detalle : String){
+
+        val id = "mensaje"
+
+        val nm :NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val builder : NotificationCompat.Builder = NotificationCompat.Builder(this, id)
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            val nc = NotificationChannel(id, "nuevo", NotificationManager.IMPORTANCE_HIGH)
+            nc.setShowBadge(true)
+            nm.createNotificationChannel(nc)
+            }
+        builder.setAutoCancel(true)
+            .setWhen(System.currentTimeMillis())
+            .setContentTitle(titulo)
             .setSmallIcon(R.drawable.button_onoff_indicator_off)
-            .setAutoCancel(true)
-        NotificationManagerCompat.from(this).notify(1, notification.build())
+            .setContentText(detalle)
+            .setContentIntent(clicknoti())
+            .setContentInfo("nuevo")
+        val random = Random(8000)
 
-
+        nm.notify(random.nextInt(), builder.build())
 
     }
+    private fun clicknoti(): PendingIntent? {
+        val nf = Intent(applicationContext, HomeActivity::class.java)
+        nf.putExtra("color", "rojo")
+        nf.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        return PendingIntent.getActivity(this, 0, nf, 0)
+    }
+
 
 }
 

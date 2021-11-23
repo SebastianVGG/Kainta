@@ -22,9 +22,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.analytics.FirebaseAnalytics
 
 import android.R.id
-
-
-
+import android.content.Context
 
 
 class LoginFragment : Fragment() {
@@ -55,6 +53,10 @@ class LoginFragment : Fragment() {
         //Iniciar sesion BASIC
 
         binding.btnIniciarSesion.setOnClickListener {
+
+            val prefs = requireActivity().getSharedPreferences(getString(R.string.user_token), Context.MODE_PRIVATE)
+            val tokenc = prefs.getString("token", null).toString()
+
             if(binding.editUsuario.text.isNotEmpty() && binding.editContrasena.text.isNotEmpty()){
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(
                     binding.editUsuario.text.toString(),
@@ -68,13 +70,12 @@ class LoginFragment : Fragment() {
                                 if (document.exists()) {
                                     if(document.contains("nombre") && document.contains("email")){
 
-                                        val data = hashMapOf("provider" to "BASIC")
+                                        val data = hashMapOf("provider" to "BASIC", "token" to tokenc)
                                         val docProvider = db.collection("usuario").document(it.result.user?.email ?: "")
                                         docProvider.set(data, SetOptions.merge())
                                             .addOnCompleteListener { document ->
-
-                                                if (document.isSuccessful) showHome(
-                                                    it.result.user?.email ?: "", ProviderType.BASIC)
+                                                if (document.isSuccessful)
+                                                    showHome(it.result.user?.email ?: "", ProviderType.BASIC)
                                                 else showAlert()
                                             }
                                             .addOnFailureListener { showAlert() }
@@ -160,7 +161,8 @@ class LoginFragment : Fragment() {
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
 
                         if(it.isSuccessful){
-
+                            val prefs = requireActivity().getSharedPreferences(getString(R.string.user_token), Context.MODE_PRIVATE)
+                            val tokenc = prefs.getString("token", null).toString()
                             val db = Firebase.firestore
                             val docRef = db.collection("usuario").document(account.email)
                                 docRef.get()
@@ -168,7 +170,7 @@ class LoginFragment : Fragment() {
                                     if (document.exists()) {
                                         if(document.contains("nombre") && document.contains("email")){
 
-                                            val data = hashMapOf("provider" to "GOOGLE")
+                                            val data = hashMapOf("provider" to "GOOGLE", "token" to tokenc)
                                             val docProvider = db.collection("usuario").document(account.email)
                                             docProvider.set(data, SetOptions.merge())
                                                 .addOnCompleteListener { document ->

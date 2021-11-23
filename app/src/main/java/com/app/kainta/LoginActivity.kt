@@ -14,11 +14,19 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.app.kainta.databinding.ActivityLoginBinding
 import com.app.kainta.ui.login.LoginFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var user: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_Kainta_NoActionBar)
@@ -32,8 +40,10 @@ class LoginActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+
+        user = Firebase.auth
+        db = Firebase.firestore
         //Setup
-        setup()
         session()
     }
 
@@ -53,12 +63,6 @@ class LoginActivity : AppCompatActivity() {
             showHome(email, ProviderType.valueOf(provider))
         }
     }
-
-
-    private fun setup(){
-
-
-        }
 
     private fun showHome(email : String, provider : ProviderType){
 

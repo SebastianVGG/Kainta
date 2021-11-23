@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Kainta</string>
     <string name="prefs_file">com.app.kainta.PREFERENCE_FILE_KEY</string>
+    <string name="user_token">com.app.kainta.USER_TOKEN</string>
     <string name="default_web_client_id_" translatable="false">510384051038-2el3p7mr4jbcorv0doaheijoj3je6svk.apps.googleusercontent.com</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="default_key_messaging" translatable="false">AAAAdtVCk14:APA91bH5yCkPxGSTGHCWUfk-eV16TamIZ5bbOkVvQ-fe91cmJMFvDNvY9M14YVkV4kTl-sxw7UwVI4RTeHa7bxJpiorjHZD4sywrg56cqXggj4DpVC3s-Ek_TZUoxV_D9hf5NZ_HiV5z</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

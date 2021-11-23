@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/drawable/rounded_border.xml" value="0.20925925925925926" />
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/activity_home.xml" value="0.19882246376811594" />
+        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/activity_login.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/adapter_direcciones.xml" value="0.1766304347826087" />
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/adapter_editar_trabajo.xml" value="0.19882246376811594" />
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/adapter_general.xml" value="0.1766304347826087" />
@@ -32,6 +33,7 @@
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_search.xml" value="0.18704710144927536" />
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_search_query.xml" value="0.18704710144927536" />
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_servicio.xml" value="0.19429347826086957" />
+        <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/fragment_solicitar_servicio.xml" value="0.16485507246376813" />
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/layout/spinner_list_item.xml" value="0.1" />
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/menu/menu_fragment_inicio.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Sebastian Garcia/StudioProjects/Kainta/app/src/main/res/menu/menu_fragment_search.xml" value="0.20416666666666666" />

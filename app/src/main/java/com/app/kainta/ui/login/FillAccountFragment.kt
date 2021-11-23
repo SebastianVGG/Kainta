@@ -1,5 +1,6 @@
 package com.app.kainta.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import com.app.kainta.HomeActivity
 import com.app.kainta.ProviderType
+import com.app.kainta.R
 import com.app.kainta.databinding.FragmentFillAccountBinding
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -65,6 +67,8 @@ class FillAccountFragment : Fragment() {
     private fun newUser(nombre : String, telefono : String, bibliografia : String, ciudad : String, email : String){
 
         val db = Firebase.firestore
+        val prefs = requireActivity().getSharedPreferences(getString(R.string.user_token), Context.MODE_PRIVATE)
+        val token = prefs.getString("token", null).toString()
 
         val user = hashMapOf(
             "nombre" to nombre,
@@ -77,7 +81,8 @@ class FillAccountFragment : Fragment() {
             "youtube" to "",
             "web" to "",
             "email" to email,
-            "provider" to provider
+            "provider" to provider,
+            "token" to token
         )
 
         db.collection("usuario")

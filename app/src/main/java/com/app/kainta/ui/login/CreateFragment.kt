@@ -1,5 +1,6 @@
 package com.app.kainta.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -64,9 +65,6 @@ class CreateFragment : Fragment() {
                             if(it.isSuccessful){
                                 //Colocando datos en la base de datos
                                 newUser(nombre,telefono,bibliografia,ciudad,email)
-
-                                showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
-
                             }
                             else{
                                 when ((it.exception as FirebaseAuthException).errorCode) {
@@ -86,6 +84,8 @@ class CreateFragment : Fragment() {
     private fun newUser(nombre : String, telefono : String, bibliografia : String, ciudad : String, email : String){
 
         val db = Firebase.firestore
+        val prefs = requireActivity().getSharedPreferences(getString(R.string.user_token), Context.MODE_PRIVATE)
+        val token = prefs.getString("token", null).toString()
 
         val user = hashMapOf(
             "nombre" to nombre,
@@ -98,7 +98,8 @@ class CreateFragment : Fragment() {
             "youtube" to "",
             "web" to "",
             "email" to email,
-            "provider" to "BASIC"
+            "provider" to "BASIC",
+            "token" to token
         )
 
         db.collection("usuario")

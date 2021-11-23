@@ -24,8 +24,12 @@ import com.app.kainta.ui.home.search.SearchFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager.widget.PagerAdapter.POSITION_NONE
-
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 enum class ProviderType{
@@ -42,6 +46,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var drawer_Layout : DrawerLayout
     private lateinit var adapter : VPAdapter
+    private lateinit var user: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
     private val searchFragment = SearchFragment()
     lateinit var close_home: Activity
 
