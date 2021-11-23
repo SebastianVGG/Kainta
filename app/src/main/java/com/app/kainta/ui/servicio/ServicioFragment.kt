@@ -224,12 +224,8 @@ class ServicioFragment : Fragment() {
             ).show()
         }
         binding.btnMensaje.setOnClickListener {
-            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-
-                val token = task.result
-                val msg = getString(, token)
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-            })
+            val firebaseMessaging : FirebaseMessaging = FirebaseMessaging.getInstance()
+            firebaseMessaging.subscribeToTopic("")
         }
 
     }
