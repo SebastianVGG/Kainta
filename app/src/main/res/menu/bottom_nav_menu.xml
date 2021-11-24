@@ -12,8 +12,8 @@
         android:title="Buscar" />
 
     <item
-        android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_baseline_chat_24"
-        android:title="Mensajes" />
+        android:id="@+id/navigation_servicios"
+        android:icon="@drawable/ic_baseline_work_24"
+        android:title="Servicios" />
 
 </menu>

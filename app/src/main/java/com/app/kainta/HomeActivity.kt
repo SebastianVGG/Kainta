@@ -24,6 +24,7 @@ import com.app.kainta.ui.home.search.SearchFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager.widget.PagerAdapter.POSITION_NONE
+import com.app.kainta.ui.home.servicios.MostrarServiciosFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -49,6 +50,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var user: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private val searchFragment = SearchFragment()
+    private val mostrarServiciosFragment = MostrarServiciosFragment()
     lateinit var close_home: Activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,6 +137,14 @@ class HomeActivity : AppCompatActivity() {
 
                     replaceFragment(searchFragment)
                     binding.toolbar.visibility = View.GONE
+                    binding.tablayout.visibility = View.GONE
+                    binding.viewpager.visibility = View.GONE
+
+                }
+                R.id.navigation_servicios -> {
+
+                    replaceFragment(mostrarServiciosFragment)
+                    binding.toolbar.visibility = View.VISIBLE
                     binding.tablayout.visibility = View.GONE
                     binding.viewpager.visibility = View.GONE
 
