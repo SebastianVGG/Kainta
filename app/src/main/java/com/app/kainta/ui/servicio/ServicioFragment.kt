@@ -1,11 +1,8 @@
 package com.app.kainta.ui.servicio
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
-import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,10 +14,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.app.kainta.R
 import com.app.kainta.adaptadores.PerfilServiciosAdapter
 import com.app.kainta.databinding.FragmentServicioBinding
@@ -41,14 +34,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import org.json.JSONObject
 import java.lang.Exception
-import com.android.volley.VolleyError
-import com.android.volley.AuthFailureError
-
-import com.android.volley.toolbox.StringRequest
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
-import com.google.firebase.iid.internal.FirebaseInstanceIdInternal
-import com.google.firebase.messaging.FirebaseMessaging
 
 
 class ServicioFragment : Fragment() {

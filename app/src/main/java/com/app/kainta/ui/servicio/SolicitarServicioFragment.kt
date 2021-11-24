@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Response
 import com.android.volley.VolleyError
@@ -18,6 +19,7 @@ import com.app.kainta.adaptadores.PerfilServiciosAdapter
 import com.app.kainta.databinding.FragmentServicioBinding
 import com.app.kainta.databinding.FragmentSolicitarServicioBinding
 import com.app.kainta.mvc.UsuarioServicioViewModel
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -69,6 +71,8 @@ class SolicitarServicioFragment : Fragment() {
 
         binding.btnSoliciarServicio.setOnClickListener {
 
+
+
             enviarNotificacion()
 
 
@@ -85,45 +89,65 @@ class SolicitarServicioFragment : Fragment() {
         val json = JSONObject()
         val jsonNotificacion = JSONObject()
 
-        try {
+
 
             json.put("to" , token)
             jsonNotificacion.put("titulo", "Se solicita su servicio de: ${jsonUsuario.getString("servicio").uppercase()}")
-            jsonNotificacion.put("detalle", "Lo solicita: ${nombre.uppercase()}")
 
-            json.put("data", jsonNotificacion)
+            db.collection("usuario").document(user.currentUser!!.email!!)
+                .get().addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        try {
+                            nombre = it.result.data?.get("nombre").toString()
+                            jsonNotificacion.put("detalle", "Lo solicita: ${nombre.uppercase()}")
 
-            val url = "https://fcm.googleapis.com/fcm/send"
+                            json.put("data", jsonNotificacion)
 
-            val request: JsonObjectRequest = object : JsonObjectRequest(
-                Method.POST, url,
-                json,
-                Response.Listener { response: JSONObject? ->
-                    Log.d(
-                        "MUR",
-                        "onResponse: "
-                    )
-                },
-                Response.ErrorListener { error: VolleyError ->
-                    Log.d(
-                        "MUR",
-                        "onError: " + error.networkResponse
-                    )
+                            val url = "https://fcm.googleapis.com/fcm/send"
+
+                            val request: JsonObjectRequest = object : JsonObjectRequest(
+                                Method.POST, url,
+                                json,
+                                Response.Listener { response: JSONObject? ->
+                                    Log.d(
+                                        "MUR",
+                                        "onResponse: "
+                                    )
+                                },
+                                Response.ErrorListener { error: VolleyError ->
+                                    Log.d(
+                                        "MUR",
+                                        "onError: " + error.networkResponse
+                                    )
+                                }
+                            ) {
+                                override fun getHeaders(): Map<String, String> {
+                                    val header: MutableMap<String, String> = HashMap()
+                                    header["content-type"] = "application/json"
+                                    header["authorization"] = "key=$keyMessaging"
+                                    return header
+                                }
+                            }
+
+
+                            myrequest.add(request)
+
+                        } catch (e: Exception) {
+                        }
+                    } else {
+                        showAlert("Error", (it.exception as FirebaseException).message.toString())
+                    }
                 }
-            ) {
-                override fun getHeaders(): Map<String, String> {
-                    val header: MutableMap<String, String> = HashMap()
-                    header["content-type"] = "application/json"
-                    header["authorization"] = "key=$keyMessaging"
-                    return header
-                }
-            }
 
+    }
 
-            myrequest.add(request)
-
-        } catch (e: Exception) {
-        }
+    private fun showAlert(titulo : String,mensaje : String){
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(titulo)
+        builder.setMessage(mensaje)
+        builder.setPositiveButton("Aceptar",null)
+        val dialog : AlertDialog = builder.create()
+        dialog.show()
     }
 
 }
