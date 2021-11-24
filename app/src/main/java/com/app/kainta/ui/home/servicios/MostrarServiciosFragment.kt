@@ -1,11 +1,13 @@
 package com.app.kainta.ui.home.servicios
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.app.kainta.HomeActivity
 import com.app.kainta.R
 import com.app.kainta.adaptadores.HomeAdapter
 import com.app.kainta.databinding.FragmentDestacadoBinding
@@ -43,9 +45,24 @@ class MostrarServiciosFragment : Fragment() {
 
     private fun setup() {
 
-       binding.btnServiciosSolicitados.setOnClickListener {
+        binding.btnServiciosSolicitados.setOnClickListener {
 
-       }
+            activity?.let{
+                val intent = Intent(it, ServiciosSolicitadosActivity::class.java)
+                it.startActivity(intent)
+            }
+
+        }
+
+        binding.btnServiciosRequeridos.setOnClickListener {
+
+            activity?.let{
+                val intent = Intent(it, ServiciosRequeridosActivity::class.java)
+                it.startActivity(intent)
+            }
+
+        }
+
 
     }
 }

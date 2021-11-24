@@ -36,19 +36,21 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"/>
 
-        <EditText
-            android:id="@+id/editFecha"
+        <Button
+            android:id="@+id/btnFecha"
             android:hint="Fecha"
             android:layout_gravity="center|top"
             android:layout_margin="15dp"
+            android:backgroundTint="#00453432"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/editHora"
+        <Button
+            android:id="@+id/btnHora"
             android:hint="Hora estimada"
             android:layout_gravity="center|top"
             android:layout_margin="15dp"
+            android:backgroundTint="#00453432"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -60,6 +62,53 @@
             android:layout_margin="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/layoutDireccion"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtDireccionNombre"
+                android:layout_margin="5dp"
+                android:text="Nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtDireccionDireccion"
+                android:layout_margin="5dp"
+                android:text="Direccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtDireccionColonia"
+                android:layout_margin="5dp"
+                android:text="Colonia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtDireccionCP"
+                android:layout_margin="5dp"
+                android:text="CP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+                <TextView
+                android:id="@+id/txtDireccionCiudad"
+                android:layout_margin="5dp"
+                android:text="Ciudad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtDireccionTelefono"
+                android:layout_margin="5dp"
+                android:text="Telefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnSoliciarServicio"
