@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.kainta.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class ServiciosImagesAdapter (
     val context: Context,
     val layoutResource: Int,
-    var listUri: ArrayList<Uri>,
+    var mArrayUri: ArrayList<String>,
     var listener : OnItemClickListener
 
 ) : RecyclerView.Adapter<ServiciosImagesAdapter.ServicioImageVH>() {
@@ -23,24 +25,34 @@ class ServiciosImagesAdapter (
     }
 
     override fun onBindViewHolder(holder: ServicioImageVH, position: Int) {
-        val uri = listUri[position]
+        val uri = mArrayUri[position]
         holder.bind(uri)
     }
 
     override fun getItemCount(): Int {
-        return listUri.size
+        return mArrayUri.size
     }
 
     interface OnItemClickListener {
-        fun onItemClick(uri : Uri)
+        fun onItemClick(uri : String)
     }
 
     inner class ServicioImageVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //----------------BIND--------------------------
-        fun bind(uri: Uri) {
+        fun bind(uri: String) {
             val image = itemView.findViewById<ImageView>(R.id.adapterImage)
-            image.setImageURI(uri)
+            Glide.with(image.context)
+                .asBitmap()
+                .load(uri)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(image)
+
+            image.setOnClickListener {
+                listener.onItemClick(uri)
+            }
+
         }
 
     }

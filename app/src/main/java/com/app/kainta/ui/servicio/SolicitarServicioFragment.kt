@@ -1,21 +1,15 @@
 package com.app.kainta.ui.servicio
 
-import android.annotation.SuppressLint
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ProgressBar
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Response
@@ -37,7 +31,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.json.JSONArray
 import org.json.JSONObject
-import java.text.SimpleDateFormat
 import java.util.*
 import com.google.gson.Gson
 
@@ -54,7 +47,7 @@ class SolicitarServicioFragment : Fragment() {
     private lateinit var jsonUsuario: JSONObject
     private lateinit var jsonDireccion: JSONObject
     private lateinit var dialog: Dialog
-    private lateinit var fecha : String
+    private lateinit var fecha : Timestamp
     private lateinit var hora : String
     private lateinit var minutos : String
     private lateinit var adaptador: MostrarDireccionesAdapter
@@ -102,8 +95,9 @@ class SolicitarServicioFragment : Fragment() {
         }
 
         datePicker.addOnPositiveButtonClickListener {
-            fecha = datePicker.headerText
-            binding.btnFecha.text = "Fecha: $fecha"
+            val date = Date(it)
+            fecha = Timestamp(date)
+            binding.btnFecha.text = "Fecha: ${datePicker.headerText}"
         }
 
 
@@ -162,7 +156,6 @@ class SolicitarServicioFragment : Fragment() {
                     }
                 }
         }
-
     }
 
     private fun usuarioInformacion(direccion: HashMap<*, *>?, fechaActual : Timestamp) {
@@ -198,16 +191,11 @@ class SolicitarServicioFragment : Fragment() {
                                     (task.exception as FirebaseException).message.toString())
                             }
                         }
-
-
                 }else{
                     showAlert("Error",
                         (it.exception as FirebaseException).message.toString())
                 }
             }
-
-
-
     }
 
 

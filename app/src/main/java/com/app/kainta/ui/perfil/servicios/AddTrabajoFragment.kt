@@ -16,44 +16,30 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.os.Build
-import android.provider.OpenableColumns
-import android.webkit.MimeTypeMap
+import android.os.Environment
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import androidx.recyclerview.widget.GridLayoutManager
 import com.app.kainta.R
 import com.app.kainta.adaptadores.ServiciosImagesAdapter
-import com.app.kainta.adaptadores.ServiciosImagesURLAdapter
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.google.firebase.storage.ktx.storageMetadata
-import id.zelory.compressor.Compressor
-import id.zelory.compressor.constraint.format
-import id.zelory.compressor.constraint.quality
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 import java.lang.Exception
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+import java.io.*
 
 
 class AddTrabajoFragment : Fragment() {
@@ -64,7 +50,7 @@ class AddTrabajoFragment : Fragment() {
     private lateinit var user : FirebaseAuth
     private lateinit var db : FirebaseFirestore
     private lateinit var storage: FirebaseStorage
-    private lateinit var mArrayUri: ArrayList<Uri>
+    private lateinit var listPath : ArrayList<String>
     private lateinit var listURLS : ArrayList<String>
     private lateinit var adaptador : ServiciosImagesAdapter
 
@@ -81,9 +67,6 @@ class AddTrabajoFragment : Fragment() {
         user = Firebase.auth
         db = Firebase.firestore
         storage = Firebase.storage
-
-        mArrayUri = ArrayList<Uri>()
-
 
         servicio = arguments?.getString("servicio").toString().lowercase()
         try {
@@ -103,22 +86,13 @@ class AddTrabajoFragment : Fragment() {
                     .show()
             }
         }*/
-
-        // click here to select image
-
-        // click here to select image
-
-
-
-
-
         return root
     }
 
     private fun setup() {
 
         binding.btnAddFotos.setOnClickListener { // initialising intent
-            mArrayUri = ArrayList()
+            listPath = ArrayList()
             requestPermission()
         }
 
@@ -139,15 +113,15 @@ class AddTrabajoFragment : Fragment() {
             //Referencia de donde estará la imagen
 
             try {
-                for (i in 0 until mArrayUri.size) {
+                for (i in 0 until listPath.size) {
                     // adding imageuri in array
-                    val imageurl = mArrayUri[i]
+                    val imageurl = Uri.fromFile(File(listPath[i]))
 
                     val spaceRef =
                         storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/$servicio/trabajos/$titulo/${titulo}$i")
 
                     //Esta variable subira el archivo
-                    val uploadTask = imageurl.let { it1 -> spaceRef.putFile(it1) }
+                    val uploadTask = spaceRef.putFile(imageurl)
 
                     //Continua subiendo archvio y se toma la url para descargar con GLIDE
                     val urlTask = uploadTask.continueWithTask { task ->
@@ -165,8 +139,8 @@ class AddTrabajoFragment : Fragment() {
                             val downloadUri = task.result
                             listURLS.add(downloadUri.toString())
 
-                            if(listURLS.size == mArrayUri.size) {
-                                for (j in 0 until mArrayUri.size) {
+                            if(listURLS.size == listPath.size) {
+                                for (j in 0 until listPath.size) {
                                     //Se actualiza base de datos para colocar la url del usuario
                                     db.collection("usuario").document(user.currentUser?.email!!)
                                         .collection("servicios").document(servicio)
@@ -328,17 +302,29 @@ class AddTrabajoFragment : Fragment() {
                     val cout = data.clipData!!.itemCount
                     for (i in 0 until cout) {
 
-                        // adding imageuri in array
-                        val imageurl = compressImage(data.clipData!!.getItemAt(i).uri)
+                        val imageurl = data.clipData!!.getItemAt(i).uri
+
                         if (imageurl != null) {
-                            mArrayUri.add(imageurl)
+                            uriToFile(requireContext(), imageurl, "select_image_from_gallery$i")?.let { file ->
+
+                                compressImage(file.absolutePath, 0.5)
+                                listPath.add(file.absolutePath)
+                            }
+
                         }
                     }
                     // setting 1st selected image into image switcher
                     0
                 } else {
                     val imageurl = data.data
-                    mArrayUri.add(imageurl!!)
+                    if (imageurl != null) {
+                    uriToFile(requireContext(), imageurl, "select_image_from_gallery")?.let { file ->
+
+                        compressImage(file.absolutePath, 0.5)
+                        listPath.add(file.absolutePath)
+
+                    }
+                    }
                     0
                 }
             }
@@ -347,9 +333,9 @@ class AddTrabajoFragment : Fragment() {
             adaptador = ServiciosImagesAdapter(
                 binding.root.context,
                 R.layout.adapter_servicios_images,
-                mArrayUri, object : ServiciosImagesAdapter.OnItemClickListener {
-                    override fun onItemClick(uri: Uri) {
-                        Toast.makeText(context, "Se pico la imagen"+uri.userInfo, Toast.LENGTH_SHORT).show()
+                listPath, object : ServiciosImagesAdapter.OnItemClickListener {
+                    override fun onItemClick(uri: String) {
+                        Toast.makeText(context, "Se pico la imagen", Toast.LENGTH_SHORT).show()
                     }
                 })
 
@@ -362,81 +348,91 @@ class AddTrabajoFragment : Fragment() {
         }
     }
 
-
-    private fun compressImage(result: Uri) : Uri? {
-        var resultUri : Uri? = null
-        val job = Job()
-        val uiScope = CoroutineScope(Dispatchers.IO + job)
-        val fileUri = getFilePathFromUri(result, requireContext())
-        uiScope.launch {
-            val compressedImageFile = Compressor.compress(requireContext(), File(fileUri?.path)){
-                quality(50) // combine with compressor constraint
-                format(Bitmap.CompressFormat.JPEG)
-            }
-            resultUri = Uri.fromFile(compressedImageFile)
-
-
-            }
-        return resultUri
+    
+    private fun uriToFile(context : Context, uri : Uri, fileName : String) : File?{
+        
+        context.contentResolver.openInputStream(uri)?.let { inputStream -> 
+            
+            val tempFile : File = createImageFile(fileName)
+            val fileOutputSteam = FileOutputStream(tempFile)
+            
+            inputStream.copyTo(fileOutputSteam)
+            inputStream.close()
+            fileOutputSteam.close()
+            
+            return tempFile
+            
         }
-
-
-
-
-    private fun getFilePathFromUri(uri: Uri?, context: Context?): Uri? {
-        val fileName: String? = getFileName(uri, context)
-        val file = File(context?.externalCacheDir, fileName)
-        file.createNewFile()
-        FileOutputStream(file).use { outputStream ->
-            if (uri != null) {
-                context?.contentResolver?.openInputStream(uri).use { inputStream ->
-                    copyFile(inputStream, outputStream)
-                    outputStream.flush()
-                }
-            }
-        }
-        return Uri.fromFile(file)
+        
+        return null
     }
 
-    private fun copyFile(`in`: InputStream?, out: OutputStream) {
-        val buffer = ByteArray(1024)
-        var read: Int? = null
-        while (`in`?.read(buffer).also { read = it!! } != -1) {
-            read?.let { out.write(buffer, 0, it) }
-        }
-    }//copyFile ends
+    private fun createImageFile(fileName: String = "temp_image"): File {
 
-    private fun getFileName(uri: Uri?, context: Context?): String? {
-        var fileName: String? = getFileNameFromCursor(uri, context)
-        if (fileName == null) {
-            val fileExtension: String? = getFileExtension(uri, context)
-            fileName = "temp_file" + if (fileExtension != null) ".$fileExtension" else ""
-        } else if (!fileName.contains(".")) {
-            val fileExtension: String? = getFileExtension(uri, context)
-            fileName = "$fileName.$fileExtension"
-        }
-        return fileName
+        val storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(fileName, ".jpg", storageDir)
+        
     }
 
-    private fun getFileExtension(uri: Uri?, context: Context?): String? {
-        val fileType: String? = uri?.let { context?.contentResolver?.getType(it) }
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(fileType)
-    }
+    private fun compressImage(filePath : String, targetMB : Double = 1.0){
 
-    private fun getFileNameFromCursor(uri: Uri?, context: Context?): String? {
-        val fileCursor: Cursor? = uri?.let {
-            context?.contentResolver
-                ?.query(it, arrayOf<String>(OpenableColumns.DISPLAY_NAME), null, null, null)
-        }
-        var fileName: String? = null
-        if (fileCursor != null && fileCursor.moveToFirst()) {
-            val cIndex: Int = fileCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-            if (cIndex != -1) {
-                fileName = fileCursor.getString(cIndex)
+        var image : Bitmap = BitmapFactory.decodeFile(filePath)
+
+        val exif = ExifInterface(filePath)
+        val exifOrientation : Int = exif.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
+        )
+
+        val exifDegree : Int = exifOrientationToDegress(exifOrientation)
+
+        image = rotateImage(image, exifDegree.toFloat())
+
+        try {
+
+            val file = File(filePath)
+            val lenght = file.length()
+
+            val fileSizeInKB = (lenght / 1024).toString().toDouble()
+            val fileSizeInMB = (fileSizeInKB / 1024).toString().toDouble()
+
+            var quality = 100
+            if(fileSizeInMB > targetMB){
+                quality = ((targetMB / fileSizeInMB) * 100).toInt()
             }
+
+            val fileOutputStream = FileOutputStream(filePath)
+            image.compress(Bitmap.CompressFormat.JPEG, quality, fileOutputStream)
+            fileOutputStream.close()
+
+        }catch (e:Exception){
+            e.printStackTrace()
         }
-        return fileName
+
     }
 
+    private fun rotateImage(source : Bitmap, angle : Float): Bitmap{
 
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+
+    }
+
+    private fun exifOrientationToDegress(exifOrientation: Int): Int {
+
+        return  when (exifOrientation){
+            ExifInterface.ORIENTATION_ROTATE_90 -> {
+                90
+            }
+            ExifInterface.ORIENTATION_ROTATE_180 -> {
+                180
+            }
+            ExifInterface.ORIENTATION_ROTATE_270 -> {
+                270
+            }
+            else -> 0
+        }
+
+    }
 }
