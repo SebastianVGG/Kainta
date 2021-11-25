@@ -49,7 +49,22 @@ class GeneralAdapter (
             val ciudad = itemView.findViewById<TextView>(R.id.cardCiudad)
             val imagenPerfilURL = itemView.findViewById<ImageView>(R.id.imageviewPerfil)
 
-            val imagenURL = jsonUsuario.getString("url")
+            var imagenURL = ""
+
+            if(jsonUsuario.has("url")){
+                imagenURL = jsonUsuario.getString("url")
+                context.let {
+                    Glide.with(it)
+                        .load(imagenURL)
+                        .apply(
+                            RequestOptions().override(
+                                300,
+                                300
+                            )
+                        )
+                        .into(imagenPerfilURL)
+                }
+            }
             servicio.text = jsonUsuario.getString("servicio").uppercase()
             nombre.text = jsonUsuario.getString("nombre").replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
@@ -61,17 +76,7 @@ class GeneralAdapter (
                     Locale.getDefault()
                 ) else it.toString()
             }
-            context.let {
-                Glide.with(it)
-                    .load(imagenURL)
-                    .apply(
-                        RequestOptions().override(
-                            300,
-                            300
-                        )
-                    )
-                    .into(imagenPerfilURL)
-            }
+
 
 
             itemView.setOnClickListener(View.OnClickListener {
