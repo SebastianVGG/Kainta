@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center|top"
+    tools:context=".ui.home.servicios.MostrarServicioRSFragment">
+
+    <TextView
+        android:id="@+id/txtServicio"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Servicio" />
+
+    <TextView
+        android:id="@+id/txtNombre"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre" />
+
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Titulo" />
+
+    <TextView
+        android:id="@+id/txtDescripcion"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descripción" />
+
+    <TextView
+        android:id="@+id/txtFecha"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha" />
+
+    <TextView
+        android:id="@+id/txtHora"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hora" />
+
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Dirección:" />
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtDireccionNombre"
+            android:layout_margin="5dp"
+            android:text="Nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txtDireccionDireccion"
+            android:layout_margin="5dp"
+            android:text="Direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txtDireccionColonia"
+            android:layout_margin="5dp"
+            android:text="Colonia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txtDireccionCP"
+            android:layout_margin="5dp"
+            android:text="CP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txtDireccionCiudad"
+            android:layout_margin="5dp"
+            android:text="Ciudad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txtDireccionTelefono"
+            android:layout_margin="5dp"
+            android:text="Telefono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAceptar"
+        android:layout_marginTop="10dp"
+        android:text="Aceptar servicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnCancelar"
+        android:layout_marginTop="10dp"
+        android:text="Cancelar"
+        android:textColor="@color/white"
+        android:backgroundTint="#FF4D4D"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

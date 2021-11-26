@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:layout_margin="5dp"
     app:cardCornerRadius="20dp">
 
@@ -42,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginTop="10dp"
-                android:text="CIUDAD"
+                android:text="FECHA"
                 android:textColor="@color/black"
                 android:textSize="16dp" />
 

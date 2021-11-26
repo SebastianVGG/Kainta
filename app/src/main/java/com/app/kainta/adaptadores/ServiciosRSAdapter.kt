@@ -1,6 +1,8 @@
 package com.app.kainta.adaptadores
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.kainta.R
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 class ServiciosRSAdapter (
@@ -40,16 +44,26 @@ class ServiciosRSAdapter (
     inner class ServicioVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //----------------BIND--------------------------
+        @SuppressLint("SetTextI18n")
         fun bind(jsonServicio: JSONObject) {
             val servicio = itemView.findViewById<TextView>(R.id.txtServicio)
-            val nombre = itemView.findViewById<TextView>(R.id.txtNombre)
-            val ciudad = itemView.findViewById<TextView>(R.id.txtFecha)
+            val titulo = itemView.findViewById<TextView>(R.id.txtTitulo)
+            val fecha = itemView.findViewById<TextView>(R.id.txtFecha)
 
-            servicio.text = jsonServicio.getString("servicio").uppercase()
-            nombre.text = jsonServicio.getString("nombre").replaceFirstChar {
+            servicio.text = "Servicio: "+ jsonServicio.getString("servicio").uppercase()
+
+            titulo.text = "Titulo: "+ jsonServicio.getString("titulo").replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
                     Locale.getDefault()
                 ) else it.toString()
+            }
+            jsonServicio.get("fecha").let {
+                try {
+                   val date = DateFormat.format("yyyy-MM-dd", it as Date)
+                    fecha.text = "Fecha: $date"
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
 
             itemView.setOnClickListener(View.OnClickListener {

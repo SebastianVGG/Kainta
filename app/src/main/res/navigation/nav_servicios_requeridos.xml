@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_servicios_requeridos"
+    app:startDestination="@id/serviciosRequeridosFragment">
+
+    <fragment
+        android:id="@+id/serviciosRequeridosFragment"
+        android:name="com.app.kainta.ui.home.servicios.ServiciosRequeridosFragment"
+        android:label="fragment_servicios_requeridos"
+        tools:layout="@layout/fragment_servicios_requeridos" >
+        <action
+            android:id="@+id/action_serviciosRequeridosFragment_to_mostrarServicioRSFragment"
+            app:destination="@id/mostrarServicioRSFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mostrarServicioRSFragment"
+        android:name="com.app.kainta.ui.home.servicios.MostrarServicioRSFragment"
+        android:label="fragment_mostrar_servicio_r_s"
+        tools:layout="@layout/fragment_mostrar_servicio_r_s" />
+</navigation>
