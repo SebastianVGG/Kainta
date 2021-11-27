@@ -10,7 +10,10 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.graphics.drawable.Drawable
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -62,7 +65,7 @@ class ConfigPerfilFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private lateinit var progress: ProgressDialog
-    private lateinit var bitmap: Bitmap
+    private lateinit var imagePath: String
     private lateinit var dialog: Dialog
     private lateinit var serviciosArray : ArrayList<String>
     private lateinit var adaptador : PerfilServiciosAdapter
@@ -316,12 +319,20 @@ class ConfigPerfilFragment : Fragment() {
 
             //Imagen de la galeria
             val data = it.data?.data
+            uriToFile(requireContext(), data!!, "image_from_camera")?.let { file ->
+
+                compressImage(file.absolutePath, 0.5)
+                imagePath = file.absolutePath
+
+            }
 
             progress = ProgressDialog(context)
             progress.setTitle("Subeidno arcivo...")
             progress.show()
 
             val storageRef = storage.reference
+
+            val imageurl = Uri.fromFile(File(imagePath))
 
 
             val metadata = storageMetadata {
@@ -333,7 +344,7 @@ class ConfigPerfilFragment : Fragment() {
                 storageRef.child("usuario/${(user.currentUser?.email ?: "")}/perfil/imagenPerfil")
 
             //Esta variable subira el archivo
-            val uploadTask = data?.let { it1 -> spaceRef.putFile(it1) }
+            val uploadTask = imageurl?.let { it1 -> spaceRef.putFile(it1) }
 
             //Continua subiendo archvio y se toma la url para descargar con GLIDE
             val urlTask = uploadTask?.continueWithTask { task ->
@@ -479,18 +490,23 @@ class ConfigPerfilFragment : Fragment() {
     private val startForActivityCamera =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
             if (activityResult.resultCode == Activity.RESULT_OK) {
-
                 //FOTO
                 try {
-                    bitmap =
-                        activityResult.data?.extras?.get("data") as Bitmap
-                    val data = bitmapToFile(bitmap)
+                    val imageBitmap = activityResult.data?.extras?.get("data") as Bitmap
+                    val imageUri = bitmapToFile(imageBitmap)
+                    uriToFile(requireContext(), imageUri, "image_from_camera")?.let { file ->
+
+                        compressImage(file.absolutePath, 0.5)
+                        imagePath = file.absolutePath
+
+                    }
                     progress = ProgressDialog(context)
                     progress.setTitle("Subeidno arcivo...")
                     progress.show()
 
-                    val storageRef = storage.reference
+                    val imageurl = Uri.fromFile(File(imagePath))
 
+                    val storageRef = storage.reference
 
                     val metadata = storageMetadata {
                         contentType = "image/jpg"
@@ -501,7 +517,7 @@ class ConfigPerfilFragment : Fragment() {
                         storageRef.child("usuario/${(user.currentUser?.email ?: "")}/perfil/imagenPerfil")
 
                     //Esta variable subira el archivo
-                    val uploadTask = spaceRef.putFile(data)
+                    val uploadTask = spaceRef.putFile(imageurl)
 
                     //Continua subiendo archvio y se toma la url para descargar con GLIDE
                     val urlTask = uploadTask.continueWithTask { task ->
@@ -577,6 +593,93 @@ class ConfigPerfilFragment : Fragment() {
                 ).show()
             }
         }
+
+    private fun uriToFile(context : Context, uri : Uri, fileName : String) : File?{
+
+        context.contentResolver.openInputStream(uri)?.let { inputStream ->
+
+            val tempFile : File = createImageFile(fileName)
+            val fileOutputSteam = FileOutputStream(tempFile)
+
+            inputStream.copyTo(fileOutputSteam)
+            inputStream.close()
+            fileOutputSteam.close()
+
+            return tempFile
+
+        }
+
+        return null
+    }
+
+    private fun createImageFile(fileName: String = "temp_image"): File {
+
+        val storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(fileName, ".jpg", storageDir)
+
+    }
+
+    private fun compressImage(filePath : String, targetMB : Double = 1.0){
+
+        var image : Bitmap = BitmapFactory.decodeFile(filePath)
+
+        val exif = ExifInterface(filePath)
+        val exifOrientation : Int = exif.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
+        )
+
+        val exifDegree : Int = exifOrientationToDegress(exifOrientation)
+
+        image = rotateImage(image, exifDegree.toFloat())
+
+        try {
+
+            val file = File(filePath)
+            val lenght = file.length()
+
+            val fileSizeInKB = (lenght / 1024).toString().toDouble()
+            val fileSizeInMB = (fileSizeInKB / 1024).toString().toDouble()
+
+            var quality = 100
+            if(fileSizeInMB > targetMB){
+                quality = ((targetMB / fileSizeInMB) * 100).toInt()
+            }
+
+            val fileOutputStream = FileOutputStream(filePath)
+            image.compress(Bitmap.CompressFormat.JPEG, quality, fileOutputStream)
+            fileOutputStream.close()
+
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun rotateImage(source : Bitmap, angle : Float): Bitmap{
+
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+
+    }
+
+    private fun exifOrientationToDegress(exifOrientation: Int): Int {
+
+        return  when (exifOrientation){
+            ExifInterface.ORIENTATION_ROTATE_90 -> {
+                90
+            }
+            ExifInterface.ORIENTATION_ROTATE_180 -> {
+                180
+            }
+            ExifInterface.ORIENTATION_ROTATE_270 -> {
+                270
+            }
+            else -> 0
+        }
+
+    }
 
     private fun bitmapToFile(bitmap: Bitmap): Uri { // File name like "image.png"
         val wrapper = ContextWrapper(requireContext())

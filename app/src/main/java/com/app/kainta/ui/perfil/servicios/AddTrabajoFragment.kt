@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.app.kainta.R
 import com.app.kainta.adaptadores.ServiciosImagesAdapter
 import com.google.firebase.FirebaseException
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
@@ -193,11 +194,19 @@ class AddTrabajoFragment : Fragment() {
                                         "fecha" to currentDate
                                     ))
                                 .addOnSuccessListener {
+                                    val currentTimestamp = Timestamp(Date())
+
                                     db.collection("servicios").document(servicio)
                                         .set(
                                             mapOf(
                                                 "nombre" to servicio
-                                            ), SetOptions.merge())
+                                            ), SetOptions.merge()).addOnSuccessListener {
+                                            db.collection("servicioN").add(mapOf(
+                                                    "correo" to user.currentUser?.email!!,
+                                                    "fecha" to currentTimestamp,
+                                                    "servicio" to servicio
+                                            ))
+                                        }
                                 }
                                 .addOnFailureListener { e ->
                                     Toast.makeText(

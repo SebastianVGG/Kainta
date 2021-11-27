@@ -67,10 +67,10 @@ class RecomendadoFragment : Fragment() {
         val listServicios = ArrayList<String>()
 
 
-        db.collection("servicios").orderBy("buscado", Query.Direction.DESCENDING).limit(5)
+        db.collection("servicios").orderBy("buscado" , Query.Direction.DESCENDING).limit(5)
             .get().addOnCompleteListener {
-                if (it.isSuccessful) {
-                    for (servicio in it.result.documents)
+                if(it.isSuccessful){
+                    for(servicio in it.result.documents)
                         listServicios.add(servicio.data?.get("nombre") as String)
                     //Adaptador
                     adaptador = HomeAdapter(binding.root.context,
@@ -78,6 +78,7 @@ class RecomendadoFragment : Fragment() {
                         listServicios,
                         object : HomeAdapter.OnItemClickListener {
                             override fun onItemClick(item: String) {
+                                model.mldUsuarioServicio.postValue(item)
                                 //Abrir activity Servicio
                                 activity?.let { act ->
                                     val servicioIntent = Intent(
@@ -95,9 +96,10 @@ class RecomendadoFragment : Fragment() {
                     binding.recyclerView.layoutManager =
                         LinearLayoutManager(requireContext())
 
-                } else {
+                }else{
                     Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
 }

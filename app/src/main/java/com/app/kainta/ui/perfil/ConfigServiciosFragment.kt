@@ -76,7 +76,6 @@ class ConfigServiciosFragment : Fragment() {
                     if(!documents.result.isEmpty){
                         for ( document in documents.result){
                             serviciosArray.add(document.data["nombre"] as String)
-                            println(document.data["nombre"] as String)
                         }
 
                         //Adaptador

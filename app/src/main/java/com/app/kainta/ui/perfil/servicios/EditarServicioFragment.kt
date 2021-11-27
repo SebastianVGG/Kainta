@@ -30,6 +30,14 @@ import androidx.annotation.NonNull
 import com.google.android.gms.tasks.OnFailureListener
 
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.DocumentSnapshot
+
+import com.google.firebase.firestore.QuerySnapshot
+
+import com.google.android.gms.tasks.OnCompleteListener
+
+
+
 
 
 
@@ -121,6 +129,12 @@ class EditarServicioFragment : Fragment() {
                                         .collection("servicios").document(servicio)
                                         .collection("trabajos").document(item!!.getString("titulo")).delete()
                                         .addOnSuccessListener {
+                                            db.collection("usuario").document(user.currentUser?.email!!)
+                                                .collection("servicios").document(servicio)
+                                                .collection("trabajos").get().addOnSuccessListener {
+                                                    if(it.isEmpty)
+                                                        eliminarServicio()
+                                                }
                                             showAlert("Correcto", "Se eliminó el trabajo")
                                         }
                                         .addOnFailureListener { e -> showAlert("Error", (e as FirebaseAuthException).message.toString()) }
@@ -164,6 +178,22 @@ class EditarServicioFragment : Fragment() {
 
         }
 
+
+    private fun eliminarServicio(){
+        db.collection("usuario").document(user.currentUser?.email!!)
+            .collection("servicios").document(servicio).delete().addOnSuccessListener {
+                db.collection("servicios").document(servicio)
+                    .collection("usuario").document(user.currentUser?.email!!).delete().addOnSuccessListener {
+                       val ref = db.collection("servicioN")
+                        ref.whereEqualTo("correo", user.currentUser?.email!!.toString())
+                        .get().addOnCompleteListener {
+                            for(document in it.result)
+                                ref.document(document.id).delete()
+                        }
+                    }
+            }
+
+    }
 
 
     private fun showAlert(titulo : String,mensaje : String){

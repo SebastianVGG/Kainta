@@ -3,6 +3,8 @@ package com.app.kainta.ui.home.search
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.app.kainta.R
@@ -19,8 +21,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.kainta.mvc.UsuarioServicioViewModel
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.ServicioActivity
+import com.app.kainta.adaptadores.ListaServiciosAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
@@ -29,6 +33,8 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.json.JSONObject
+import java.lang.reflect.Array
+import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -38,6 +44,7 @@ class SearchFragment : Fragment() {
     private lateinit var jsonUsuarios: JSONArray
     private lateinit var listCorreos: ArrayList<String>
     private lateinit var adaptador: GeneralAdapter
+    private lateinit var adaptadorServicios : ListaServiciosAdapter
     private lateinit var user: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var model : UsuarioServicioViewModel
@@ -106,9 +113,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchServicios(servicio: String) {
+        binding.recyclerListaServicios.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
         binding.recyclerServicios.visibility = View.GONE
-        binding.txtResultado.visibility = View.GONE
+        binding.btnListaServicios.visibility = View.GONE
 
         listCorreos = ArrayList()
         jsonUsuarios = JSONArray()
@@ -175,6 +183,7 @@ class SearchFragment : Fragment() {
 
                                                 binding.progressBar.visibility = View.GONE
                                                 binding.recyclerServicios.visibility = View.VISIBLE
+                                                binding.btnListaServicios.visibility = View.VISIBLE
                                             }
                                         }
                                     }
@@ -194,6 +203,27 @@ class SearchFragment : Fragment() {
                             binding.txtResultado.text = "No se encontraron resultados del servicio $servicio"
                             binding.progressBar.visibility = View.GONE
                             binding.txtResultado.visibility = View.VISIBLE
+                            binding.recyclerServicios.visibility = View.GONE
+                            binding.btnListaServicios.visibility = View.VISIBLE
+
+                            //Adaptador
+
+                            val listServicios = resources.getStringArray(R.array.spinner_servicios)
+                            Arrays.sort(listServicios)
+
+                            adaptadorServicios = ListaServiciosAdapter(
+                                binding.root.context,
+                                R.layout.adapter_perfil_servicios,
+                                listServicios, object : ListaServiciosAdapter.OnItemClickListener {
+                                    @SuppressLint("ResourceType")
+                                    override fun onItemClick(servicioNombre: String) {
+                                        searchServicios(servicioNombre.lowercase())
+                                    }
+                                })
+
+                            binding.recyclerListaServicios.adapter = adaptadorServicios
+                            binding.recyclerListaServicios.layoutManager = LinearLayoutManager(requireContext())
+
 
                             db.collection("servicios").document(servicio)
                                 .get().addOnCompleteListener {
@@ -221,6 +251,48 @@ class SearchFragment : Fragment() {
 
     private fun setup() {
 
+        binding.btnLimpiar.visibility = View.INVISIBLE
+
+        binding.autoComplete.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if(binding.autoComplete.text.toString() == "")
+                    binding.btnLimpiar.visibility = View.INVISIBLE
+                else
+                    binding.btnLimpiar.visibility = View.VISIBLE
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        binding.btnLimpiar.setOnClickListener {
+            binding.autoComplete.setText("")
+        }
+
+        binding.btnListaServicios.setOnClickListener {
+            binding.recyclerServicios.visibility = View.GONE
+            binding.btnListaServicios.visibility = View.GONE
+            binding.recyclerListaServicios.visibility = View.VISIBLE
+            binding.txtResultado.visibility = View.GONE
+        }
+
+
+        //Adaptador
+
+        val listServicios = resources.getStringArray(R.array.spinner_servicios)
+        Arrays.sort(listServicios)
+
+        adaptadorServicios = ListaServiciosAdapter(
+            binding.root.context,
+            R.layout.adapter_perfil_servicios,
+            listServicios, object : ListaServiciosAdapter.OnItemClickListener {
+                @SuppressLint("ResourceType")
+                override fun onItemClick(servicioNombre: String) {
+                    searchServicios(servicioNombre.lowercase())
+                }
+            })
+
+        binding.recyclerListaServicios.adapter = adaptadorServicios
+        binding.recyclerListaServicios.layoutManager = LinearLayoutManager(requireContext())
     }
 
 

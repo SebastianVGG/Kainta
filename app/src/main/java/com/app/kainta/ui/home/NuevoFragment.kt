@@ -36,7 +36,7 @@ class NuevoFragment : Fragment() {
     private var _binding: FragmentNuevoBinding? = null
     private lateinit var jsonServicios: JSONArray
     private lateinit var listCorreos: ArrayList<String>
-    private lateinit var adaptador: HomeAdapter
+    private lateinit var adaptador: GeneralAdapter
     private lateinit var user: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var model : UsuarioServicioViewModel
@@ -66,71 +66,110 @@ class NuevoFragment : Fragment() {
 
     private fun setup() {
 
-        jsonServicios = JSONArray()
-        var jsonServicio = JSONObject()
-        val listServicios = ArrayList<String>()
+        binding.swiperRefresh.setOnRefreshListener {
+            cargarInformacion()
+            binding.swiperRefresh.isRefreshing = false
+        }
 
-
-        db.collection("servicios").orderBy("buscado" , Query.Direction.DESCENDING).limit(5)
-            .get().addOnCompleteListener {
-                if(it.isSuccessful){
-                    for(servicio in it.result.documents)
-                        listServicios.add(servicio.data?.get("nombre") as String)
-                    //Adaptador
-                    adaptador = HomeAdapter(binding.root.context,
-                        R.layout.adapter_general,
-                        listServicios,
-                        object : HomeAdapter.OnItemClickListener {
-                            override fun onItemClick(item: String) {
-                                //Abrir activity Servicio
-                                activity?.let { act ->
-                                    val servicioIntent = Intent(
-                                        act,
-                                        ServicioActivity::class.java
-                                    ).apply {
-                                        putExtra("usuario", item.toString())
-                                    }
-                                    act.startActivity(servicioIntent)
-                                }
-                            }
-                        })
-
-                    binding.recyclerView.adapter = adaptador
-                    binding.recyclerView.layoutManager =
-                        LinearLayoutManager(requireContext())
-
-                }else{
-                    Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-      /*  val arrayServicios = resources.getStringArray(R.array.spinner_servicios)
-        arrayServicios.sort()
-        try {
-            for(servicio in arrayServicios)
-                db.collection("servicios").document(servicio.lowercase())
-                    .set(mapOf(
-                        "nombre" to servicio.lowercase(),
-                        "buscado" to 0
-                    ))
-                    .addOnFailureListener { e ->
-                        Toast.makeText(
-                            context,
-                            (e as FirebaseAuthException).message.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-        } catch (e: Exception) {
-            Toast.makeText(
-                context,
-                "No hay registros de servicios",
-                Toast.LENGTH_SHORT
-
-            ).show()
-        }*/
+        cargarInformacion()
 
 
     }
+
+    private fun cargarInformacion() {
+
+        jsonServicios = JSONArray()
+        listCorreos = ArrayList()
+        val lServicios = ArrayList<String>()
+        var jsonUsuario = JSONObject()
+        val jsonUsuarios = JSONArray()
+
+        db.collection("servicioN").orderBy("fecha", Query.Direction.DESCENDING).limit(5)
+            .get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    for (document in it.result.documents){
+                        listCorreos.add(document.data?.get("correo") as String)
+                        lServicios.add(document.data?.get("servicio") as String)
+                    }
+                    for (i in 0 until listCorreos.size) {
+
+                        db.collection("usuario").document(listCorreos[i])
+                            .get()
+                            .addOnFailureListener { e ->
+                                Toast.makeText(
+                                    context,
+                                    (e as FirebaseAuthException).message.toString(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            .addOnCompleteListener { usuario ->
+                                if (usuario.isSuccessful) {
+                                    jsonUsuario = JSONObject(usuario.result.data)
+                                    jsonUsuario.put("servicio", lServicios[i])
+                                    jsonUsuarios.put(jsonUsuario)
+
+                                    if (jsonUsuarios.length() == listCorreos.size) {
+                                        //Adaptador
+                                        adaptador = GeneralAdapter(binding.root.context,
+                                            R.layout.adapter_general,
+                                            jsonUsuarios,
+                                            object : GeneralAdapter.OnItemClickListener {
+                                                override fun onItemClick(usuario: JSONObject?) {
+                                                    //Abrir activity Servicio
+                                                    activity?.let { frActivity ->
+                                                        val servicioIntent = Intent(
+                                                            frActivity,
+                                                            ServicioActivity::class.java
+                                                        ).apply {
+                                                            putExtra("usuario", usuario.toString())
+                                                        }
+                                                        frActivity.startActivity(servicioIntent)
+                                                    }
+
+                                                }
+                                            })
+
+                                        binding.recyclerView.adapter = adaptador
+                                        binding.recyclerView.layoutManager =
+                                            LinearLayoutManager(requireContext())
+                                    }
+                                }else{
+                                    Toast.makeText(context, "Error al cargar nuevos", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+                    }
+                }else{
+                    Toast.makeText(context, "Error al cargar nuevos", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+    }
+
+    /*  val arrayServicios = resources.getStringArray(R.array.spinner_servicios)
+      arrayServicios.sort()
+      try {
+          for(servicio in arrayServicios)
+              db.collection("servicios").document(servicio.lowercase())
+                  .set(mapOf(
+                      "nombre" to servicio.lowercase(),
+                      "buscado" to 0
+                  ))
+                  .addOnFailureListener { e ->
+                      Toast.makeText(
+                          context,
+                          (e as FirebaseAuthException).message.toString(),
+                          Toast.LENGTH_SHORT
+                      ).show()
+                  }
+      } catch (e: Exception) {
+          Toast.makeText(
+              context,
+              "No hay registros de servicios",
+              Toast.LENGTH_SHORT
+
+          ).show()
+      }*/
 
 }
 
