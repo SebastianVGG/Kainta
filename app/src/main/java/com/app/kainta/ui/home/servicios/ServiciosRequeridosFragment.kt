@@ -2,6 +2,7 @@ package com.app.kainta.ui.home.servicios
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.*
 
 class ServiciosRequeridosFragment : Fragment() {
 
@@ -55,7 +57,6 @@ class ServiciosRequeridosFragment : Fragment() {
         val jsons = JSONArray()
         var jsonData : JSONObject = JSONObject()
 
-        //Se obtienen las direcciones del usuario
         val docRef = db.collection("usuario").document(user.currentUser?.email!!).collection("servicios_requeridos")
         docRef.get()
             .addOnCompleteListener { documents ->
@@ -77,6 +78,13 @@ class ServiciosRequeridosFragment : Fragment() {
                             override fun onItemClick(item: JSONObject?) {
                                 val bundle = Bundle()
                                 item?.put("requeridos", true)
+                                item?.get("fecha").let {
+                                    try {
+                                        bundle.putLong("fecha", (it as Date).time)
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                }
                                 bundle.putString("jsonServicio", item.toString())
                                 findNavController().navigate(R.id.action_serviciosRequeridosFragment_to_mostrarServicioRSFragment, bundle)
                             }

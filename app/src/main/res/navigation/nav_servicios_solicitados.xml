@@ -10,11 +10,11 @@
         android:label="fragment_servicios_solicitados"
         tools:layout="@layout/fragment_servicios_solicitados" >
         <action
-            android:id="@+id/action_serviciosSolicitadosFragment_to_mostrarServicioRSFragment2"
-            app:destination="@id/mostrarServicioRSFragment2" />
+            android:id="@+id/action_serviciosSolicitadosFragment_to_mostrarServicioRSFragment"
+            app:destination="@id/mostrarServicioRSFragment" />
     </fragment>
     <fragment
-        android:id="@+id/mostrarServicioRSFragment2"
+        android:id="@+id/mostrarServicioRSFragment"
         android:name="com.app.kainta.ui.home.servicios.MostrarServicioRSFragment"
         android:label="fragment_mostrar_servicio_r_s"
         tools:layout="@layout/fragment_mostrar_servicio_r_s" />

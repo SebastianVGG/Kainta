@@ -23,9 +23,7 @@ import org.json.JSONObject
 import java.text.DateFormat
 import java.util.*
 import android.text.format.DateUtils
-
-
-
+import androidx.navigation.fragment.findNavController
 
 
 class ServiciosSolicitadosFragment : Fragment() {
@@ -77,8 +75,16 @@ class ServiciosSolicitadosFragment : Fragment() {
                         R.layout.adapter_servicios_r_s,
                         jsons, object : ServiciosRSAdapter.OnItemClickListener {
                             override fun onItemClick(item: JSONObject?) {
-
-
+                                val bundle = Bundle()
+                                item?.get("fecha").let {
+                                    try {
+                                        bundle.putLong("fecha", (it as Date).time)
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                }
+                                bundle.putString("jsonServicio", item.toString())
+                                findNavController().navigate(R.id.action_serviciosSolicitadosFragment_to_mostrarServicioRSFragment, bundle)
 
                             }
 

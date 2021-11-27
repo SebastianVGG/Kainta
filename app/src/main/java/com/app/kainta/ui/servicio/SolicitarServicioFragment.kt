@@ -26,7 +26,9 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import org.json.JSONArray
@@ -52,6 +54,9 @@ class SolicitarServicioFragment : Fragment() {
     private lateinit var minutos : String
     private lateinit var adaptador: MostrarDireccionesAdapter
     private lateinit var progressBar: ProgressBar
+    private lateinit var idRequeridos : String
+    private lateinit var idSolicitados : String
+
     private val picker =
         MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_12H)
@@ -86,7 +91,8 @@ class SolicitarServicioFragment : Fragment() {
 
     private fun setup() {
 
-        binding.txtServicio.text = "Solicitar el servicio de: ${jsonUsuario.getString("servicio").uppercase()}"
+        binding.txtServicio.text =
+            "Solicitar el servicio de: ${jsonUsuario.getString("servicio").uppercase()}"
 
 
         //FECHA
@@ -108,11 +114,11 @@ class SolicitarServicioFragment : Fragment() {
 
         picker.addOnPositiveButtonClickListener {
 
-            if(picker.minute < 10){
+            if (picker.minute < 10) {
                 hora = picker.hour.toString()
-                minutos = "0"+picker.minute.toString()
+                minutos = "0" + picker.minute.toString()
                 binding.btnHora.text = "Horario: $hora : $minutos "
-            }else{
+            } else {
                 hora = picker.hour.toString()
                 minutos = picker.minute.toString()
                 binding.btnHora.text = "Horario: $hora : $minutos "
@@ -125,40 +131,63 @@ class SolicitarServicioFragment : Fragment() {
 
 
         binding.btnSoliciarServicio.setOnClickListener {
+
+
             val fechaActual = Timestamp(Date())
             val direccion = Gson().fromJson(
                 jsonDireccion.toString(),
                 HashMap::class.java
             )
+            val refSolicitados = db.collection("usuario").document(user.currentUser!!.email!!)
+                .collection("servicios_solicitados")
 
-            val data = mapOf<String, Any>(
-                "servicio" to jsonUsuario.getString("servicio"),
-                "correo" to jsonUsuario.getString("email"),
-                "nombre" to jsonUsuario.getString("nombre"),
-                "titulo" to binding.editTitulo.text.toString(),
-                "descripcion" to binding.editDescripcion.text.toString(),
-                "fecha" to fecha,
-                "hora" to hora,
-                "minutos" to minutos,
-                "direccion" to direccion,
-                "fecha_creacion" to fechaActual
-            )
+            val refRequeridos = db.collection("usuario").document(jsonUsuario.getString("email"))
+                .collection("servicios_requeridos")
+
+            idRequeridos = refRequeridos.document().id
+            idSolicitados = refSolicitados.document().id
 
             db.collection("usuario").document(user.currentUser!!.email!!)
-                .collection("servicios_requeridos")
-                .add(data)
+                .get()
                 .addOnCompleteListener {
-                    if(it.isSuccessful){
-                        usuarioInformacion(direccion, fechaActual)
-                    }else{
-                        showAlert("Error",
-                            (it.exception as FirebaseException).message.toString())
+                    if (it.isSuccessful) {
+                        val data = mapOf<String, Any>(
+                            "id" to idRequeridos,
+                            "id_solicitados" to idSolicitados,
+                            "servicio" to jsonUsuario.getString("servicio"),
+                            "correo" to (it.result.data?.get("email")?.toString() ?: ""),
+                            "nombre" to (it.result.data?.get("nombre")?.toString() ?: ""),
+                            "titulo" to binding.editTitulo.text.toString(),
+                            "descripcion" to binding.editDescripcion.text.toString(),
+                            "fecha" to fecha,
+                            "hora" to hora,
+                            "estado" to "pendiente",
+                            "minutos" to minutos,
+                            "direccion" to direccion,
+                            "fecha_creacion" to fechaActual
+                        )
+                        refRequeridos.document(idRequeridos).set(data)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    usuarioInformacion(direccion, fechaActual, refSolicitados)
+                                } else {
+                                    showAlert(
+                                        "Error",
+                                        (it.exception as FirebaseException).message.toString()
+                                    )
+                                }
+                            }
+                    } else {
+                        showAlert(
+                            "Error",
+                            (it.exception as FirebaseException).message.toString()
+                        )
                     }
                 }
         }
     }
 
-    private fun usuarioInformacion(direccion: HashMap<*, *>?, fechaActual : Timestamp) {
+    private fun usuarioInformacion(direccion: HashMap<*, *>?, fechaActual : Timestamp, refSolicitados : CollectionReference) {
 
         db.collection("usuario").document(user.currentUser!!.email!!)
             .get()
@@ -166,21 +195,22 @@ class SolicitarServicioFragment : Fragment() {
                 if(it.isSuccessful){
 
                     val data = mapOf<String, Any>(
+                        "id" to idSolicitados,
+                        "id_requeridos" to idRequeridos,
                         "servicio" to jsonUsuario.getString("servicio"),
-                        "correo" to (it.result.data?.get("email")?.toString() ?: ""),
-                        "nombre" to (it.result.data?.get("nombre")?.toString() ?: ""),
+                        "correo" to jsonUsuario.getString("email"),
+                        "nombre" to jsonUsuario.getString("nombre"),
                         "titulo" to binding.editTitulo.text.toString(),
                         "descripcion" to binding.editDescripcion.text.toString(),
                         "fecha" to fecha,
                         "hora" to hora,
+                        "estado" to "pendiente",
                         "minutos" to minutos,
                         "direccion" to (direccion ?: ""),
                         "fecha_creacion" to fechaActual
                     )
 
-                    db.collection("usuario").document(jsonUsuario.getString("email"))
-                        .collection("servicios_solicitados")
-                        .add(data)
+                    refSolicitados.document(idSolicitados).set(data)
                         .addOnCompleteListener { task ->
                             if(task.isSuccessful){
                                 enviarNotificacion()

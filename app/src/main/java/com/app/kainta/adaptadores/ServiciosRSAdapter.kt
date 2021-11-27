@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.kainta.R
 import org.json.JSONArray
 import org.json.JSONObject
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
@@ -49,6 +50,7 @@ class ServiciosRSAdapter (
             val servicio = itemView.findViewById<TextView>(R.id.txtServicio)
             val titulo = itemView.findViewById<TextView>(R.id.txtTitulo)
             val fecha = itemView.findViewById<TextView>(R.id.txtFecha)
+            val estado = itemView.findViewById<TextView>(R.id.txtEstado)
 
             servicio.text = "Servicio: "+ jsonServicio.getString("servicio").uppercase()
 
@@ -65,6 +67,8 @@ class ServiciosRSAdapter (
                     e.printStackTrace()
                 }
             }
+
+            estado.text = jsonServicio.getString("estado")
 
             itemView.setOnClickListener(View.OnClickListener {
                 listener.onItemClick(jsonServicio)
