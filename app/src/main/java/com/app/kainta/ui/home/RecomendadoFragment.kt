@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.R
 import com.app.kainta.ServicioActivity
 import com.app.kainta.adaptadores.HomeAdapter
+import com.app.kainta.adaptadores.ServicioVistaAdapter
 import com.app.kainta.databinding.FragmentNuevoBinding
 import com.app.kainta.databinding.FragmentRecomendadoBinding
 import com.app.kainta.mvc.UsuarioServicioViewModel
@@ -32,7 +33,7 @@ class RecomendadoFragment : Fragment() {
     private var _binding: FragmentRecomendadoBinding? = null
     private lateinit var jsonServicios: JSONArray
     private lateinit var listCorreos: ArrayList<String>
-    private lateinit var adaptador: HomeAdapter
+    private lateinit var adaptador: ServicioVistaAdapter
     private lateinit var user: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var model: UsuarioServicioViewModel
@@ -73,19 +74,19 @@ class RecomendadoFragment : Fragment() {
                     for(servicio in it.result.documents)
                         listServicios.add(servicio.data?.get("nombre") as String)
                     //Adaptador
-                    adaptador = HomeAdapter(binding.root.context,
-                        R.layout.adapter_general,
-                        listServicios,
-                        object : HomeAdapter.OnItemClickListener {
-                            override fun onItemClick(item: String) {
-                                model.mldUsuarioServicio.postValue(item)
+                    adaptador = ServicioVistaAdapter(binding.root.context,
+                        R.layout.adapter_servicio_vista,
+                        jsonServicios,
+                        object : ServicioVistaAdapter.OnItemClickListener {
+                            override fun onItemClick(jsonServicio: JSONObject) {
+                                model.mldUsuarioServicio.postValue(jsonServicio.toString())
                                 //Abrir activity Servicio
                                 activity?.let { act ->
                                     val servicioIntent = Intent(
                                         act,
                                         ServicioActivity::class.java
                                     ).apply {
-                                        putExtra("usuario", item.toString())
+                                        putExtra("usuario", jsonServicio.toString())
                                     }
                                     act.startActivity(servicioIntent)
                                 }

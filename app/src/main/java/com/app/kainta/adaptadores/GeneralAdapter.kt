@@ -65,7 +65,12 @@ class GeneralAdapter (
                         .into(imagenPerfilURL)
                 }
             }
-            servicio.text = jsonUsuario.getString("servicio").uppercase()
+
+            if(jsonUsuario.has("servicio"))
+                servicio.text = jsonUsuario.getString("servicio").uppercase()
+            else
+                servicio.text = "Usuario destacado"
+
             nombre.text = jsonUsuario.getString("nombre").replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
                     Locale.getDefault()

@@ -213,6 +213,23 @@ class SolicitarServicioFragment : Fragment() {
                     refSolicitados.document(idSolicitados).set(data)
                         .addOnCompleteListener { task ->
                             if(task.isSuccessful){
+                                db.collection("valorados").document(jsonUsuario.getString("email"))
+                                    .get().addOnSuccessListener { doc ->
+                                        if(doc.exists())
+                                            db.collection("valorados").document(jsonUsuario.getString("email"))
+                                                .set(mapOf(
+                                                    "valoracion" to doc.get("valoracion") as Int + 1,
+                                                ))
+                                        else
+                                            db.collection("valorados").document(jsonUsuario.getString("email"))
+                                                .set(mapOf(
+                                                    "valoracion" to 1,
+                                                ))
+                                    }
+                                db.collection("valorados").document(jsonUsuario.getString("email"))
+                                    .set(mapOf(
+                                        "valoracion" to 4,
+                                    ))
                                 enviarNotificacion()
                                 showAlert("Correcto",
                                     "Se realizó la solicitud correctamente")

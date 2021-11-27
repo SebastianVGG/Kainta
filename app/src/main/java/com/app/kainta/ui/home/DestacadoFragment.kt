@@ -17,6 +17,7 @@ import com.app.kainta.adaptadores.HomeAdapter
 import com.app.kainta.adaptadores.PerfilServiciosAdapter
 import com.app.kainta.databinding.FragmentDestacadoBinding
 import com.app.kainta.mvc.UsuarioServicioViewModel
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -33,7 +34,8 @@ class DestacadoFragment : Fragment() {
     private var _binding: FragmentDestacadoBinding? = null
     private lateinit var jsonServicios: JSONArray
     private lateinit var jsonArrayCopia : JSONArray
-    private lateinit var adaptador : HomeAdapter
+    private lateinit var listCorreos: ArrayList<String>
+    private lateinit var adaptador : GeneralAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var model : UsuarioServicioViewModel
     private val binding get() = _binding!!
@@ -57,41 +59,67 @@ class DestacadoFragment : Fragment() {
     private fun setup() {
 
         jsonServicios = JSONArray()
+        listCorreos = ArrayList()
         var jsonServicio = JSONObject()
-        val listServicios = ArrayList<String>()
+        var jsonUsuario = JSONObject()
+        val jsonUsuarios = JSONArray()
 
-
-        db.collection("servicios").orderBy("buscado" , Query.Direction.DESCENDING).limit(5)
+        db.collection("valorados").orderBy("valoracion" , Query.Direction.DESCENDING).limit(5)
             .get().addOnCompleteListener {
-                if(it.isSuccessful){
-                    for(servicio in it.result.documents)
-                    listServicios.add(servicio.data?.get("nombre") as String)
-                    //Adaptador
-                    adaptador = HomeAdapter(binding.root.context,
-                        R.layout.adapter_general,
-                        listServicios,
-                        object : HomeAdapter.OnItemClickListener {
-                            override fun onItemClick(item: String) {
-                                model.mldUsuarioServicio.postValue(item)
-                                //Abrir activity Servicio
-                                activity?.let { act ->
-                                    val servicioIntent = Intent(
-                                        act,
-                                        ServicioActivity::class.java
-                                    ).apply {
-                                        putExtra("usuario", item.toString())
+                if (it.isSuccessful) {
+                    for (document in it.result.documents)
+                        listCorreos.add(document.data?.get("correo") as String)
+
+                    for (i in 0 until listCorreos.size) {
+
+                        db.collection("usuario").document(listCorreos[i])
+                            .get()
+                            .addOnFailureListener { e ->
+                                Toast.makeText(
+                                    context,
+                                    (e as FirebaseAuthException).message.toString(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            .addOnCompleteListener { usuario ->
+                                if (usuario.isSuccessful) {
+                                    jsonUsuario = JSONObject(usuario.result.data)
+                                    jsonUsuarios.put(jsonUsuario)
+
+                                    if (jsonUsuarios.length() == listCorreos.size) {
+                                        //Adaptador
+                                        adaptador = GeneralAdapter(binding.root.context,
+                                            R.layout.adapter_general,
+                                            jsonUsuarios,
+                                            object : GeneralAdapter.OnItemClickListener {
+                                                override fun onItemClick(usuario: JSONObject?) {
+                                                    //Abrir activity Servicio
+                                                    activity?.let { frActivity ->
+                                                        val servicioIntent = Intent(
+                                                            frActivity,
+                                                            ServicioActivity::class.java
+                                                        ).apply {
+                                                            putExtra("usuario", usuario.toString())
+                                                        }
+                                                        frActivity.startActivity(servicioIntent)
+                                                    }
+
+                                                }
+                                            })
+
+                                        binding.recyclerView.adapter = adaptador
+                                        binding.recyclerView.layoutManager =
+                                            LinearLayoutManager(requireContext())
                                     }
-                                    act.startActivity(servicioIntent)
+                                }else{
+                                    Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT)
+                                        .show()
                                 }
                             }
-                        })
-
-                    binding.recyclerView.adapter = adaptador
-                    binding.recyclerView.layoutManager =
-                        LinearLayoutManager(requireContext())
-
+                    }
                 }else{
-                    Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
     }
