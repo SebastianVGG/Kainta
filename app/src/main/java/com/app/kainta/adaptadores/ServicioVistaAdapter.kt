@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.kainta.R
 import com.bumptech.glide.Glide
@@ -44,7 +45,12 @@ class ServicioVistaAdapter (
         fun bind(jsonServicio : JSONObject) {
 
             val image = itemView.findViewById<ImageView>(R.id.imageviewServicio)
+            val servicio = itemView.findViewById<TextView>(R.id.cardServicio)
+            val servicioDestacado = itemView.findViewById<TextView>(R.id.txtServicioDestacado)
+            val buscado = itemView.findViewById<TextView>(R.id.cardCantidad)
 
+
+            if(jsonServicio.has("url"))
             context.let {
                 Glide.with(it)
                     .load(jsonServicio.getString("url"))
@@ -57,9 +63,19 @@ class ServicioVistaAdapter (
                     .into(image)
             }
 
-            image.setOnClickListener {
-                listener.onItemClick(jsonServicio)
+            if(jsonServicio.has("search")){
+
+                servicio.text = jsonServicio.getString("nombre").uppercase()
+                servicioDestacado.text = "SERVICIO DISPONIBLE"
+                buscado.visibility = View.GONE
+
+            }else{
+                servicio.text = jsonServicio.getString("nombre").uppercase()
+                buscado.text = "Este servicio ha sido buscado más de " + jsonServicio.getString("buscado")+ " veces. "
             }
+            itemView.setOnClickListener (View.OnClickListener {
+                listener.onItemClick(jsonServicio)
+            })
 
 
         }

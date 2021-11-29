@@ -1,7 +1,6 @@
 package com.app.kainta.ui.home
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,12 +12,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.R
-import com.app.kainta.ServicioActivity
-import com.app.kainta.adaptadores.HomeAdapter
 import com.app.kainta.adaptadores.ServicioVistaAdapter
-import com.app.kainta.databinding.FragmentNuevoBinding
 import com.app.kainta.databinding.FragmentRecomendadoBinding
-import com.app.kainta.mvc.UsuarioServicioViewModel
+import com.app.kainta.mvc.RecomendadoToSearchViewModel
+import com.app.kainta.ui.home.search.SearchFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,11 +29,10 @@ import org.json.JSONObject
 class RecomendadoFragment : Fragment() {
     private var _binding: FragmentRecomendadoBinding? = null
     private lateinit var jsonServicios: JSONArray
-    private lateinit var listCorreos: ArrayList<String>
     private lateinit var adaptador: ServicioVistaAdapter
     private lateinit var user: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private lateinit var model: UsuarioServicioViewModel
+    private lateinit var model: RecomendadoToSearchViewModel
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawer_Layout: DrawerLayout
     private val binding get() = _binding!!
@@ -52,7 +48,7 @@ class RecomendadoFragment : Fragment() {
         user = Firebase.auth
         db = Firebase.firestore
 
-        model = ViewModelProvider(requireActivity()).get(UsuarioServicioViewModel::class.java)
+        model = ViewModelProvider(requireActivity()).get(RecomendadoToSearchViewModel::class.java)
 
         setup()
 
@@ -63,33 +59,36 @@ class RecomendadoFragment : Fragment() {
 
     private fun setup() {
 
+        binding.swiperRefresh.setOnRefreshListener {
+            cargarInformacion()
+            binding.swiperRefresh.isRefreshing = false
+        }
+
+        cargarInformacion()
+
+    }
+
+    private fun cargarInformacion() {
         jsonServicios = JSONArray()
         var jsonServicio = JSONObject()
-        val listServicios = ArrayList<String>()
+        val jsonServicios = JSONArray()
 
 
         db.collection("servicios").orderBy("buscado" , Query.Direction.DESCENDING).limit(5)
             .get().addOnCompleteListener {
                 if(it.isSuccessful){
-                    for(servicio in it.result.documents)
-                        listServicios.add(servicio.data?.get("nombre") as String)
+                    for(servicio in it.result.documents){
+                        jsonServicio = JSONObject(servicio.data)
+                        jsonServicios.put(jsonServicio)
+                    }
                     //Adaptador
                     adaptador = ServicioVistaAdapter(binding.root.context,
                         R.layout.adapter_servicio_vista,
                         jsonServicios,
                         object : ServicioVistaAdapter.OnItemClickListener {
                             override fun onItemClick(jsonServicio: JSONObject) {
-                                model.mldUsuarioServicio.postValue(jsonServicio.toString())
-                                //Abrir activity Servicio
-                                activity?.let { act ->
-                                    val servicioIntent = Intent(
-                                        act,
-                                        ServicioActivity::class.java
-                                    ).apply {
-                                        putExtra("usuario", jsonServicio.toString())
-                                    }
-                                    act.startActivity(servicioIntent)
-                                }
+                                model.setData(jsonServicio.getString("nombre").toString())
+
                             }
                         })
 

@@ -188,7 +188,9 @@ class ConfigLoginEmailPassFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(titulo)
         builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar", null)
+        builder.setPositiveButton("Aceptar") { _,_ ->
+            activity?.onBackPressed()
+        }
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }

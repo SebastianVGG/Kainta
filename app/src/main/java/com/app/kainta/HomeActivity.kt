@@ -18,14 +18,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import com.app.kainta.adaptadores.VPAdapter
 import com.app.kainta.databinding.ActivityHomeBinding
 import com.app.kainta.models.QueryServicioModel
-import com.app.kainta.ui.InformacionPersonalViewModel
+import com.app.kainta.mvc.RecomendadoToSearchViewModel
+import com.app.kainta.ui.home.addservicio.HomeAddServicioActivity
 import com.app.kainta.ui.home.search.SearchFragment
 import com.app.kainta.ui.home.servicios.MostrarServiciosFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 
 
 enum class ProviderType{
@@ -36,17 +34,13 @@ enum class ProviderType{
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var infoPersonalViewModel: InformacionPersonalViewModel
     private lateinit var appBarConfiguration: AppBarConfiguration
-    //private lateinit var vmlGeneral: General_ViewModel
+    private lateinit var viewModel: RecomendadoToSearchViewModel
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var drawer_Layout : DrawerLayout
     private lateinit var adapter : VPAdapter
-    private lateinit var user: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
     private val searchFragment = SearchFragment()
     private val mostrarServiciosFragment = MostrarServiciosFragment()
-    lateinit var close_home: Activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,18 +112,23 @@ class HomeActivity : AppCompatActivity() {
 
 
         //NAVIGATION BOTTOM-------------------------------------------------
+        viewModel = ViewModelProvider(this).get(RecomendadoToSearchViewModel::class.java)
+        viewModel.getData().observe(this){
+            if(it != null)
+                binding.navbottonView.selectedItemId = R.id.navigation_search
 
+        }
         binding.navbottonView.setOnItemSelectedListener {
             when(it.itemId){
 
                 R.id.navigation_home ->{
+                    viewModel.setData(null)
                     binding.tablayout.visibility = View.VISIBLE
                     binding.viewpager.visibility = View.VISIBLE
                     binding.toolbar.visibility = View.VISIBLE
                 }
 
                 R.id.navigation_search -> {
-
                     replaceFragment(searchFragment)
                     binding.toolbar.visibility = View.GONE
                     binding.tablayout.visibility = View.GONE
@@ -137,7 +136,7 @@ class HomeActivity : AppCompatActivity() {
 
                 }
                 R.id.navigation_servicios -> {
-
+                    viewModel.setData(null)
                     replaceFragment(mostrarServiciosFragment)
                     binding.toolbar.visibility = View.VISIBLE
                     binding.tablayout.visibility = View.GONE
@@ -153,9 +152,6 @@ class HomeActivity : AppCompatActivity() {
 
 
         //SETUP----------------------------------------
-
-        infoPersonalViewModel = ViewModelProvider(this).get(InformacionPersonalViewModel::class.java)
-       // vmlGeneral  = ViewModelProvider(this).get(General_ViewModel::class.java)
 
         val email = intent.getStringExtra("email")
         val provider = intent.getStringExtra("provider")
@@ -217,9 +213,7 @@ class HomeActivity : AppCompatActivity() {
 
         when(item.itemId){
             R.id.nav_inicio_add -> {
-                val activityIntent = Intent(this, PerfilActivity::class.java).apply {
-                    putExtra("fromHome", true)
-                }
+                val activityIntent = Intent(this, HomeAddServicioActivity::class.java)
                 startActivity(activityIntent)
             }
         }

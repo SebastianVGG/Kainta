@@ -26,6 +26,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.app.kainta.R
 import com.app.kainta.adaptadores.ServiciosImagesAdapter
@@ -49,6 +50,8 @@ class AddTrabajoFragment : Fragment() {
     private lateinit var servicio : String
     private var nuevoServicio : Boolean = true
     private lateinit var user : FirebaseAuth
+    private var fromAddServicio : Boolean = false
+    private var fromPerfil : Boolean = false
     private lateinit var db : FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private lateinit var listPath : ArrayList<String>
@@ -69,10 +72,19 @@ class AddTrabajoFragment : Fragment() {
         db = Firebase.firestore
         storage = Firebase.storage
 
+        nuevoServicio = true
+        fromAddServicio = false
+        fromPerfil = false
+
         servicio = arguments?.getString("servicio").toString().lowercase()
         try {
             if(arguments?.containsKey("nuevo") as Boolean)
-            nuevoServicio = arguments?.getBoolean("nuevo") as Boolean
+            nuevoServicio = false
+            if(arguments?.containsKey("fromAddServicio") as Boolean)
+                fromAddServicio = true
+            if(arguments?.containsKey("fromPerfil1") as Boolean)
+                fromPerfil = true
+
         }catch (e : Exception){}
 
         setup()
@@ -114,12 +126,18 @@ class AddTrabajoFragment : Fragment() {
             //Referencia de donde estará la imagen
 
             try {
+
+                //REFERENCIA A FIRESTORE PERO SE TOMA ANTES PARA OBTENER EL ID Y DARLSE AL STORE
+                val refTrabajo = db.collection("usuario").document(user.currentUser?.email!!)
+                    .collection("servicios").document(servicio)
+                    .collection("trabajos").document()
+
                 for (i in 0 until listPath.size) {
                     // adding imageuri in array
                     val imageurl = Uri.fromFile(File(listPath[i]))
 
                     val spaceRef =
-                        storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/$servicio/trabajos/$titulo/${titulo}$i")
+                        storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/$servicio/trabajos/${refTrabajo.id}/${titulo}$i")
 
                     //Esta variable subira el archivo
                     val uploadTask = spaceRef.putFile(imageurl)
@@ -143,16 +161,14 @@ class AddTrabajoFragment : Fragment() {
                             if(listURLS.size == listPath.size) {
                                 for (j in 0 until listPath.size) {
                                     //Se actualiza base de datos para colocar la url del usuario
-                                    db.collection("usuario").document(user.currentUser?.email!!)
-                                        .collection("servicios").document(servicio)
-                                        .collection("trabajos").document(titulo)
+                                    refTrabajo
                                         .set(
                                             mapOf(
+                                                "id" to refTrabajo.id,
                                                 "url$j" to listURLS[j],
                                                 "titulo" to titulo,
                                                 "descripcion" to descripcion
-                                            ), SetOptions.merge()
-                                        )
+                                            ), SetOptions.merge())
                                         .addOnFailureListener { e ->
                                             Toast.makeText(
                                                 context,
@@ -161,6 +177,9 @@ class AddTrabajoFragment : Fragment() {
                                             ).show()
                                         }
                                 }
+                                showAlert("Correcto", "Se agregó correctamente")
+
+
                                 binding.progessBar.visibility = View.INVISIBLE
                             }
 
@@ -236,7 +255,14 @@ class AddTrabajoFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(titulo)
         builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar", null)
+        builder.setPositiveButton("Aceptar"){_,_ ->
+            if(fromAddServicio)
+            findNavController().navigate(R.id.action_addTrabajoFragment_to_configServiciosFragment)
+            else if(fromPerfil)
+                activity?.onBackPressed()
+            else
+                activity?.onBackPressed()
+        }
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }

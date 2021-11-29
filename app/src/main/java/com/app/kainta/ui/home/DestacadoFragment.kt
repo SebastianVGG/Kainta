@@ -58,6 +58,17 @@ class DestacadoFragment : Fragment() {
 
     private fun setup() {
 
+        binding.swiperRefresh.setOnRefreshListener {
+            cargarInformacion()
+            binding.swiperRefresh.isRefreshing = false
+        }
+
+        cargarInformacion()
+
+
+    }
+
+    private fun cargarInformacion() {
         jsonServicios = JSONArray()
         listCorreos = ArrayList()
         var jsonServicio = JSONObject()
@@ -67,56 +78,59 @@ class DestacadoFragment : Fragment() {
         db.collection("valorados").orderBy("valoracion" , Query.Direction.DESCENDING).limit(5)
             .get().addOnCompleteListener {
                 if (it.isSuccessful) {
-                    for (document in it.result.documents)
-                        listCorreos.add(document.data?.get("correo") as String)
+                    if(!it.result.isEmpty){
+                        for (document in it.result.documents)
+                            listCorreos.add(document.data?.get("correo") as String)
 
-                    for (i in 0 until listCorreos.size) {
+                        for (i in 0 until listCorreos.size) {
 
-                        db.collection("usuario").document(listCorreos[i])
-                            .get()
-                            .addOnFailureListener { e ->
-                                Toast.makeText(
-                                    context,
-                                    (e as FirebaseAuthException).message.toString(),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                            .addOnCompleteListener { usuario ->
-                                if (usuario.isSuccessful) {
-                                    jsonUsuario = JSONObject(usuario.result.data)
-                                    jsonUsuarios.put(jsonUsuario)
-
-                                    if (jsonUsuarios.length() == listCorreos.size) {
-                                        //Adaptador
-                                        adaptador = GeneralAdapter(binding.root.context,
-                                            R.layout.adapter_general,
-                                            jsonUsuarios,
-                                            object : GeneralAdapter.OnItemClickListener {
-                                                override fun onItemClick(usuario: JSONObject?) {
-                                                    //Abrir activity Servicio
-                                                    activity?.let { frActivity ->
-                                                        val servicioIntent = Intent(
-                                                            frActivity,
-                                                            ServicioActivity::class.java
-                                                        ).apply {
-                                                            putExtra("usuario", usuario.toString())
-                                                        }
-                                                        frActivity.startActivity(servicioIntent)
-                                                    }
-
-                                                }
-                                            })
-
-                                        binding.recyclerView.adapter = adaptador
-                                        binding.recyclerView.layoutManager =
-                                            LinearLayoutManager(requireContext())
-                                    }
-                                }else{
-                                    Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT)
-                                        .show()
+                            db.collection("usuario").document(listCorreos[i])
+                                .get()
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(
+                                        context,
+                                        (e as FirebaseAuthException).message.toString(),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-                            }
+                                .addOnCompleteListener { usuario ->
+                                    if (usuario.isSuccessful) {
+                                        jsonUsuario = JSONObject(usuario.result.data)
+                                        jsonUsuarios.put(jsonUsuario)
+
+                                        if (jsonUsuarios.length() == listCorreos.size) {
+                                            //Adaptador
+                                            adaptador = GeneralAdapter(binding.root.context,
+                                                R.layout.adapter_general,
+                                                jsonUsuarios,
+                                                object : GeneralAdapter.OnItemClickListener {
+                                                    override fun onItemClick(usuario: JSONObject?) {
+                                                        //Abrir activity Servicio
+                                                        activity?.let { frActivity ->
+                                                            val servicioIntent = Intent(
+                                                                frActivity,
+                                                                ServicioActivity::class.java
+                                                            ).apply {
+                                                                putExtra("usuario", usuario.toString())
+                                                            }
+                                                            frActivity.startActivity(servicioIntent)
+                                                        }
+
+                                                    }
+                                                })
+
+                                            binding.recyclerView.adapter = adaptador
+                                            binding.recyclerView.layoutManager =
+                                                LinearLayoutManager(requireContext())
+                                        }
+                                    }else{
+                                        Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+                                }
+                        }
                     }
+
                 }else{
                     Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT)
                         .show()

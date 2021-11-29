@@ -267,7 +267,9 @@ class ConfigPerfilFragment : Fragment() {
         }
 
         binding.btnAddServicio.setOnClickListener{
-            findNavController().navigate(R.id.action_configPerfilFragment_to_addServicioFragment)
+            val bundle = Bundle()
+            bundle.putBoolean("fromPerfil", true)
+            findNavController().navigate(R.id.action_configPerfilFragment_to_addServicioFragment, bundle)
         }
 
     }

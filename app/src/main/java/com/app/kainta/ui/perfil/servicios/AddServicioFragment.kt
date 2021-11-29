@@ -27,6 +27,7 @@ class AddServicioFragment : Fragment(), AdapterView.OnItemClickListener {
     private val binding get() = _binding!!
     private lateinit var adaptador : PerfilServiciosAdapter
     private lateinit var user : FirebaseAuth
+    private var fromPerfil : Boolean = false
     private lateinit var db : FirebaseFirestore
     private lateinit var servicio : String
 
@@ -40,6 +41,11 @@ class AddServicioFragment : Fragment(), AdapterView.OnItemClickListener {
 
         user = Firebase.auth
         db = Firebase.firestore
+
+        try {
+            if(arguments?.containsKey("fromPerfil") as Boolean)
+                fromPerfil = arguments?.getBoolean("fromPerfil", false)!!
+        }catch (e : Exception){e.printStackTrace()}
 
         setup()
 
@@ -62,6 +68,8 @@ class AddServicioFragment : Fragment(), AdapterView.OnItemClickListener {
         binding.btnAddTrabajo.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("servicio",servicio.lowercase())
+            bundle.putBoolean("fromAddServicio", true)
+            bundle.putBoolean("fromPerfil1", fromPerfil)
             findNavController().navigate(R.id.action_addServicioFragment_to_addTrabajoFragment, bundle)
         }
 

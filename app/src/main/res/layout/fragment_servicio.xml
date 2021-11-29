@@ -145,8 +145,9 @@
 
 
             <Button
-                android:id="@+id/btnMensaje"
+                android:id="@+id/btnSolicitarServicio"
                 android:layout_width="130dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="#919191"

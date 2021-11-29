@@ -92,7 +92,7 @@ class SolicitarServicioFragment : Fragment() {
     private fun setup() {
 
         binding.txtServicio.text =
-            "Solicitar el servicio de: ${jsonUsuario.getString("servicio").uppercase()}"
+                "Solicitar el servicio de: ${jsonUsuario.getString("servicio").uppercase()}"
 
 
         //FECHA
@@ -218,18 +218,17 @@ class SolicitarServicioFragment : Fragment() {
                                         if(doc.exists())
                                             db.collection("valorados").document(jsonUsuario.getString("email"))
                                                 .set(mapOf(
-                                                    "valoracion" to doc.get("valoracion") as Int + 1,
+                                                    "valoracion" to (doc.getLong("valoracion")?.toInt()
+                                                        ?.plus(1) ?: 0),
+                                                    "correo" to jsonUsuario.getString("email")
                                                 ))
                                         else
                                             db.collection("valorados").document(jsonUsuario.getString("email"))
                                                 .set(mapOf(
                                                     "valoracion" to 1,
+                                                    "correo" to jsonUsuario.getString("email")
                                                 ))
                                     }
-                                db.collection("valorados").document(jsonUsuario.getString("email"))
-                                    .set(mapOf(
-                                        "valoracion" to 4,
-                                    ))
                                 enviarNotificacion()
                                 showAlert("Correcto",
                                     "Se realizó la solicitud correctamente")

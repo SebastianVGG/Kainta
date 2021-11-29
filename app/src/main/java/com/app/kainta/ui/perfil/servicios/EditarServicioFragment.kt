@@ -35,11 +35,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 
 import com.google.android.gms.tasks.OnCompleteListener
-
-
-
-
-
+import com.google.firebase.FirebaseException
 
 
 class EditarServicioFragment : Fragment() {
@@ -48,6 +44,7 @@ class EditarServicioFragment : Fragment() {
     private lateinit var user : FirebaseAuth
     private lateinit var db : FirebaseFirestore
     private lateinit var storage: FirebaseStorage
+    private var eliminarTrabajo : Boolean = true
     private lateinit var jsonTrabajos : JSONArray
     private lateinit var adaptador : EditarTrabajoAdapter
     private lateinit var servicio : String
@@ -78,7 +75,19 @@ class EditarServicioFragment : Fragment() {
 
     private fun setup() {
 
+        agregarTrabajos()
+
+        binding.btnEliminarServicio.setOnClickListener {
+            eliminarServicio(true)
+        }
+
+
+        }
+
+    private fun agregarTrabajos() {
+
         var jsonTrabajo = JSONObject()
+        jsonTrabajos = JSONArray()
 
         try{
             db.collection("usuario").document(user.currentUser?.email!!)
@@ -94,10 +103,10 @@ class EditarServicioFragment : Fragment() {
                 }
                 .addOnCompleteListener { documents ->
                     if(documents.isSuccessful)
-                            for ( document in documents.result){
-                                jsonTrabajo = JSONObject(document.data)
-                                jsonTrabajos.put(jsonTrabajo)
-                            }
+                        for ( document in documents.result){
+                            jsonTrabajo = JSONObject(document.data)
+                            jsonTrabajos.put(jsonTrabajo)
+                        }
 
                     //Adaptador
                     adaptador = EditarTrabajoAdapter(
@@ -105,40 +114,37 @@ class EditarServicioFragment : Fragment() {
                         R.layout.adapter_editar_trabajo,
                         jsonTrabajos, object : EditarTrabajoAdapter.OnItemClickListener {
                             override fun onItemClick(item: JSONObject?, editar: Boolean) {
+                                val storageRef = storage.reference
 
-                                   /* val bundle = Bundle()
-                                    bundle.putString("jsonTrabajo", item.toString())
-                                    bundle.putString("servicio", servicio)
-                                    findNavController().navigate(R.id.action_editarServicioFragment_to_editarTrabajoFragment, bundle)
-                                    */
+                                for (i in 0 until (item?.length()?.minus(3) ?: 0)){
+                                    val spaceRef =
+                                        storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/" +
+                                                "$servicio/trabajos/" +
+                                                "${item!!.getString("id")}/${item.getString("titulo")}$i")
 
-                                    val storageRef = storage.reference
-
-                                    for (i in 0 until (item?.length()?.minus(2) ?: 0)){
-                                        val spaceRef =
-                                            storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/" +
-                                                    "$servicio/trabajos/" +
-                                                    "${item!!.getString("titulo")}/${item.getString("titulo")}$i")
-
-                                            spaceRef.delete()
+                                    spaceRef.delete()
                                         .addOnFailureListener {
                                             showAlert("Error", (it as FirebaseAuthException).message.toString()) }
-                                    }
-
-                                    db.collection("usuario").document(user.currentUser?.email!!)
-                                        .collection("servicios").document(servicio)
-                                        .collection("trabajos").document(item!!.getString("titulo")).delete()
-                                        .addOnSuccessListener {
-                                            db.collection("usuario").document(user.currentUser?.email!!)
-                                                .collection("servicios").document(servicio)
-                                                .collection("trabajos").get().addOnSuccessListener {
-                                                    if(it.isEmpty)
-                                                        eliminarServicio()
-                                                }
-                                            showAlert("Correcto", "Se eliminó el trabajo")
-                                        }
-                                        .addOnFailureListener { e -> showAlert("Error", (e as FirebaseAuthException).message.toString()) }
                                 }
+
+                                db.collection("usuario").document(user.currentUser?.email!!)
+                                    .collection("servicios").document(servicio)
+                                    .collection("trabajos").document(item!!.getString("id")).delete()
+                                    .addOnSuccessListener {
+                                        db.collection("usuario").document(user.currentUser?.email!!)
+                                            .collection("servicios").document(servicio)
+                                            .collection("trabajos").get().addOnSuccessListener {
+                                                if(it.isEmpty)
+                                                    eliminarServicio(false)
+                                                else{
+                                                    eliminarTrabajo = true
+                                                    showAlert("Correcto", "Se eliminó el trabajo")
+                                                }
+                                            }
+
+                                    }
+                                    .addOnFailureListener { e -> showAlert("Error", (e as FirebaseAuthException).message.toString()) }
+                            }
                         })
 
                     binding.recyclerTrabajos.adapter = adaptador
@@ -155,44 +161,150 @@ class EditarServicioFragment : Fragment() {
 
         }catch(e:Exception){
             Toast.makeText(
-            context,
-            "No hay registros de servicios",
-            Toast.LENGTH_SHORT
-        ).show()}
+                context,
+                "No hay registros de servicios",
+                Toast.LENGTH_SHORT
+            ).show()}
+    }
 
-        binding.btnEliminarServicio.setOnClickListener {
+
+    private fun eliminarServicio(fromBtn : Boolean){
+
+        if(fromBtn){
+            val storageRef = storage.reference
 
             db.collection("usuario").document(user.currentUser?.email!!)
                 .collection("servicios").document(servicio)
-                .delete()
-                .addOnSuccessListener {db.collection("servicios").document(servicio)
-                    .collection("usuario").document(user.currentUser?.email!!)
-                    .delete()
-                    .addOnSuccessListener {
-                        showAlert("Correcto", "Se eliminó el servicio")
-                        requireActivity().onBackPressedDispatcher
-                    }
-                    }.addOnFailureListener { e -> showAlert("Error", (e as FirebaseAuthException).message.toString()) }
-                }
+                .collection("trabajos")
+                .get().addOnCompleteListener { trabajos ->
 
+                    if(trabajos.isSuccessful){
 
-        }
+                        if(!trabajos.result.isEmpty){
 
+                            for(trabajo in trabajos.result){
 
-    private fun eliminarServicio(){
-        db.collection("usuario").document(user.currentUser?.email!!)
-            .collection("servicios").document(servicio).delete().addOnSuccessListener {
-                db.collection("servicios").document(servicio)
-                    .collection("usuario").document(user.currentUser?.email!!).delete().addOnSuccessListener {
-                       val ref = db.collection("servicioN")
-                        ref.whereEqualTo("correo", user.currentUser?.email!!.toString())
-                        .get().addOnCompleteListener {
-                            for(document in it.result)
-                                ref.document(document.id).delete()
+                                for (i in 0 until (trabajo?.data?.size?.minus(3) ?: 0)){
+
+                                    storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/" +
+                                            "$servicio/trabajos/" +
+                                            "${trabajo.id}/${trabajo.get("titulo")}$i")
+
+                                        .delete().addOnFailureListener {
+                                            showAlert("Error", (it as FirebaseException).message.toString())
+                                        }
+                                }
+
+                                db.collection("usuario").document(user.currentUser?.email!!)
+                                    .collection("servicios").document(servicio)
+                                    .collection("trabajos").document(trabajo.id).delete()
+
+                            }
+
+                            db.collection("usuario").document(user.currentUser?.email!!)
+                                .collection("servicios").document(servicio).delete().addOnSuccessListener {
+
+                                    db.collection("servicios").document(servicio)
+                                        .collection("usuario").document(user.currentUser?.email!!).delete().addOnSuccessListener {
+
+                                            val ref = db.collection("servicioN")
+                                            ref.whereEqualTo("correo", user.currentUser?.email!!.toString()).whereEqualTo("servicio", servicio.lowercase())
+                                                .get().addOnCompleteListener {
+
+                                                    for(document in it.result)
+                                                        ref.document(document.id).delete()
+
+                                                    showAlert("Correcto", "Se eliminó el servicio")
+                                                    eliminarTrabajo = false
+
+                                                }
+
+                                        }
+                                }
+
+                        }else{
+                            db.collection("usuario").document(user.currentUser?.email!!)
+                                .collection("servicios").document(servicio).delete().addOnSuccessListener {
+                                    db.collection("servicios").document(servicio)
+                                        .collection("usuario").document(user.currentUser?.email!!).delete().addOnSuccessListener {
+                                            val ref = db.collection("servicioN")
+                                            ref.whereEqualTo("correo", user.currentUser?.email!!.toString()).whereEqualTo("servicio", servicio.lowercase())
+                                                .get().addOnCompleteListener {
+                                                    for(document in it.result)
+                                                        ref.document(document.id).delete()
+                                                    showAlert("Correcto", "Se eliminó el servicio")
+                                                    eliminarTrabajo = false
+                                                }
+                                        }
+                                }
+
                         }
-                    }
-            }
 
+                    }else{
+                        showAlert("Error", (trabajos.exception as FirebaseException).message.toString())
+                    }
+
+                }
+        }else{
+            db.collection("usuario").document(user.currentUser?.email!!)
+                .collection("servicios").document(servicio)
+                .collection("trabajos")
+                .get().addOnCompleteListener { trabajos ->
+
+                    if(trabajos.isSuccessful){
+
+                        if(!trabajos.result.isEmpty){
+
+                            for(trabajo in trabajos.result){
+                                db.collection("usuario").document(user.currentUser?.email!!)
+                                    .collection("servicios").document(servicio)
+                                    .collection("trabajos").document(trabajo.id).delete()
+                            }
+                            db.collection("usuario").document(user.currentUser?.email!!)
+                                .collection("servicios").document(servicio).delete().addOnSuccessListener {
+
+                                    db.collection("servicios").document(servicio)
+                                        .collection("usuario").document(user.currentUser?.email!!).delete().addOnSuccessListener {
+
+                                            val ref = db.collection("servicioN")
+                                            ref.whereEqualTo("correo", user.currentUser?.email!!.toString()).whereEqualTo("servicio", servicio.lowercase())
+                                                .get().addOnCompleteListener {
+
+                                                    for(document in it.result)
+                                                        ref.document(document.id).delete()
+
+                                                    showAlert("Correcto", "Se eliminó el servicio")
+                                                    eliminarTrabajo = false
+
+                                                }
+
+                                        }
+                                }
+
+                        }else{
+                            db.collection("usuario").document(user.currentUser?.email!!)
+                                .collection("servicios").document(servicio).delete().addOnSuccessListener {
+                                    db.collection("servicios").document(servicio)
+                                        .collection("usuario").document(user.currentUser?.email!!).delete().addOnSuccessListener {
+                                            val ref = db.collection("servicioN")
+                                            ref.whereEqualTo("correo", user.currentUser?.email!!.toString()).whereEqualTo("servicio", servicio.lowercase())
+                                                .get().addOnCompleteListener {
+                                                    for(document in it.result)
+                                                        ref.document(document.id).delete()
+                                                    showAlert("Correcto", "Se eliminó el servicio")
+                                                    eliminarTrabajo = false
+                                                }
+                                        }
+                                }
+
+                        }
+
+                    }else{
+                        showAlert("Error", (trabajos.exception as FirebaseException).message.toString())
+                    }
+
+                }
+        }
     }
 
 
@@ -201,6 +313,11 @@ class EditarServicioFragment : Fragment() {
         builder.setTitle(titulo)
         builder.setMessage(mensaje)
         builder.setPositiveButton("Aceptar") { _,_ ->
+
+            if(eliminarTrabajo)
+                agregarTrabajos()
+            else
+            activity?.onBackPressed()
 
         }
         val dialog : AlertDialog = builder.create()

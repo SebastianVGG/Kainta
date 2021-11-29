@@ -25,10 +25,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.ServicioActivity
 import com.app.kainta.adaptadores.ListaServiciosAdapter
+import com.app.kainta.adaptadores.ServicioVistaAdapter
+import com.app.kainta.mvc.RecomendadoToSearchViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -44,10 +47,11 @@ class SearchFragment : Fragment() {
     private lateinit var jsonUsuarios: JSONArray
     private lateinit var listCorreos: ArrayList<String>
     private lateinit var adaptador: GeneralAdapter
-    private lateinit var adaptadorServicios : ListaServiciosAdapter
+    private lateinit var adaptadorServicios : ServicioVistaAdapter
     private lateinit var user: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var model : UsuarioServicioViewModel
+    private lateinit var viewModel : RecomendadoToSearchViewModel
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var drawer_Layout : DrawerLayout
     private val binding get() = _binding!!
@@ -77,6 +81,13 @@ class SearchFragment : Fragment() {
         db = Firebase.firestore
 
         model = ViewModelProvider(requireActivity()).get(UsuarioServicioViewModel::class.java)
+
+        viewModel = ViewModelProvider(requireActivity()).get(RecomendadoToSearchViewModel::class.java)
+
+        viewModel.getData().observe(viewLifecycleOwner,{
+            if(it != null)
+                searchServicios(viewModel.getData().value.toString().lowercase())
+        })
 
         val arrayServicios = resources.getStringArray(R.array.spinner_servicios)
 
@@ -117,6 +128,7 @@ class SearchFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
         binding.recyclerServicios.visibility = View.GONE
         binding.btnListaServicios.visibility = View.GONE
+        binding.txtResultado.visibility = View.GONE
 
         listCorreos = ArrayList()
         jsonUsuarios = JSONArray()
@@ -135,7 +147,7 @@ class SearchFragment : Fragment() {
                 }
                 .addOnCompleteListener { documents ->
                     if (documents.isSuccessful) {
-                        if(!documents.result.isEmpty){
+                        if (!documents.result.isEmpty) {
                             for (document in documents.result) {
                                 listCorreos.add(document.data["correo"] as String)
                             }
@@ -162,14 +174,17 @@ class SearchFragment : Fragment() {
                                                     R.layout.adapter_general,
                                                     jsonUsuarios,
                                                     object : GeneralAdapter.OnItemClickListener {
-                                                        override fun onItemClick(usuario : JSONObject?) {
+                                                        override fun onItemClick(usuario: JSONObject?) {
                                                             //Abrir activity Servicio
                                                             activity?.let {
                                                                 val servicioIntent = Intent(
                                                                     it,
                                                                     ServicioActivity::class.java
                                                                 ).apply {
-                                                                    putExtra("usuario", usuario.toString())
+                                                                    putExtra(
+                                                                        "usuario",
+                                                                        usuario.toString()
+                                                                    )
                                                                 }
                                                                 it.startActivity(servicioIntent)
                                                             }
@@ -179,7 +194,7 @@ class SearchFragment : Fragment() {
 
                                                 binding.recyclerServicios.adapter = adaptador
                                                 binding.recyclerServicios.layoutManager =
-                                                    LinearLayoutManager(requireContext())
+                                                    LinearLayoutManager(binding.root.context)
 
                                                 binding.progressBar.visibility = View.GONE
                                                 binding.recyclerServicios.visibility = View.VISIBLE
@@ -191,55 +206,81 @@ class SearchFragment : Fragment() {
                             db.collection("servicios").document(servicio)
                                 .get().addOnSuccessListener {
                                     db.collection("servicios").document(servicio)
-                                        .set(mapOf(
-                                            "buscado" to (it.data?.get("buscado") as Long +1)
-                                        ), SetOptions.merge())
+                                        .set(
+                                            mapOf(
+                                                "buscado" to (it.data?.get("buscado") as Long + 1)
+                                            ), SetOptions.merge()
+                                        )
                                 }.addOnFailureListener {
-                                    Toast.makeText(context, "No se agrego el contador" , Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "No se agrego el contador",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
 
 
-                        }else{
-                            binding.txtResultado.text = "No se encontraron resultados del servicio $servicio"
+                        } else {
+                            binding.txtResultado.text =
+                                "No se encontraron resultados del servicio $servicio"
                             binding.progressBar.visibility = View.GONE
                             binding.txtResultado.visibility = View.VISIBLE
                             binding.recyclerServicios.visibility = View.GONE
                             binding.btnListaServicios.visibility = View.VISIBLE
 
-                            //Adaptador
+                            var jsonServicio = JSONObject()
+                            val jsonServicios = JSONArray()
 
-                            val listServicios = resources.getStringArray(R.array.spinner_servicios)
-                            Arrays.sort(listServicios)
-
-                            adaptadorServicios = ListaServiciosAdapter(
-                                binding.root.context,
-                                R.layout.adapter_perfil_servicios,
-                                listServicios, object : ListaServiciosAdapter.OnItemClickListener {
-                                    @SuppressLint("ResourceType")
-                                    override fun onItemClick(servicioNombre: String) {
-                                        searchServicios(servicioNombre.lowercase())
+                            db.collection("servicios").get().addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    for (servicio in it.result.documents) {
+                                        jsonServicio = JSONObject(servicio.data)
+                                        jsonServicio.put("search", true)
+                                        jsonServicios.put(jsonServicio)
                                     }
-                                })
+                                    //Adaptador
 
-                            binding.recyclerListaServicios.adapter = adaptadorServicios
-                            binding.recyclerListaServicios.layoutManager = LinearLayoutManager(requireContext())
+                                    adaptadorServicios = ServicioVistaAdapter(
+                                        binding.root.context,
+                                        R.layout.adapter_servicio_vista,
+                                        jsonServicios,
+                                        object : ServicioVistaAdapter.OnItemClickListener {
+                                            override fun onItemClick(jsonServicio: JSONObject) {
+                                                searchServicios(
+                                                    jsonServicio.getString("nombre").lowercase()
+                                                )
+                                            }
+                                        })
 
-
-                            db.collection("servicios").document(servicio)
-                                .get().addOnCompleteListener {
-                                    if(it.result.exists())
-                                    db.collection("servicios").document(servicio)
-                                        .set(mapOf(
-                                            "buscado" to (it.result.data?.get("buscado") as Long + 1)
-                                        ), SetOptions.merge())
+                                    binding.recyclerListaServicios.adapter = adaptadorServicios
+                                    binding.recyclerListaServicios.layoutManager =
+                                        LinearLayoutManager(requireContext())
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Error al cargar destacados",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
 
+                                db.collection("servicios").document(servicio)
+                                    .get().addOnCompleteListener {
+                                        if (it.result.exists())
+                                            db.collection("servicios").document(servicio)
+                                                .set(
+                                                    mapOf(
+                                                        "buscado" to (it.result.data?.get("buscado") as Long + 1)
+                                                    ), SetOptions.merge()
+                                                )
+                                    }
+
+                            }
                         }
+
+
                     }
-
-
                 }
-        } catch (e: Exception) {
+            }catch (e: Exception) {
             Toast.makeText(
                 context,
                 "No hay registros de servicios",
@@ -255,11 +296,12 @@ class SearchFragment : Fragment() {
 
         binding.autoComplete.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if(binding.autoComplete.text.toString() == "")
+                if (binding.autoComplete.text.toString() == "")
                     binding.btnLimpiar.visibility = View.INVISIBLE
                 else
                     binding.btnLimpiar.visibility = View.VISIBLE
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -278,21 +320,40 @@ class SearchFragment : Fragment() {
 
         //Adaptador
 
-        val listServicios = resources.getStringArray(R.array.spinner_servicios)
-        Arrays.sort(listServicios)
+        var jsonServicio = JSONObject()
+        val jsonServicios = JSONArray()
 
-        adaptadorServicios = ListaServiciosAdapter(
-            binding.root.context,
-            R.layout.adapter_perfil_servicios,
-            listServicios, object : ListaServiciosAdapter.OnItemClickListener {
-                @SuppressLint("ResourceType")
-                override fun onItemClick(servicioNombre: String) {
-                    searchServicios(servicioNombre.lowercase())
+        db.collection("servicios").get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                for (servicio in it.result.documents) {
+                    jsonServicio = JSONObject(servicio.data)
+                    jsonServicio.put("search", true)
+                    jsonServicios.put(jsonServicio)
                 }
-            })
+                //Adaptador
 
-        binding.recyclerListaServicios.adapter = adaptadorServicios
-        binding.recyclerListaServicios.layoutManager = LinearLayoutManager(requireContext())
+                adaptadorServicios = ServicioVistaAdapter(
+                    binding.root.context,
+                    R.layout.adapter_servicio_vista,
+                    jsonServicios,
+                    object : ServicioVistaAdapter.OnItemClickListener {
+                        override fun onItemClick(jsonServicio: JSONObject) {
+                            searchServicios(
+                                jsonServicio.getString("nombre").lowercase()
+                            )
+                        }
+                    })
+
+                binding.recyclerListaServicios.adapter = adaptadorServicios
+                binding.recyclerListaServicios.layoutManager =
+                    LinearLayoutManager(requireContext())
+            } else
+                Toast.makeText(
+                    context,
+                    "Error al cargar destacados",
+                    Toast.LENGTH_SHORT
+                ).show()
+        }
     }
 
 
@@ -332,8 +393,6 @@ class SearchFragment : Fragment() {
         val item = menu.findItem(R.id.nav_inicio_add)
         item.isVisible = isHidden
     }
-
-
 
 }
 

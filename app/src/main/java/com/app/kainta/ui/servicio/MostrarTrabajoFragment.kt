@@ -57,7 +57,7 @@ class MostrarTrabajoFragment : Fragment() {
 
     private fun setup() {
 
-        for (i in 0 until jsonTrabajo.length()-2)
+        for (i in 0 until jsonTrabajo.length()-3)
             listURL.add(jsonTrabajo.getString("url$i"))
 
         //Adaptador

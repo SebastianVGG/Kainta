@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.adaptadores.DireccionesAdapter
 import com.app.kainta.databinding.FragmentConfigDireccionesBinding
-import com.app.kainta.modelos.DireccionModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
@@ -50,6 +49,15 @@ class ConfigDireccionesFragment : Fragment() {
 
     private fun setup(){
 
+        cargarDirecciones()
+
+        binding.btnAddDireccion.setOnClickListener {
+            findNavController().navigate(R.id.action_configDireccionesFragment_to_nuevaDireccionFragment)
+        }
+
+    }
+
+    private fun cargarDirecciones() {
         val jsons = JSONArray()
         var jsonData : JSONObject = JSONObject()
 
@@ -103,13 +111,6 @@ class ConfigDireccionesFragment : Fragment() {
             .addOnFailureListener {
                 showAlert("Error", (it as FirebaseAuthException).message.toString())
             }
-
-
-
-
-        binding.btnAddDireccion.setOnClickListener {
-            findNavController().navigate(R.id.action_configDireccionesFragment_to_nuevaDireccionFragment)
-        }
     }
 
 
@@ -118,7 +119,7 @@ class ConfigDireccionesFragment : Fragment() {
         builder.setTitle(titulo)
         builder.setMessage(mensaje)
         builder.setPositiveButton("Aceptar") { _,_ ->
-
+            cargarDirecciones()
         }
         val dialog : AlertDialog = builder.create()
         dialog.show()

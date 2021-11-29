@@ -7,15 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
-import com.app.kainta.R
-import com.app.kainta.databinding.FragmentConfigLoginEmailPassBinding
 import com.app.kainta.databinding.FragmentEditInfoPersonalBinding
-import com.app.kainta.modelos.UpdateEmailModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -130,7 +126,9 @@ class EditInfoPersonalFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(titulo)
         builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar", null)
+        builder.setPositiveButton("Aceptar") { _,_ ->
+            activity?.onBackPressed()
+        }
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }

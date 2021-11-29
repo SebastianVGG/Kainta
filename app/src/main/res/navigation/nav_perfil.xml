@@ -104,11 +104,19 @@
             android:id="@+id/action_addServicioFragment_to_addTrabajoFragment"
             app:destination="@id/addTrabajoFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/addTrabajoFragment"
         android:name="com.app.kainta.ui.perfil.servicios.AddTrabajoFragment"
         android:label="fragment_add_trabajo"
-        tools:layout="@layout/fragment_add_trabajo" />
+        tools:layout="@layout/fragment_add_trabajo" >
+        <action
+            android:id="@+id/action_addTrabajoFragment_to_configServiciosFragment"
+            app:destination="@id/configServiciosFragment"
+            app:popUpTo="@+id/configServiciosFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
     <fragment
         android:id="@+id/editarServicioFragment"
         android:name="com.app.kainta.ui.perfil.servicios.EditarServicioFragment"

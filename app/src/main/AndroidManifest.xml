@@ -18,15 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kainta">
         <activity
+            android:name=".ui.home.addservicio.HomeAddServicioActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Kainta.NoActionBar" />
+        <activity
             android:name=".ui.home.servicios.ServiciosRequeridosActivity"
             android:exported="false"
-            android:theme="@style/Theme.Kainta.NoActionBar"
-            />
+            android:theme="@style/Theme.Kainta.NoActionBar" />
         <activity
             android:name=".ui.home.servicios.ServiciosSolicitadosActivity"
             android:exported="false"
-            android:theme="@style/Theme.Kainta.NoActionBar"
-            />
+            android:theme="@style/Theme.Kainta.NoActionBar" />
         <activity
             android:name=".SearchActivity"
             android:exported="false" />
