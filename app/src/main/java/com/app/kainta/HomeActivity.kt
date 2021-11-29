@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,8 +23,15 @@ import com.app.kainta.mvc.RecomendadoToSearchViewModel
 import com.app.kainta.ui.home.addservicio.HomeAddServicioActivity
 import com.app.kainta.ui.home.search.SearchFragment
 import com.app.kainta.ui.home.servicios.MostrarServiciosFragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 enum class ProviderType{
@@ -39,6 +47,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var drawer_Layout : DrawerLayout
     private lateinit var adapter : VPAdapter
+    private lateinit var user : FirebaseAuth
+    private lateinit var db : FirebaseFirestore
     private val searchFragment = SearchFragment()
     private val mostrarServiciosFragment = MostrarServiciosFragment()
 
@@ -87,6 +97,8 @@ class HomeActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val headerView = nav_view.getHeaderView(0)
+
         //DRAWER NAVIGATION SELECTED
         nav_view.setNavigationItemSelectedListener {
 
@@ -108,8 +120,6 @@ class HomeActivity : AppCompatActivity() {
             }
             true
         }
-
-
 
         //NAVIGATION BOTTOM-------------------------------------------------
         viewModel = ViewModelProvider(this).get(RecomendadoToSearchViewModel::class.java)
@@ -156,7 +166,7 @@ class HomeActivity : AppCompatActivity() {
         val email = intent.getStringExtra("email")
         val provider = intent.getStringExtra("provider")
 
-        setup(email ?: "",provider ?: "",  viewNavHeader)
+        setup(email ?: "",provider ?: "",  headerView)
 
         //Guardado de datos
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
@@ -168,18 +178,39 @@ class HomeActivity : AppCompatActivity() {
     }
 
     //SETUP
-    private fun setup(email: String, provider: String, viewNavHeader: View) {
+    private fun setup(email: String, provider: String, headerView: View) {
 
-        val textEmail = viewNavHeader.findViewById<TextView>(R.id.navHeaderCorreo)
+        user = Firebase.auth
+        db = Firebase.firestore
+
+        val imageHeader = headerView.findViewById<ImageView>(R.id.navHeaderImage)
+        val correo = headerView.findViewById<TextView>(R.id.navCorreo)
 
         val informacionPersonal = QueryServicioModel(
             email,
             provider
         )
-        textEmail.text = email
 
+        db.collection("usuario").document(user.currentUser?.email!!)
+            .get().addOnCompleteListener {
+                if(it.isSuccessful){
+                    correo.text = it.result.getString("email").toString()
+                    if(it.result.contains("url"))
+                    this.let { contextHome ->
+                        Glide.with(contextHome)
+                            .load(it.result.getString("url"))
+                            .apply(
+                                RequestOptions().override(
+                                    300,
+                                    300
+                                )
+                            )
+                            .into(imageHeader)
+                    }
+                }else{
 
-
+                }
+            }
 
     }
 

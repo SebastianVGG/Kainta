@@ -9,23 +9,28 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.app.kainta.ui.login.LoginFragment"
-        android:label="fragment_login"
+        android:label=""
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_createFragment"
-            app:destination="@id/createFragment" />
+            app:destination="@id/createFragment"
+            app:enterAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_left" />
         <action
             android:id="@+id/action_loginFragment_to_fillAccountFragment"
-            app:destination="@id/fillAccountFragment" />
+            app:destination="@id/fillAccountFragment"
+            app:enterAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/createFragment"
         android:name="com.app.kainta.ui.login.CreateFragment"
-        android:label="fragment_create"
+        android:label=""
         tools:layout="@layout/fragment_create" />
     <fragment
         android:id="@+id/fillAccountFragment"
         android:name="com.app.kainta.ui.login.FillAccountFragment"
-        android:label="fragment_fill_account"
+        android:label=""
+        android:textSize="16dp"
         tools:layout="@layout/fragment_fill_account" />
 </navigation>

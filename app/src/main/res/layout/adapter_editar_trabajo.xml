@@ -56,7 +56,6 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="15dp"
                     android:backgroundTint="@color/secondaryColor"
-                    android:fontFamily="@font/madeleina"
                     android:hint="Eliminar"
                     android:textColorHint="@color/secondaryTextColor"
                     android:textSize="16sp" />

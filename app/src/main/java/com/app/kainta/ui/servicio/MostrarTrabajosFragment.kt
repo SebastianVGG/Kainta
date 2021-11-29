@@ -62,6 +62,19 @@ class MostrarTrabajosFragment : Fragment() {
 
     private fun setup() {
 
+        if(jsonUsuario.getString("email") == user.currentUser?.email)
+            binding.btnSolicitarServicio.visibility = View.GONE
+
+        binding.btnSolicitarServicio.setOnClickListener {
+
+            val bundle = Bundle()
+            jsonUsuario.put("servicio", servicio)
+            bundle.putString("jsonUsuario", jsonUsuario.toString())
+
+            findNavController().navigate(R.id.action_mostrarTrabajosFragment_to_solicitarServicioFragment, bundle)
+
+        }
+
         var jsonTrabajo = JSONObject()
 
         try{

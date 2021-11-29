@@ -34,7 +34,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center"
-                android:fontFamily="@font/madeleina"
                 android:text="Direcciones"
                 android:textColor="@color/secondaryTextColor"
                 android:textSize="32dp"
@@ -47,7 +46,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/secondaryColor"
-                android:fontFamily="@font/madeleina"
                 android:hint="Agregar una dirección nueva"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="16sp" />
@@ -66,7 +64,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="5dp"
-                android:fontFamily="@font/madeleina"
                 android:text="No hay direcciones registradas"
                 android:textColor="@color/secondaryTextColor"
                 android:textSize="32dp"

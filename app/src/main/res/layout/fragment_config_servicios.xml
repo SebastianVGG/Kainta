@@ -26,7 +26,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:fontFamily="@font/madeleina"
                 android:hint="Servicios que ofreces"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="26dp" />

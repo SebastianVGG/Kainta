@@ -24,7 +24,11 @@
 
     </style>
 
-
+    <style name="EditTextTheme" parent="Theme.Kainta">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/primaryColor</item>
+        <item name="colorControlHighlight">@color/secondaryColor</item>
+    </style>
 
 
 </resources>

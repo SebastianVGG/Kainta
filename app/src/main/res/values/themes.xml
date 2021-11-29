@@ -13,17 +13,17 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
-        <item name="android:fontFamily">@font/madeleina</item>
+        <item name="android:fontFamily">@font/ambler</item>
 
-    </style>
+     </style>
 
-    <style name="Theme.Kainta.NoActionBar" parent="Theme.Kainta">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+     <style name="Theme.Kainta.NoActionBar" parent="Theme.Kainta">
+         <item name="windowActionBar">false</item>
+         <item name="windowNoTitle">true</item>
 
-    </style>
+     </style>
 
-    <style name="Theme.Kainta.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+     <style name="Theme.Kainta.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.Kainta.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-</resources>
+     <style name="Theme.Kainta.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+ </resources>

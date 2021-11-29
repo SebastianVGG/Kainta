@@ -45,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/madeleina"
                 android:hint="Nombre"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="26dp" />
@@ -54,7 +53,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/madeleina"
                 android:hint="Ciudad"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="20dp" />
@@ -66,7 +64,6 @@
                 android:layout_gravity="start"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/madeleina"
                 android:hint="Descripcion"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="22dp" />
@@ -77,7 +74,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/madeleina"
                 android:hint="Redes sociales"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="22dp" />
@@ -90,7 +86,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/madeleina"
                 android:text="No hay redes sociales registradas"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="22dp" />
@@ -142,22 +137,6 @@
 
             </LinearLayout>
 
-
-
-            <Button
-                android:id="@+id/btnSolicitarServicio"
-                android:layout_width="130dp"
-                android:visibility="gone"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="#919191"
-                android:fontFamily="@font/madeleina"
-                android:hint="Soliciar servicio"
-                android:textColorHint="@color/secondaryTextColor"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-
         </LinearLayout>
 
 
@@ -166,7 +145,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:fontFamily="@font/madeleina"
             android:hint="Servicios"
             android:textColorHint="@color/secondaryTextColor"
             android:textSize="26dp" />

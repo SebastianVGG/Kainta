@@ -55,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/secondaryColor"
-                android:fontFamily="@font/madeleina"
                 android:hint="Ver trabajo"
                 android:textColorHint="@color/secondaryTextColor"
                 android:textSize="16sp" />

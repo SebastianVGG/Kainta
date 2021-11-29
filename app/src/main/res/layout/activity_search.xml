@@ -10,7 +10,6 @@
     <TextView
         android:id="@+id/fragmentSearch_busqueda"
         android:hint="Correo electronico"
-        android:fontFamily="@font/madeleina"
         android:textColorHint="@color/secondaryTextColor"
         android:layout_marginTop="35dp"
         android:layout_width="wrap_content"

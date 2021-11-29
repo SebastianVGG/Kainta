@@ -79,9 +79,6 @@ class ServicioFragment : Fragment() {
 
     private fun setup() {
 
-        if(jsonUsuario.has("servicio"))
-            binding.btnSolicitarServicio.visibility = View.VISIBLE
-
         db.collection("usuario").document(user.currentUser!!.email!!)
             .get().addOnSuccessListener {
                 nombre = it.data?.get("nombre").toString()
@@ -224,17 +221,7 @@ class ServicioFragment : Fragment() {
             ).show()
         }
 
-        if(jsonUsuario.getString("email") == user.currentUser!!.email!!)
-            binding.btnSolicitarServicio.visibility = View.GONE
 
-        binding.btnSolicitarServicio.setOnClickListener {
-
-            val bundle = Bundle()
-            bundle.putString("jsonUsuario", jsonUsuario.toString())
-
-            findNavController().navigate(R.id.action_servicioFragment_to_solicitarServicioFragment, bundle)
-
-        }
     }
 
     private fun showAlert(titulo: String, mensaje: String) {

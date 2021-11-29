@@ -86,7 +86,6 @@
                     android:layout_gravity="start"
                     android:layout_marginTop="15dp"
                     android:backgroundTint="@color/secondaryColor"
-                    android:fontFamily="@font/madeleina"
                     android:hint="Editar"
                     android:textColorHint="@color/secondaryTextColor"
                     android:textSize="16sp" />
@@ -98,7 +97,6 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="15dp"
                     android:backgroundTint="@color/secondaryColor"
-                    android:fontFamily="@font/madeleina"
                     android:hint="Eliminar"
                     android:textColorHint="@color/secondaryTextColor"
                     android:textSize="16sp" />

@@ -110,9 +110,7 @@ class ServiciosRequeridosFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(titulo)
         builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar") { _,_ ->
-
-        }
+        builder.setPositiveButton("Aceptar", null)
         val dialog : AlertDialog = builder.create()
         dialog.show()
     }

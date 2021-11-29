@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:backgroundTint="#00552126"
-                app:titleTextColor="@color/black">
+                app:popupTheme="@style/Theme.Kainta.PopupOverlay"                app:titleTextColor="@color/black">
 
                 <FrameLayout
                     android:layout_width="match_parent"

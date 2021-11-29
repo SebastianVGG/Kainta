@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,67 +18,80 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/madeleina"
             android:text="Iniciar Sesión"
             android:textColor="@color/secondaryTextColor"
             android:textSize="32dp"
             android:textStyle="bold" />
+
+
 
         <EditText
             android:id="@+id/editUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:fontFamily="@font/madeleina"
-            android:hint="Usuario o Correo electronico"
+            android:elevation="3dp"
+            android:drawableStart="@drawable/ic_account_circle_24"
+            android:drawablePadding="5dp"
+            android:padding="10dp"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/custom_edit"
+            android:hint="Correo electrónico"
             android:textColorHint="@color/secondaryTextColor" />
 
         <EditText
             android:id="@+id/editContrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:layout_margin="15dp"
-            android:fontFamily="@font/madeleina"
+            android:elevation="3dp"
+            android:drawableStart="@drawable/ic_lock_24"
+            android:drawablePadding="5dp"
+            android:padding="10dp"
+            android:background="@drawable/custom_edit"
             android:hint="Contraseña"
             android:textColorHint="@color/secondaryTextColor" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/madeleina"
-            android:text="Olvidé la contraseña"
-            android:textColor="@color/primaryDarkColor"
-            android:textSize="16dp"
-            android:textStyle="bold" />
-
         <Button
             android:id="@+id/btnIniciarSesion"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_margin="15dp"
-            android:backgroundTint="@color/primaryColor"
-            android:fontFamily="@font/madeleina"
-            android:hint="Iniciar sesión"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="20dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:hint="Iniciar Sesión"
+            android:textColorHint="@color/primaryTextColor"
+            app:cornerRadius="20dp"
+            app:strokeColor="@color/primaryColor"
+            app:strokeWidth="1dp" />
 
         <Button
             android:id="@+id/btnCrearCuenta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:fontFamily="@font/madeleina"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:hint="Crear cuenta"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="16sp" />
+            android:textColorHint="@color/primaryTextColor"
+            app:cornerRadius="20dp"
+            app:strokeColor="@color/secondaryColor"
+            app:strokeWidth="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Olvidé la contraseña"
+            android:textColor="@color/primaryDarkColor"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/madeleina"
             android:text="ó"
             android:textColor="@color/secondaryTextColor"
             android:textSize="16dp"
@@ -86,15 +100,17 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnIniciarSesionGoogle"
             android:layout_width="wrap_content"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
             android:layout_marginTop="15dp"
             android:backgroundTint="@color/white"
             android:drawableStart="@drawable/icon_google"
             android:drawablePadding="15dp"
-            android:fontFamily="@font/madeleina"
-            android:hint="Iniciar sesión con Google"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="20dp" />
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/buttom_border_primary"
+            android:text="Iniciar sesión con Google"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="15dp" />
 
     </LinearLayout>
 

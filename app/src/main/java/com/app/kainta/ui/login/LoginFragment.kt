@@ -23,6 +23,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 
 import android.R.id
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 
 
 class LoginFragment : Fragment() {
@@ -39,7 +40,6 @@ class LoginFragment : Fragment() {
         val root: View = binding.root
 
         setup()
-
 
         return binding.root
     }

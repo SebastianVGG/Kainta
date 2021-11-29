@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Response
@@ -368,7 +369,9 @@ class SolicitarServicioFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(titulo)
         builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar",null)
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            findNavController().navigate(R.id.action_solicitarServicioFragment_to_servicioFragment)
+        }
         val dialog : AlertDialog = builder.create()
         dialog.show()
     }
