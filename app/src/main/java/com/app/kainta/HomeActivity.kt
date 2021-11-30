@@ -33,7 +33,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-
 enum class ProviderType{
     BASIC,
     GOOGLE
@@ -59,7 +58,7 @@ class HomeActivity : AppCompatActivity() {
 
         //SE CREA LA TOOLBAR--------------------
         setSupportActionBar(binding.toolbar)
-
+        binding.toolbar.elevation = 0F
 
         //VIEW PAGE PARA LA TAB---------------------------
 
@@ -122,13 +121,14 @@ class HomeActivity : AppCompatActivity() {
         }
 
         //NAVIGATION BOTTOM-------------------------------------------------
+
         viewModel = ViewModelProvider(this).get(RecomendadoToSearchViewModel::class.java)
         viewModel.getData().observe(this){
             if(it != null)
-                binding.navbottonView.selectedItemId = R.id.navigation_search
-
+            binding.navbottonView.selectedItemId = R.id.navigation_search
         }
-        binding.navbottonView.setOnItemSelectedListener {
+        binding.navbottonView.elevation = 4F
+       binding.navbottonView.setOnItemSelectedListener {
             when(it.itemId){
 
                 R.id.navigation_home ->{
@@ -159,8 +159,6 @@ class HomeActivity : AppCompatActivity() {
             return@setOnItemSelectedListener true
         }
 
-
-
         //SETUP----------------------------------------
 
         val email = intent.getStringExtra("email")
@@ -185,6 +183,7 @@ class HomeActivity : AppCompatActivity() {
 
         val imageHeader = headerView.findViewById<ImageView>(R.id.navHeaderImage)
         val correo = headerView.findViewById<TextView>(R.id.navCorreo)
+        val nombre = headerView.findViewById<TextView>(R.id.navNombre)
 
         val informacionPersonal = QueryServicioModel(
             email,
@@ -195,6 +194,7 @@ class HomeActivity : AppCompatActivity() {
             .get().addOnCompleteListener {
                 if(it.isSuccessful){
                     correo.text = it.result.getString("email").toString()
+                    nombre.text = it.result.getString("nombre").toString()
                     if(it.result.contains("url"))
                     this.let { contextHome ->
                         Glide.with(contextHome)
@@ -211,6 +211,11 @@ class HomeActivity : AppCompatActivity() {
 
                 }
             }
+
+        binding.btnAddServicio.setOnClickListener {
+            val activityIntent = Intent(this, HomeAddServicioActivity::class.java)
+            startActivity(activityIntent)
+        }
 
     }
 
@@ -231,8 +236,7 @@ class HomeActivity : AppCompatActivity() {
 
     //Funcion para inflar los items del toolbar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-      menuInflater.inflate(R.menu.menu_fragment_inicio,menu)
-
+        //menuInflater.inflate(R.menu.menu_fragment_inicio,menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -242,12 +246,12 @@ class HomeActivity : AppCompatActivity() {
         if(toggle.onOptionsItemSelected(item))
             return true
 
-        when(item.itemId){
+        /*when(item.itemId){
             R.id.nav_inicio_add -> {
                 val activityIntent = Intent(this, HomeAddServicioActivity::class.java)
                 startActivity(activityIntent)
             }
-        }
+        }*/
 
         return super.onOptionsItemSelected(item)
     }

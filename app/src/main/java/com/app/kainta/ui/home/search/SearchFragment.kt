@@ -21,8 +21,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.kainta.mvc.UsuarioServicioViewModel
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
+import android.widget.LinearLayout
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.ServicioActivity
 import com.app.kainta.adaptadores.ListaServiciosAdapter
 import com.app.kainta.adaptadores.ServicioVistaAdapter
@@ -39,6 +39,9 @@ import org.json.JSONObject
 import java.lang.reflect.Array
 import java.util.*
 import kotlin.collections.ArrayList
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 
 
 class SearchFragment : Fragment() {
@@ -390,8 +393,8 @@ class SearchFragment : Fragment() {
 
     override fun onPrepareOptionsMenu(menu: Menu){
         super.onPrepareOptionsMenu(menu)
-        val item = menu.findItem(R.id.nav_inicio_add)
-        item.isVisible = isHidden
+       /* val item = menu.findItem(R.id.nav_inicio_add)
+        item.isVisible = isHidden*/
     }
 
 }

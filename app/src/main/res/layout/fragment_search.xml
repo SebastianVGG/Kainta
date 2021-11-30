@@ -16,17 +16,17 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarSearch"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
                 android:backgroundTint="#00552126">
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <AutoCompleteTextView
                         android:id="@+id/autoComplete"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:backgroundTint="#00545434"
                         android:drawableStart="@drawable/ic_baseline_search_24"
                         android:drawableTintMode="src_atop"
@@ -39,7 +39,7 @@
                     <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/btnLimpiar"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="end|center"
                         android:backgroundTint="#00453454"
                         android:src="@drawable/ic_baseline_close_24" />
@@ -48,7 +48,10 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EEA8A8A8" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -77,13 +80,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerListaServicios"
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
             android:layout_height="match_parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerServicios"
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
             android:layout_height="match_parent"
             android:visibility="gone"
             />

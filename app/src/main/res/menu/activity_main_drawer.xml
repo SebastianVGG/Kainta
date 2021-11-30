@@ -6,16 +6,26 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:icon="@drawable/ic_account_circle_24"
             android:id="@+id/nav_perfil"
+            android:actionLayout="@layout/nav_header_divider"
             android:title="Perfil" />
         <item
+            android:icon="@drawable/ic_settings_24"
             android:id="@+id/nav_configuracion"
+            android:actionLayout="@layout/nav_header_divider"
             android:title="Configuracion" />
         <item
+            android:icon="@drawable/ic_star_rate_24"
             android:id="@+id/nav_calificanos"
+            android:actionLayout="@layout/nav_header_divider"
             android:title="Calificanos" />
         <item
+            android:icon="@drawable/ic_baseline_chat_24"
             android:id="@+id/nav_contactanos"
+            android:actionLayout="@layout/nav_header_divider"
             android:title="Contactanos" />
     </group>
+
+
 </menu>

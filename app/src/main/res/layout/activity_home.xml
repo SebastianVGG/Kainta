@@ -5,7 +5,6 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    android:background="@color/black"
     tools:context=".HomeActivity">
 
     <LinearLayout
@@ -15,57 +14,86 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            android:backgroundTint="#00454545"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:navigationIcon="@drawable/ic_back_24"
-            android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
-            />
+            android:layout_height="?attr/actionBarSize"
+            >
 
-        <LinearLayout
-            android:id="@+id/container_mainn"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:text="KAINTA"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/btnAddServicio"
+                    android:text="Agregar Servicio"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_gravity="end|center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/primaryTextColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </FrameLayout>
+
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:id="@+id/divider2"
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="1dp"
+            android:background="#EEA8A8A8" />
 
 
+    <LinearLayout
+        android:id="@+id/container_mainn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="65dp"
+        android:orientation="vertical">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tablayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-
-
-        </LinearLayout>
+    </LinearLayout>
 
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/frameBottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
+        android:layout_height="wrap_content">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navbotton_view"
+            style="@style/BottomNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:layout_margin="10dp"
+            android:background="@drawable/rounded_border"
             app:labelVisibilityMode="selected"
-            android:background="@color/secondaryColor"
-            app:menu="@menu/bottom_nav_menu"
-            style="@style/BottomNavigation"
-            />
+            app:menu="@menu/bottom_nav_menu" />
+
     </FrameLayout>
-
-
-
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_View"

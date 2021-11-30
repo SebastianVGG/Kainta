@@ -51,6 +51,7 @@ class DestacadoFragment : Fragment() {
 
         model = ViewModelProvider(requireActivity()).get(UsuarioServicioViewModel::class.java)
 
+
         setup()
 
         return binding.root
