@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center|top"
     android:orientation="vertical"
+    android:id="@+id/layoutPrincipal"
     tools:context=".ui.login.LoginFragment">
 
         <ImageView
@@ -20,7 +21,7 @@
             android:layout_marginTop="15dp"
             android:text="Iniciar Sesión"
             android:textColor="@color/secondaryTextColor"
-            android:textSize="32dp"
+            android:textSize="24dp"
             android:textStyle="bold" />
 
 
@@ -30,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:singleLine="true"
             android:elevation="3dp"
             android:drawableStart="@drawable/ic_account_circle_24"
             android:drawablePadding="5dp"
@@ -39,12 +41,41 @@
             android:hint="Correo electrónico"
             android:textColorHint="@color/secondaryTextColor" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_show_password_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Switch
+                    android:id="@+id/switchPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:checked="false"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <EditText
             android:id="@+id/editContrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:layout_margin="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:singleLine="true"
             android:elevation="3dp"
             android:drawableStart="@drawable/ic_lock_24"
             android:drawablePadding="5dp"
@@ -52,6 +83,11 @@
             android:background="@drawable/custom_edit"
             android:hint="Contraseña"
             android:textColorHint="@color/secondaryTextColor" />
+
+
+
+
+
 
         <Button
             android:id="@+id/btnIniciarSesion"
@@ -112,5 +148,5 @@
             android:textColor="@color/secondaryTextColor"
             android:textSize="15dp" />
 
-    </LinearLayout>
+</LinearLayout>
 

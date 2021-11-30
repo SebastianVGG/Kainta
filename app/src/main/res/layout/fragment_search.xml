@@ -16,21 +16,19 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarSearch"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:backgroundTint="#00552126"
-                app:popupTheme="@style/Theme.Kainta.PopupOverlay"                app:titleTextColor="@color/black">
+                android:layout_height="wrap_content"
+                android:backgroundTint="#00552126">
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <AutoCompleteTextView
                         android:id="@+id/autoComplete"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:backgroundTint="#00545434"
                         android:drawableStart="@drawable/ic_baseline_search_24"
-                        android:drawablePadding="5dp"
                         android:drawableTintMode="src_atop"
                         android:layout_gravity="start|center"
                         android:hint="Buscar..."

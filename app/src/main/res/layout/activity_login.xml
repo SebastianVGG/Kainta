@@ -9,12 +9,6 @@
     android:background = "@drawable/gradient_drawable"
     tools:context=".LoginActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:backgroundTint="#00998734" />
-
         <include layout="@layout/content_login" />
 
 </LinearLayout>

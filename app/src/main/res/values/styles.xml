@@ -21,6 +21,7 @@
     <style name="Theme.Kainta.NoActionBar_Login" parent="Theme.Kainta">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
 
     </style>
 
@@ -28,6 +29,13 @@
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlActivated">@color/primaryColor</item>
         <item name="colorControlHighlight">@color/secondaryColor</item>
+    </style>
+
+    <style name="ActivityAnimation" parent="Theme.Kainta">
+        <item name="android:activityOpenEnterAnimation">@anim/to_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/to_left</item>
+
+
     </style>
 
 

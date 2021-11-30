@@ -74,7 +74,7 @@ class SearchFragment : Fragment() {
 
         drawer_Layout.addDrawerListener(toggle)
         toggle.syncState()
-
+        binding.toolbarSearch.elevation = 0F
         (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         user = Firebase.auth
