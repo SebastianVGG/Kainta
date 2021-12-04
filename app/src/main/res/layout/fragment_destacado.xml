@@ -6,8 +6,17 @@
     android:orientation="vertical"
     tools:context=".ui.home.DestacadoFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/primaryDarkColor"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swiperRefresh"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

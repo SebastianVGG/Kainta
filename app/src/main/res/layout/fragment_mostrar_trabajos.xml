@@ -1,34 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.servicio.MostrarTrabajosFragment">
 
-    <TextView
-        android:layout_gravity="center|top"
-        android:layout_marginTop="15dp"
-        android:text="Trabajos del servicio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerTrabajos"
-        android:layout_margin="15dp"
-        android:layout_gravity="center|top"
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
-        android:layout_height="350dp"/>
-
-    <Button
-        android:id="@+id/btnSolicitarServicio"
-        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:hint="Soliciar servicio"
-        android:textColorHint="@color/secondaryTextColor"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        android:indeterminate="true"
+        android:indeterminateTint="@color/primaryDarkColor"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutPrincipal"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Trabajos del servicio"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTrabajos"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnSolicitarServicio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTitulo" />
+
+        <Button
+            android:id="@+id/btnSolicitarServicio"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Solicitar servicio"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:layout_marginBottom="150dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </LinearLayout>

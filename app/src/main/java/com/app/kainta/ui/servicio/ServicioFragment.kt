@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -59,6 +57,11 @@ class ServicioFragment : Fragment() {
         val root: View = binding.root
 
         progressBar = binding.progressBar
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.finish()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Perfil"
 
         user = Firebase.auth
         db = Firebase.firestore

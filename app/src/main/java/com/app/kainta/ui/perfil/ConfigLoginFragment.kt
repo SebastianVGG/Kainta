@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.app.kainta.R
@@ -31,6 +33,11 @@ class ConfigLoginFragment : Fragment() {
         val root: View = binding.root
 
         progressBar = binding.progressBar
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Configuración de inicio de sesión"
 
         setup()
 

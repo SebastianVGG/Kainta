@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.app.kainta.LoginActivity
 import com.app.kainta.R
@@ -27,6 +29,11 @@ class PerfilFragment : Fragment() {
 
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.finish()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Configuración de Perfil"
 
         setup()
 

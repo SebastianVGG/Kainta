@@ -1,142 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.perfil.login.EditInfoPersonalFragment">
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/primaryDarkColor"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/layout"
-        android:visibility="gone"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.perfil.login.EditInfoPersonalFragment">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/primaryDarkColor"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
         <LinearLayout
+            android:id="@+id/layout"
+            android:visibility="gone"
             android:orientation="vertical"
-            android:layout_margin="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/editNombre"
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:hint="Nombre"
-                android:background="@drawable/rounded_border"
-                android:textColorHint="@color/secondaryTextColor" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/editBibliografia"
+                <EditText
+                    android:id="@+id/editNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/custom_edit"
+                    android:elevation="3dp"
+                    android:hint="Nombre completo"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    />
+
+                <EditText
+                    android:id="@+id/editBibliografia"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/custom_edit"
+                    android:elevation="3dp"
+                    android:hint="Bibliografía"
+                    android:inputType="textMultiLine"
+                    android:padding="10dp"
+                    />
+
+                <EditText
+                    android:id="@+id/editCiudad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/custom_edit"
+                    android:elevation="3dp"
+                    android:hint="Ciudad"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    />
+
+                <EditText
+                    android:id="@+id/editTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/custom_edit"
+                    android:elevation="3dp"
+                    android:hint="Teléfono"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_margin="15dp"
-                android:hint="Bibliografía"
-                android:background="@drawable/rounded_border"
-                android:textColorHint="@color/secondaryTextColor" />
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/editCiudad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:hint="Ciudad"
-                android:background="@drawable/rounded_border"
-                android:textColorHint="@color/secondaryTextColor" />
+                <TextView
+                    android:text="Redes sociales"
+                    android:layout_margin="15dp"
+                    android:textSize="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <EditText
-                android:id="@+id/editTelefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:background="@drawable/rounded_border"
-                android:hint="Teléfono"
-                android:textColorHint="@color/secondaryTextColor" />
+                <EditText
+                    android:id="@+id/editFacebook"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/custom_edit"
+                    android:elevation="3dp"
+                    android:hint="Facebook"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    />
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/editTwitter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/custom_edit"
+                    android:elevation="3dp"
+                    android:hint="Twitter"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    />
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/editInstagram"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/custom_edit"
+                    android:elevation="3dp"
+                    android:hint="Instagram"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    />
 
-            <TextView
-                android:text="Redes sociales"
-                android:layout_margin="15dp"
-                android:textSize="20dp"
+                <EditText
+                    android:id="@+id/editYoutube"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/custom_edit"
+                    android:elevation="3dp"
+                    android:hint="Youtube"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    />
+
+                <EditText
+                    android:id="@+id/editPaginaWeb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/custom_edit"
+                    android:elevation="3dp"
+                    android:hint="Sitio web personal"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAceptar"
+                android:text="Aceptar"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="25dp"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <EditText
-                android:id="@+id/editFacebook"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:hint="Facebook"
-                android:background="@drawable/rounded_border"
-                android:textColorHint="@color/secondaryTextColor" />
-
-            <EditText
-                android:id="@+id/editTwitter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:hint="Twitter"
-                android:background="@drawable/rounded_border"
-                android:textColorHint="@color/secondaryTextColor" />
-
-            <EditText
-                android:id="@+id/editInstagram"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:hint="Instagram"
-                android:background="@drawable/rounded_border"
-                android:textColorHint="@color/secondaryTextColor" />
-
-            <EditText
-                android:id="@+id/editYoutube"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:background="@drawable/rounded_border"
-                android:hint="Youtube"
-                android:textColorHint="@color/secondaryTextColor" />
-
-            <EditText
-                android:id="@+id/editPaginaWeb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:background="@drawable/rounded_border"
-                android:hint="Sitio web personal"
-                android:textColorHint="@color/secondaryTextColor" />
-
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnAceptar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:hint="Aceptar"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="16sp" />
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

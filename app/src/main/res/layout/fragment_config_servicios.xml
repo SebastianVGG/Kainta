@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.perfil.ConfigServiciosFragment">
 
@@ -28,7 +29,7 @@
                 android:layout_gravity="center"
                 android:hint="Servicios que ofreces"
                 android:textColorHint="@color/secondaryTextColor"
-                android:textSize="26dp" />
+                android:textSize="24dp" />
 
         <androidx.recyclerview.widget.RecyclerView
 
@@ -44,6 +45,7 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddServicio"
         android:visibility="gone"
+        app:backgroundTint="@color/primaryColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

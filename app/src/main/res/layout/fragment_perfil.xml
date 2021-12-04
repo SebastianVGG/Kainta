@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.perfil.PerfilFragment">
 
@@ -20,6 +21,8 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
             android:text="Configurar cuenta" />
 
         <LinearLayout
@@ -30,41 +33,64 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:layout_marginTop="5dp"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground">
 
-                <TextView
+                <FrameLayout
+                    android:padding="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start|center"
-                    android:drawableEnd="@drawable/ic_baseline_home_24"
-                    android:paddingStart="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Inicio de sesión" />
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:text="Inicio de sesión" />
+
+                    <ImageView
+                        android:src="@drawable/ic_baseline_home_24"
+                        android:layout_gravity="end|center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </FrameLayout>
+
+
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_direcciones"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:layout_marginTop="5dp"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground">
 
-                <TextView
+                <FrameLayout
+                    android:padding="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="start|center"
-                    android:drawableEnd="@drawable/ic_baseline_home_24"
-                    android:paddingStart="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Direcciones" />
+                    android:layout_height="match_parent">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:text="Direcciones" />
+
+                    <ImageView
+                        android:src="@drawable/ic_apartment_24"
+                        android:layout_gravity="end|center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </FrameLayout>
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
@@ -80,10 +106,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:textSize="16dp"
+                android:textStyle="bold"
                 android:text="Personalizar perfil" />
 
             <LinearLayout
@@ -94,40 +121,62 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_perfil"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="start"
-                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="5dp"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground">
 
-                    <TextView
+                    <FrameLayout
+                        android:padding="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="start|center"
-                        android:drawableEnd="@drawable/ic_baseline_home_24"
-                        android:paddingStart="10dp"
-                        android:paddingTop="5dp"
-                        android:text="Mi perfíl" />
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start|center"
+                            android:text="Mi Perfil" />
+
+                        <ImageView
+                            android:src="@drawable/ic_account_circle_24"
+                            android:layout_gravity="end|center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </FrameLayout>
 
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_servicios"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="start"
-                    android:layout_marginTop="5dp"
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="5dp"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground">
 
-                    <TextView
+                    <FrameLayout
+                        android:padding="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="start|center"
-                        android:drawableEnd="@drawable/ic_baseline_home_24"
-                        android:paddingStart="10dp"
-                        android:paddingTop="5dp"
-                        android:text="Servicios" />
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start|center"
+                            android:text="Mis Servicios" />
+
+                        <ImageView
+                            android:src="@drawable/ic_baseline_work_24"
+                            android:layout_gravity="end|center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </FrameLayout>
 
                 </androidx.cardview.widget.CardView>
 
@@ -135,16 +184,17 @@
 
         </LinearLayout>
 
+
         <Button
             android:id="@+id/btnCerrarSesion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="Cerrar sesión"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:hint="Cerrar sesión"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="16sp" />
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

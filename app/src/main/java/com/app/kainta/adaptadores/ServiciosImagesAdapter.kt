@@ -34,7 +34,7 @@ class ServiciosImagesAdapter (
     }
 
     interface OnItemClickListener {
-        fun onItemClick(uri : String)
+        fun onItemClick(uri : String, posicion : Int)
     }
 
     inner class ServicioImageVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -50,7 +50,7 @@ class ServiciosImagesAdapter (
                 .into(image)
 
             image.setOnClickListener {
-                listener.onItemClick(uri)
+                listener.onItemClick(uri, adapterPosition)
             }
 
         }

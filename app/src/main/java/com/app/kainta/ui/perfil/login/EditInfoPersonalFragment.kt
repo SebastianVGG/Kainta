@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.app.kainta.R
 import com.app.kainta.databinding.FragmentEditInfoPersonalBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -35,6 +38,10 @@ class EditInfoPersonalFragment : Fragment() {
         user = Firebase.auth
         db = Firebase.firestore
 
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Editando Información Personal"
 
         setup()
 

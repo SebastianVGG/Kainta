@@ -1,13 +1,11 @@
 package com.app.kainta.ui.perfil.servicios
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.app.kainta.databinding.FragmentAddTrabajoBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -18,18 +16,29 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.drawable.ColorDrawable
 import android.media.ExifInterface
+import android.media.Image
 import android.os.Build
 import android.os.Environment
+import android.view.*
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.app.kainta.R
 import com.app.kainta.adaptadores.ServiciosImagesAdapter
+import com.app.kainta.adaptadores.SliderAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuthException
@@ -42,6 +51,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import java.io.*
+import com.smarteist.autoimageslider.SliderAnimations
+
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
+import com.smarteist.autoimageslider.SliderView
 
 
 class AddTrabajoFragment : Fragment() {
@@ -57,6 +70,11 @@ class AddTrabajoFragment : Fragment() {
     private lateinit var listPath : ArrayList<String>
     private lateinit var listURLS : ArrayList<String>
     private lateinit var adaptador : ServiciosImagesAdapter
+    private lateinit var dialogLoading : Dialog
+    private lateinit var dialogSlider : Dialog
+    private lateinit var dialogAlert : Dialog
+
+
 
     var position = 0
 
@@ -75,6 +93,11 @@ class AddTrabajoFragment : Fragment() {
         nuevoServicio = true
         fromAddServicio = false
         fromPerfil = false
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Agregar Trabajo"
 
         servicio = arguments?.getString("servicio").toString().lowercase()
         try {
@@ -104,6 +127,8 @@ class AddTrabajoFragment : Fragment() {
 
     private fun setup() {
 
+        inicializarLoading()
+
         binding.btnAddFotos.setOnClickListener { // initialising intent
             listPath = ArrayList()
             requestPermission()
@@ -111,160 +136,197 @@ class AddTrabajoFragment : Fragment() {
 
         binding.btnAceptar.setOnClickListener {
 
-            binding.progessBar.visibility = View.VISIBLE
-            val titulo = binding.editTitulo.text.toString()
-            val descripcion = binding.editDescripcion.text.toString()
+            if(binding.editTitulo.text.isNotEmpty()){
 
-            listURLS = ArrayList()
+                binding.editTitulo.error = null
+                binding.editTitulo.background = context?.getDrawable(R.drawable.custom_edit)
 
-            val storageRef = storage.reference
+                if(binding.editDescripcion.text.isNotEmpty()){
 
-            val metadata = storageMetadata {
-                contentType = "image/jpeg"
-            }
+                    binding.editDescripcion.error = null
+                    binding.editDescripcion.background = context?.getDrawable(R.drawable.custom_edit)
 
-            //Referencia de donde estará la imagen
+                    if(listPath.isNotEmpty()){
 
-            try {
+                        dialogLoading.show()
+                        val titulo = binding.editTitulo.text.toString()
+                        val descripcion = binding.editDescripcion.text.toString()
 
-                //REFERENCIA A FIRESTORE PERO SE TOMA ANTES PARA OBTENER EL ID Y DARLSE AL STORE
-                val refTrabajo = db.collection("usuario").document(user.currentUser?.email!!)
-                    .collection("servicios").document(servicio)
-                    .collection("trabajos").document()
+                        listURLS = ArrayList()
 
-                for (i in 0 until listPath.size) {
-                    // adding imageuri in array
-                    val imageurl = Uri.fromFile(File(listPath[i]))
+                        val storageRef = storage.reference
 
-                    val spaceRef =
-                        storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/$servicio/trabajos/${refTrabajo.id}/${titulo}$i")
-
-                    //Esta variable subira el archivo
-                    val uploadTask = spaceRef.putFile(imageurl)
-
-                    //Continua subiendo archvio y se toma la url para descargar con GLIDE
-                    val urlTask = uploadTask.continueWithTask { task ->
-                        if (!task.isSuccessful) {
-                            task.exception?.let {
-                                throw it
-                            }
+                        val metadata = storageMetadata {
+                            contentType = "image/jpeg"
                         }
-                        spaceRef.downloadUrl
-                    }
-                        .addOnCompleteListener { task ->
 
-                        if (task.isSuccessful) {
-                            //Tomamos el url de Descarga
-                            val downloadUri = task.result
-                            listURLS.add(downloadUri.toString())
+                        //Referencia de donde estará la imagen
 
-                            if(listURLS.size == listPath.size) {
-                                for (j in 0 until listPath.size) {
-                                    //Se actualiza base de datos para colocar la url del usuario
-                                    refTrabajo
-                                        .set(
-                                            mapOf(
-                                                "id" to refTrabajo.id,
-                                                "url$j" to listURLS[j],
-                                                "titulo" to titulo,
-                                                "descripcion" to descripcion
-                                            ), SetOptions.merge())
-                                        .addOnFailureListener { e ->
-                                            Toast.makeText(
-                                                context,
-                                                (e as FirebaseAuthException).message.toString(),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                        try {
+
+                            //REFERENCIA A FIRESTORE PERO SE TOMA ANTES PARA OBTENER EL ID Y DARLSE AL STORE
+                            val refTrabajo = db.collection("usuario").document(user.currentUser?.email!!)
+                                .collection("servicios").document(servicio)
+                                .collection("trabajos").document()
+
+                            for (i in 0 until listPath.size) {
+                                // adding imageuri in array
+                                val imageurl = Uri.fromFile(File(listPath[i]))
+
+                                val spaceRef =
+                                    storageRef.child("usuario/${(user.currentUser?.email ?: "")}/servicios/$servicio/trabajos/${refTrabajo.id}/${titulo}$i")
+
+                                //Esta variable subira el archivo
+                                val uploadTask = spaceRef.putFile(imageurl)
+
+                                //Continua subiendo archvio y se toma la url para descargar con GLIDE
+                                val urlTask = uploadTask.continueWithTask { task ->
+                                    if (!task.isSuccessful) {
+                                        task.exception?.let {
+                                            throw it
                                         }
+                                    }
+                                    spaceRef.downloadUrl
                                 }
-                                showAlert("Correcto", "Se agregó correctamente")
+                                    .addOnCompleteListener { task ->
+
+                                        if (task.isSuccessful) {
+                                            //Tomamos el url de Descarga
+                                            val downloadUri = task.result
+                                            listURLS.add(downloadUri.toString())
+
+                                            if(listURLS.size == listPath.size) {
+                                                for (j in 0 until listPath.size) {
+                                                    //Se actualiza base de datos para colocar la url del usuario
+                                                    refTrabajo
+                                                        .set(
+                                                            mapOf(
+                                                                "id" to refTrabajo.id,
+                                                                "url$j" to listURLS[j],
+                                                                "titulo" to titulo,
+                                                                "descripcion" to descripcion
+                                                            ), SetOptions.merge())
+                                                        .addOnFailureListener { e ->
+                                                            Toast.makeText(
+                                                                context,
+                                                                (e as FirebaseAuthException).message.toString(),
+                                                                Toast.LENGTH_SHORT
+                                                            ).show()
+                                                        }
+                                                }
+                                                showAlert("Correcto", "Se agregó correctamente")
+                                                dialogAlert.show()
+
+                                                dialogLoading.dismiss()
+                                            }
 
 
-                                binding.progessBar.visibility = View.INVISIBLE
+                                        } else {
+                                            showAlert("Error", (task.exception as FirebaseException).message.toString())
+                                            dialogAlert.show()
+
+                                        }
+                                    }
+
                             }
 
 
-                        } else {
-                            showAlert("Error", (task.exception as FirebaseException).message.toString())
-                        }
-                    }
 
-                }
+                            if(nuevoServicio){
+                                db.collection("usuario").document(user.currentUser?.email!!)
+                                    .collection("servicios").document(servicio)
+                                    .set(
+                                        mapOf(
+                                            "nombre" to servicio
+                                        ), SetOptions.merge())
+                                    .addOnSuccessListener {
 
+                                        val sdf = SimpleDateFormat("dd/MM/yyyy")
+                                        val currentDate = sdf.format(Date())
 
-
-                if(nuevoServicio){
-                    db.collection("usuario").document(user.currentUser?.email!!)
-                        .collection("servicios").document(servicio)
-                        .set(
-                            mapOf(
-                                "nombre" to servicio
-                            ), SetOptions.merge())
-                        .addOnSuccessListener {
-
-                            val sdf = SimpleDateFormat("dd/MM/yyyy")
-                            val currentDate = sdf.format(Date())
-
-                            db.collection("servicios").document(servicio)
-                                .collection("usuario").document(user.currentUser?.email!!)
-                                .set(
-                                    mapOf(
-                                        "correo" to user.currentUser?.email!!,
-                                        "fecha" to currentDate
-                                    ))
-                                .addOnSuccessListener {
-                                    val currentTimestamp = Timestamp(Date())
-
-                                    db.collection("servicios").document(servicio)
-                                        .set(
-                                            mapOf(
-                                                "nombre" to servicio
-                                            ), SetOptions.merge()).addOnSuccessListener {
-                                            db.collection("servicioN").add(mapOf(
+                                        db.collection("servicios").document(servicio)
+                                            .collection("usuario").document(user.currentUser?.email!!)
+                                            .set(
+                                                mapOf(
                                                     "correo" to user.currentUser?.email!!,
-                                                    "fecha" to currentTimestamp,
-                                                    "servicio" to servicio
-                                            ))
-                                        }
-                                }
-                                .addOnFailureListener { e ->
-                                    Toast.makeText(
-                                        context,
-                                        (e as FirebaseAuthException).message.toString(),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+                                                    "fecha" to currentDate
+                                                ))
+                                            .addOnSuccessListener {
+                                                val currentTimestamp = Timestamp(Date())
+
+                                                db.collection("servicios").document(servicio)
+                                                    .set(
+                                                        mapOf(
+                                                            "nombre" to servicio
+                                                        ), SetOptions.merge()).addOnSuccessListener {
+                                                        db.collection("servicioN").add(mapOf(
+                                                            "correo" to user.currentUser?.email!!,
+                                                            "fecha" to currentTimestamp,
+                                                            "servicio" to servicio
+                                                        ))
+                                                    }
+                                            }
+                                            .addOnFailureListener { e ->
+                                                Toast.makeText(
+                                                    context,
+                                                    (e as FirebaseAuthException).message.toString(),
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(
+                                            context,
+                                            (e as FirebaseAuthException).message.toString(),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                            }
+                        }catch (e : Exception){
+                            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT)
+                                .show()
                         }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(
-                                context,
-                                (e as FirebaseAuthException).message.toString(),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+
+                    }else{
+                        showSnackBar(binding.layoutPrincipal, "Necesita subir al menos una imagen.")
+
+                    }
+                }else{
+                    binding.editDescripcion.background = context?.getDrawable(R.drawable.custom_edit_error)
+                    binding.editDescripcion.error = "Debe de llenar este campo."
                 }
-            }catch (e : Exception){
-                Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT)
-                    .show()
+
+            }else{
+                binding.editTitulo.background = context?.getDrawable(R.drawable.custom_edit_error)
+                binding.editTitulo.error = "Debe de llenar este campo."
             }
             }
     }
 
 
     private fun showAlert(titulo: String, mensaje: String) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(titulo)
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar"){_,_ ->
+
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.setOnDismissListener {
             if(fromAddServicio)
-            findNavController().navigate(R.id.action_addTrabajoFragment_to_configServiciosFragment)
+                findNavController().navigate(R.id.action_addTrabajoFragment_to_configServiciosFragment)
             else if(fromPerfil)
-                activity?.onBackPressed()
+                findNavController().navigate(R.id.action_addTrabajoFragment_to_configPerfilFragment)
             else
                 activity?.onBackPressed()
         }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
     }
 
 
@@ -369,13 +431,18 @@ class AddTrabajoFragment : Fragment() {
                 binding.root.context,
                 R.layout.adapter_servicios_images,
                 listPath, object : ServiciosImagesAdapter.OnItemClickListener {
-                    override fun onItemClick(uri: String) {
-                        Toast.makeText(context, "Se pico la imagen", Toast.LENGTH_SHORT).show()
+                    override fun onItemClick(uri: String, posicion : Int) {
+
+                        inicializarSliderAdapter(listPath, posicion)
+                        dialogSlider.show()
                     }
                 })
 
             binding.recyclerImages.adapter = adaptador
-            binding.recyclerImages.layoutManager = GridLayoutManager(context, 3)
+            binding.recyclerImages.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+            binding.cardView.visibility = View.VISIBLE
+            binding.btnAceptar.visibility = View.VISIBLE
 
         }else{
             // show this if no image is selected
@@ -470,4 +537,59 @@ class AddTrabajoFragment : Fragment() {
         }
 
     }
+
+    private fun inicializarLoading() {
+        dialogLoading = Dialog(requireContext())
+        dialogLoading.setContentView(R.layout.dialog_loading)
+        dialogLoading.setCancelable(false)
+        if(dialogLoading.window!=null)
+            dialogLoading.window?.setBackgroundDrawable(ColorDrawable(0))
+    }
+
+    private fun inicializarSliderAdapter(listImages : ArrayList<String>, posicion : Int) {
+        dialogSlider = Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
+
+        dialogSlider.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogSlider.setContentView(R.layout.dialog_slider_images)
+
+        val window: Window? = dialogSlider.window
+        val wlp: WindowManager.LayoutParams = (window?.attributes ?: null) as WindowManager.LayoutParams
+
+        wlp.gravity = Gravity.CENTER
+        wlp.flags = wlp.flags and WindowManager.LayoutParams.FLAG_BLUR_BEHIND.inv()
+        window?.attributes = wlp
+        dialogSlider.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+
+
+        val sliderView : SliderView = dialogSlider.findViewById<SliderView>(R.id.imageSlider)
+        val sliderAdapter = SliderAdapter(listImages, false)
+
+        sliderView.setSliderAdapter(sliderAdapter)
+        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM)
+        sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION)
+        sliderView.currentPagePosition = posicion
+
+
+    }
+
+    private fun showSnackBar(view: ConstraintLayout, text: String) {
+
+        val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_INDEFINITE)
+        val snackbarLayout : Snackbar.SnackbarLayout = snackbar.view as Snackbar.SnackbarLayout
+        val customView = layoutInflater.inflate(R.layout.custom_snackbar, null)
+
+        customView.findViewById<TextView>(R.id.btnOK).setOnClickListener {
+            snackbar.dismiss()
+        }
+        customView.findViewById<TextView>(R.id.txtSnackBar).text = text
+
+        snackbarLayout.setPadding(0,0,0,0)
+        snackbarLayout.addView(customView, 0)
+        snackbar.show()
+
+        snackbar.view.setBackgroundColor(Color.TRANSPARENT)
+
+
+    }
+
 }

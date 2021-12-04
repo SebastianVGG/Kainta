@@ -36,19 +36,19 @@
                 android:layout_gravity="center"
                 android:text="Direcciones"
                 android:textColor="@color/secondaryTextColor"
-                android:textSize="32dp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnAddDireccion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:text="Agregar una dirección nueva"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
-                android:backgroundTint="@color/secondaryColor"
-                android:hint="Agregar una dirección nueva"
-                android:textColorHint="@color/secondaryTextColor"
-                android:textSize="16sp" />
+                android:textColor="@color/primaryTextColor"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 

@@ -11,7 +11,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.Uri
@@ -40,6 +42,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -60,16 +63,15 @@ import kotlin.properties.Delegates
 class ConfigPerfilFragment : Fragment() {
     private var _binding: FragmentConfigPerfilBinding? = null
     private val binding get() = _binding!!
-    private lateinit var imagePicker: ImageView
     private lateinit var user: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
-    private lateinit var progress: ProgressDialog
     private lateinit var imagePath: String
-    private lateinit var dialog: Dialog
     private lateinit var serviciosArray : ArrayList<String>
     private lateinit var adaptador : PerfilServiciosAdapter
     private lateinit var progressBar: ProgressBar
+    private lateinit var dialog : Dialog
+    private lateinit var dialogLoading : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,6 +83,11 @@ class ConfigPerfilFragment : Fragment() {
 
         progressBar = binding.progressBar
 
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Mi Perfil"
+
         user = Firebase.auth
         db = Firebase.firestore
         storage = Firebase.storage
@@ -88,14 +95,14 @@ class ConfigPerfilFragment : Fragment() {
         binding.imageviewPerfil.layoutParams.height = 300
         binding.imageviewPerfil.layoutParams.width = 300
 
-
-
         setup()
 
         return root
     }
 
     private fun setup() {
+
+        inicializarLoading()
 
 
         db.collection("usuario").document(user.currentUser?.email!!).get()
@@ -174,19 +181,12 @@ class ConfigPerfilFragment : Fragment() {
                         binding.btnAddServicio.visibility = View.VISIBLE
                     }
 
-                } else {
-                    showAlert(
-                        "Error",
-                        (it.exception as FirebaseAuthException).message.toString()
-                    )
-                }
+                } else
+                showSnackBar(binding.layout, (it.exception as FirebaseAuthException).message.toString())
 
 
             }.addOnFailureListener {
-                showAlert(
-                    "Error",
-                    (it as FirebaseAuthException).message.toString()
-                )
+                showSnackBar(binding.layout, (it as FirebaseAuthException).message.toString())
                 progressBar.visibility = View.GONE
                 binding.layout.visibility = View.VISIBLE
                 binding.btnAddServicio.visibility = View.VISIBLE
@@ -251,12 +251,8 @@ class ConfigPerfilFragment : Fragment() {
                                 View.VISIBLE
                         }
                 }
-        }catch(e:Exception){Toast.makeText(
-            context,
-            "No hay registros de servicios",
-            Toast.LENGTH_SHORT
-
-        ).show()}
+        }catch(e:Exception){
+            showSnackBar(binding.layout, "No hay registros de servicios") }
 
 
 
@@ -272,15 +268,6 @@ class ConfigPerfilFragment : Fragment() {
             findNavController().navigate(R.id.action_configPerfilFragment_to_addServicioFragment, bundle)
         }
 
-    }
-
-    private fun showAlert(titulo: String, mensaje: String) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(titulo)
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar", null)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
     }
 
     private fun showDialog() {
@@ -302,12 +289,15 @@ class ConfigPerfilFragment : Fragment() {
                 }
             })
 
-        dialog.findViewById<ImageButton>(R.id.btn_close)
+        dialog.findViewById<ImageButton>(R.id.btnClose)
             .setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     dialog.dismiss()
                 }
             })
+
+        if(dialog.window!=null)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(0))
 
         dialog.show()
 
@@ -328,9 +318,8 @@ class ConfigPerfilFragment : Fragment() {
 
             }
 
-            progress = ProgressDialog(context)
-            progress.setTitle("Subeidno arcivo...")
-            progress.show()
+            dialogLoading.show()
+
 
             val storageRef = storage.reference
 
@@ -369,8 +358,6 @@ class ConfigPerfilFragment : Fragment() {
                                 "url" to downloadUri.toString(),
                             )
                         ).addOnSuccessListener {
-                            if (progress.isShowing)
-                                progress.dismiss()
 
                             //Se toma el url de la foto que esta almacenada
                             context?.let {
@@ -384,12 +371,7 @@ class ConfigPerfilFragment : Fragment() {
                                     )
                                     .into(binding.imageviewPerfil)
                             }
-
-                            Toast.makeText(
-                                context,
-                                "Correcto",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            dialogLoading.dismiss()
 
                         }.addOnFailureListener { e ->
                             Toast.makeText(
@@ -400,10 +382,10 @@ class ConfigPerfilFragment : Fragment() {
                         }
 
                 } else {
-                    if (progress.isShowing)
-                        progress.dismiss()
-                    Toast.makeText(context, "Mal", Toast.LENGTH_SHORT)
-                        .show()
+                    dialogLoading.dismiss()
+
+                    showSnackBar(binding.layout, "Error al cambiar la foto de perfil")
+
                 }
             }
 
@@ -441,16 +423,12 @@ class ConfigPerfilFragment : Fragment() {
     private val requestePermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) {
-        if (it) {
-            pickPhotoFromGallery()
-        } else {
-            Toast.makeText(
-                context,
-                "Se necesitan permisos",
-                Toast.LENGTH_SHORT
-            ).show()
+
+        if (it) pickPhotoFromGallery()
+
+         else showSnackBar(binding.layout, "Se necesitan permisos.")
+
         }
-    }
 
     private fun pickPhotoFromGallery() {
 
@@ -471,11 +449,7 @@ class ConfigPerfilFragment : Fragment() {
             if (it)
                 takePhoto()
             else
-                Toast.makeText(
-                    context,
-                    "NOOOO",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showSnackBar(binding.layout, "Se necesitan permisos.")
         }
 
 
@@ -502,9 +476,7 @@ class ConfigPerfilFragment : Fragment() {
                         imagePath = file.absolutePath
 
                     }
-                    progress = ProgressDialog(context)
-                    progress.setTitle("Subeidno arcivo...")
-                    progress.show()
+                    dialogLoading.show()
 
                     val imageurl = Uri.fromFile(File(imagePath))
 
@@ -542,8 +514,6 @@ class ConfigPerfilFragment : Fragment() {
                                         "url" to downloadUri.toString(),
                                     )
                                 ).addOnSuccessListener {
-                                    if (progress.isShowing)
-                                        progress.dismiss()
 
                                     //Se toma el url de la foto que esta almacenada
                                     context?.let {
@@ -556,13 +526,8 @@ class ConfigPerfilFragment : Fragment() {
                                                 )
                                             )
                                             .into(binding.imageviewPerfil)
+                                        dialogLoading.dismiss()
                                     }
-
-                                    Toast.makeText(
-                                        context,
-                                        "Correcto",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
 
                                 }.addOnFailureListener { e ->
                                     Toast.makeText(
@@ -573,26 +538,15 @@ class ConfigPerfilFragment : Fragment() {
                                 }
 
                         } else {
-                            if (progress.isShowing)
-                                progress.dismiss()
-                            println((task.exception as FirebaseException).message.toString())
+                            dialogLoading.dismiss()
+                            showSnackBar(binding.layout, (task.exception as FirebaseException).message.toString())
                         }
                     }
 
                 } catch (e: Exception) {
-                    Toast.makeText(
-                        context,
-                        e.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showSnackBar(binding.layout, e.toString())
                 }
 
-            } else {
-                Toast.makeText(
-                    context,
-                    "Error el resultado no es OK",
-                    Toast.LENGTH_SHORT
-                ).show()
             }
         }
 
@@ -693,6 +647,35 @@ class ConfigPerfilFragment : Fragment() {
         stream.close()
         return file.toUri()
     }
+
+    private fun showSnackBar(view: LinearLayout, text: String) {
+
+        val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_INDEFINITE)
+        val snackbarLayout : Snackbar.SnackbarLayout = snackbar.view as Snackbar.SnackbarLayout
+        val customView = layoutInflater.inflate(R.layout.custom_snackbar, null)
+
+        customView.findViewById<TextView>(R.id.btnOK).setOnClickListener {
+            snackbar.dismiss()
+        }
+        customView.findViewById<TextView>(R.id.txtSnackBar).text = text
+
+        snackbarLayout.setPadding(0,0,0,0)
+        snackbarLayout.addView(customView, 0)
+        snackbar.show()
+
+        snackbar.view.setBackgroundColor(Color.TRANSPARENT)
+
+
+    }
+
+    private fun inicializarLoading() {
+        dialogLoading = Dialog(requireContext())
+        dialogLoading.setContentView(R.layout.dialog_loading)
+        dialogLoading.setCancelable(false)
+        if(dialogLoading.window!=null)
+            dialogLoading.window?.setBackgroundDrawable(ColorDrawable(0))
+    }
+
 }
 
 

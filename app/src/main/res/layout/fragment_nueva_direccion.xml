@@ -13,8 +13,7 @@
         android:layout_gravity="center"
         android:text="Agregar una nueva dirección"
         android:textColor="@color/secondaryTextColor"
-        android:textSize="32dp"
-        android:textStyle="bold" />
+        android:textSize="24dp" />
 
     <FrameLayout
         android:layout_margin="10dp"
@@ -29,64 +28,102 @@
             android:layout_height="wrap_content">
 
 
+
             <EditText
                 android:id="@+id/editNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="Nombre completo" />
+                android:layout_margin="10dp"
+                android:background="@drawable/custom_edit"
+                android:elevation="3dp"
+                android:hint="Nombre completo"
+                android:inputType="text"
+                android:padding="10dp"
+                android:singleLine="true"
+                />
 
             <EditText
                 android:id="@+id/editDireccion"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:hint="Dirección completa, calle, número interior y exterior" />
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/custom_edit"
+                android:elevation="3dp"
+                android:hint="Dirección completa, calle, número interior y exterior"
+                android:inputType="textMultiLine"
+                android:padding="10dp"
+                android:singleLine="true"
+                />
+
 
             <EditText
                 android:id="@+id/editColonia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="Colonia" />
+                android:layout_margin="10dp"
+                android:background="@drawable/custom_edit"
+                android:elevation="3dp"
+                android:hint="Colonia"
+                android:inputType="text"
+                android:padding="10dp"
+                android:singleLine="true"
+                />
 
             <EditText
                 android:id="@+id/editCP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="Código postal" />
+                android:layout_margin="10dp"
+                android:background="@drawable/custom_edit"
+                android:elevation="3dp"
+                android:hint="Código postal"
+                android:inputType="number"
+                android:padding="10dp"
+                android:singleLine="true"
+                />
 
             <EditText
                 android:id="@+id/editCiudad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="Ciudad" />
+                android:layout_margin="10dp"
+                android:background="@drawable/custom_edit"
+                android:elevation="3dp"
+                android:hint="Ciudad"
+                android:inputType="text"
+                android:padding="10dp"
+                android:singleLine="true"
+                />
 
 
             <EditText
                 android:id="@+id/editTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="Número teléfonico" />
+                android:layout_margin="10dp"
+                android:background="@drawable/custom_edit"
+                android:elevation="3dp"
+                android:hint="Número teléfonico"
+                android:inputType="number"
+                android:padding="10dp"
+                android:singleLine="true"
+                />
 
         </LinearLayout>
 
 
     </FrameLayout>
 
-
-
     <Button
         android:id="@+id/btnAceptar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:text="Aceptar"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_gravity="center"
-        android:backgroundTint="@color/secondaryColor"
-        android:hint="Aceptar"
-        android:textColorHint="@color/secondaryTextColor"
-        android:textSize="16sp" />
+        android:layout_marginTop="15dp"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
 </LinearLayout>

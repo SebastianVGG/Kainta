@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +45,11 @@ class ConfigServiciosFragment : Fragment() {
 
         _binding = FragmentConfigServiciosBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Mis Servicios"
 
 
         user = Firebase.auth

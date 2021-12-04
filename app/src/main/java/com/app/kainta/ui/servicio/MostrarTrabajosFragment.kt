@@ -1,10 +1,13 @@
 package com.app.kainta.ui.servicio
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
@@ -24,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.*
 
 class MostrarTrabajosFragment : Fragment() {
     private var _binding: FragmentMostrarTrabajosBinding? = null
@@ -45,6 +49,11 @@ class MostrarTrabajosFragment : Fragment() {
         _binding = FragmentMostrarTrabajosBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Trabajos realizados"
+
 
         user = Firebase.auth
         db = Firebase.firestore
@@ -60,7 +69,16 @@ class MostrarTrabajosFragment : Fragment() {
         return root
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setup() {
+
+        val txtServicio = servicio.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+        binding.txtTitulo.text = "Servicio de $txtServicio"
 
         if(jsonUsuario.getString("email") == user.currentUser?.email)
             binding.btnSolicitarServicio.visibility = View.GONE
@@ -103,6 +121,8 @@ class MostrarTrabajosFragment : Fragment() {
                         jsonTrabajos, object : MostrarTrabajosAdapter.OnItemClickListener {
                             override fun onItemClick(item: JSONObject) {
                                 val bundle = Bundle()
+                                jsonUsuario.put("servicio", servicio)
+                                bundle.putString("jsonUsuario", jsonUsuario.toString())
                                 bundle.putString("jsonTrabajo", item.toString())
                                 findNavController().navigate(
                                     R.id.action_mostrarTrabajosFragment_to_mostrarTrabajoFragment,
@@ -113,6 +133,8 @@ class MostrarTrabajosFragment : Fragment() {
 
                     binding.recyclerTrabajos.adapter = adaptador
                     binding.recyclerTrabajos.layoutManager = LinearLayoutManager(requireContext())
+                    binding.progressBar.visibility = View.GONE
+                    binding.layoutPrincipal.visibility = View.VISIBLE
                 }
 
         }catch(e:Exception){
@@ -125,16 +147,7 @@ class MostrarTrabajosFragment : Fragment() {
 
 
 
-    private fun showAlert(titulo : String,mensaje : String){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(titulo)
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar") { _,_ ->
 
-        }
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
-    }
 
 
 }

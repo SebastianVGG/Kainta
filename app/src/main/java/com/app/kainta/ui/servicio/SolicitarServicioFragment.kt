@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -37,10 +38,6 @@ import org.json.JSONObject
 import java.util.*
 import com.google.gson.Gson
 
-
-
-
-
 class SolicitarServicioFragment : Fragment() {
     private var _binding: FragmentSolicitarServicioBinding? = null
     private val binding get() = _binding!!
@@ -54,7 +51,6 @@ class SolicitarServicioFragment : Fragment() {
     private lateinit var hora : String
     private lateinit var minutos : String
     private lateinit var adaptador: MostrarDireccionesAdapter
-    private lateinit var progressBar: ProgressBar
     private lateinit var idRequeridos : String
     private lateinit var idSolicitados : String
 
@@ -82,6 +78,11 @@ class SolicitarServicioFragment : Fragment() {
 
         user = Firebase.auth
         db = Firebase.firestore
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Solicitando servicio"
 
         jsonUsuario = JSONObject(arguments?.getString("jsonUsuario").toString())
 

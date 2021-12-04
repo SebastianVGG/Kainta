@@ -1,70 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutPrincipal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.perfil.servicios.AddTrabajoFragment">
+    android:layout_height="match_parent">
+
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:layout_marginTop="25dp"
-        android:layout_gravity="center"
+        android:text="Agregar trabajo realizado"
         android:textSize="24dp"
-        android:text="Agregar trabajo realizado" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:hint="Titulo del trabajo" />
+        android:layout_margin="15dp"
+        android:background="@drawable/custom_edit"
+        android:elevation="3dp"
+        android:hint="Titulo del trabajo"
+        android:inputType="text"
+        android:padding="10dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
         android:id="@+id/editDescripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:hint="Descripcion" />
+        android:layout_margin="15dp"
+        android:background="@drawable/custom_edit"
+        android:elevation="3dp"
+        android:hint="Descripcion"
+        android:inputType="textMultiLine"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTitulo" />
 
     <Button
         android:id="@+id/btnAddFotos"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/secondaryColor"
-        android:hint="Agregar fotos"
-        android:textColorHint="@color/secondaryTextColor"
-        android:textSize="16sp" />
+        android:text="Agregar fotos"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editDescripcion" />
 
-
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cardElevation="8dp"
+        android:visibility="invisible"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAceptar"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddFotos"
+        tools:layout_editor_absoluteX="-26dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerImages"
             android:layout_width="match_parent"
-            android:layout_height="240dp"/>
+            android:layout_height="wrap_content" />
 
-
+    </androidx.cardview.widget.CardView>
 
 
     <Button
         android:id="@+id/btnAceptar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/secondaryColor"
-        android:hint="Aceptar"
-        android:textColorHint="@color/secondaryTextColor"
-        android:textSize="16sp" />
-
-
-    <ProgressBar
-        android:id="@+id/progessBar"
-        android:indeterminate="true"
         android:visibility="invisible"
-        android:layout_gravity="center"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:text="Aceptar"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

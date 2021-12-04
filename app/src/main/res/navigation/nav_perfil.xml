@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/perfilFragment"
         android:name="com.app.kainta.ui.perfil.PerfilFragment"
-        android:label="fragment_perfil"
+        android:label=""
         tools:layout="@layout/fragment_perfil" >
         <action
             android:id="@+id/action_perfilFragment_to_configLoginFragment"
@@ -114,6 +114,11 @@
             android:id="@+id/action_addTrabajoFragment_to_configServiciosFragment"
             app:destination="@id/configServiciosFragment"
             app:popUpTo="@+id/configServiciosFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_addTrabajoFragment_to_configPerfilFragment"
+            app:destination="@id/configPerfilFragment"
+            app:popUpTo="@+id/configPerfilFragment"
             app:popUpToInclusive="true" />
     </fragment>
 

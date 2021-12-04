@@ -1,194 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.perfil.ConfigPerfilFragment">
-
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <FrameLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/primaryDarkColor"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-    <LinearLayout
-        android:id="@+id/layout"
-        android:visibility="gone"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        tools:context=".ui.perfil.ConfigPerfilFragment">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageviewPerfil"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="0dp"
-                android:clickable="true"
-                android:src="@mipmap/ic_launcher_round" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="120dp"
-                android:layout_marginEnd="0dp"
-                android:src="@drawable/ic_baseline_photo_camera_24" />
-
-        </RelativeLayout>
-
-        <LinearLayout
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center|top"
-            android:orientation="vertical">
+            android:indeterminate="true"
+            android:indeterminateTint="@color/primaryDarkColor"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
-            <TextView
-                android:id="@+id/txtNombre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Nombre"
-                android:textColorHint="@color/secondaryTextColor"
-                android:textSize="26dp" />
-            <TextView
-                android:id="@+id/txtCiudad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Ciudad"
-                android:textColorHint="@color/secondaryTextColor"
-                android:textSize="20dp" />
+        <LinearLayout
+            android:id="@+id/layout"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/txtDescripcion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="10dp"
-                android:hint="Descripcion"
-                android:textColorHint="@color/secondaryTextColor"
-                android:textSize="22dp" />
+                <FrameLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:hint="Redes sociales"
-                android:textColorHint="@color/secondaryTextColor"
-                android:textSize="22dp" />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imageviewPerfil"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:clickable="true"
+                        android:src="@mipmap/ic_launcher_round" />
 
-            <TextView
-                android:id="@+id/txtRedesSociales"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="No hay redes sociales registradas"
-                android:textColorHint="@color/secondaryTextColor"
-                android:textSize="22dp" />
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:src="@drawable/ic_baseline_photo_camera_24" />
+
+                </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="15dp"
+                android:background="#EEA8A8A8" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center|top"
+                android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageFacebook"
+                <TextView
+                    android:id="@+id/txtNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="Nombre"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="20dp" />
+                <TextView
+                    android:id="@+id/txtCiudad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="Ciudad"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/txtDescripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_margin="15dp"
+                    android:hint="Descripcion"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="16dp" />
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Redes sociales"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/txtRedesSociales"
                     android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:src="@drawable/facebook_48" />
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="No hay redes sociales registradas"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="22dp" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageTwitter"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/twitter_48" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageInstagram"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/instagram_48" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageFacebook"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:src="@drawable/facebook_48" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageYoutube"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/youtube_48" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageTwitter"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/twitter_48" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageWeb"
-                    android:visibility="gone"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageInstagram"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/instagram_48" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageYoutube"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/youtube_48" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageWeb"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/web_48" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnEditarInfo"
+                    android:text="Editar"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/web_48" />
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="15dp"
+                android:background="#EEA8A8A8" />
 
-            <Button
-                android:id="@+id/btnEditarInfo"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/secondaryDarkColor"
-                android:hint="Editar"
-                android:textColorHint="@color/secondaryTextColor"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+            <androidx.recyclerview.widget.RecyclerView
+
+                android:id="@+id/recyclerServicios"
+                android:layout_marginTop="20dp"
+                android:layout_margin="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
 
         </LinearLayout>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAddServicio"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/primaryColor"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_baseline_add_30"
+            android:layout_gravity="end|bottom" />
 
+    </FrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-
-            android:id="@+id/recyclerServicios"
-            android:layout_marginTop="20dp"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"/>
-
-
-    </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAddServicio"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_baseline_add_30"
-        android:layout_gravity="end|bottom" />
-</FrameLayout>

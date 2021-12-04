@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.app.kainta.R
 import com.app.kainta.databinding.FragmentConfigPerfilBinding
@@ -34,6 +36,11 @@ class NuevaDireccionFragment : Fragment() {
 
         user = Firebase.auth
         db = Firebase.firestore
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Nueva Dirección"
 
         setup()
 

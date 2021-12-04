@@ -51,6 +51,7 @@ class DestacadoFragment : Fragment() {
 
         model = ViewModelProvider(requireActivity()).get(UsuarioServicioViewModel::class.java)
 
+        binding.progressBar.visibility = View.VISIBLE
 
         setup()
 
@@ -123,8 +124,11 @@ class DestacadoFragment : Fragment() {
                                             binding.recyclerView.adapter = adaptador
                                             binding.recyclerView.layoutManager =
                                                 LinearLayoutManager(requireContext())
+                                            binding.progressBar.visibility = View.GONE
+                                            binding.swiperRefresh.visibility= View.VISIBLE
                                         }
                                     }else{
+                                        binding.progressBar.visibility = View.GONE
                                         Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT)
                                             .show()
                                     }
@@ -133,6 +137,7 @@ class DestacadoFragment : Fragment() {
                     }
 
                 }else{
+                    binding.progressBar.visibility = View.GONE
                     Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT)
                         .show()
                 }

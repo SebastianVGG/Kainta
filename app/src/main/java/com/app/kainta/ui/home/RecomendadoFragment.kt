@@ -50,6 +50,8 @@ class RecomendadoFragment : Fragment() {
 
         model = ViewModelProvider(requireActivity()).get(RecomendadoToSearchViewModel::class.java)
 
+        binding.progressBar.visibility = View.VISIBLE
+
         setup()
 
         return binding.root
@@ -95,8 +97,11 @@ class RecomendadoFragment : Fragment() {
                     binding.recyclerView.adapter = adaptador
                     binding.recyclerView.layoutManager =
                         LinearLayoutManager(requireContext())
+                    binding.progressBar.visibility = View.GONE
+                    binding.swiperRefresh.visibility= View.VISIBLE
 
                 }else{
+                    binding.progressBar.visibility = View.GONE
                     Toast.makeText(context, "Error al cargar destacados", Toast.LENGTH_SHORT).show()
                 }
             }

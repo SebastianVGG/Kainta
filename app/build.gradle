@@ -61,6 +61,7 @@ dependencies {
     implementation 'id.zelory:compressor:3.0.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

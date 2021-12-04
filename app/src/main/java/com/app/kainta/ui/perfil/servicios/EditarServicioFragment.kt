@@ -1,19 +1,19 @@
 package com.app.kainta.ui.perfil.servicios
 
-import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.R
-import com.app.kainta.adaptadores.DireccionesAdapter
 import com.app.kainta.adaptadores.EditarTrabajoAdapter
-import com.app.kainta.adaptadores.PerfilServiciosAdapter
 import com.app.kainta.databinding.FragmentEditarServicioBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -25,16 +25,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import org.json.JSONArray
 import org.json.JSONObject
-import androidx.annotation.NonNull
-
-import com.google.android.gms.tasks.OnFailureListener
-
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.firestore.DocumentSnapshot
-
-import com.google.firebase.firestore.QuerySnapshot
-
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 
 
@@ -48,7 +38,8 @@ class EditarServicioFragment : Fragment() {
     private lateinit var jsonTrabajos : JSONArray
     private lateinit var adaptador : EditarTrabajoAdapter
     private lateinit var servicio : String
-
+    private lateinit var dialogLoading : Dialog
+    private lateinit var dialogAlert : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +56,11 @@ class EditarServicioFragment : Fragment() {
 
         servicio = arguments?.getString("servicioNombre").toString().lowercase()
 
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Editando el servicio ${servicio.uppercase()}"
+
         jsonTrabajos = JSONArray()
 
         setup()
@@ -75,9 +71,15 @@ class EditarServicioFragment : Fragment() {
 
     private fun setup() {
 
+        binding.progressBar.visibility = View.VISIBLE
+
+        inicializarLoading()
+
+
         agregarTrabajos()
 
         binding.btnEliminarServicio.setOnClickListener {
+            dialogLoading.show()
             eliminarServicio(true)
         }
 
@@ -95,6 +97,7 @@ class EditarServicioFragment : Fragment() {
                 .collection("trabajos")
                 .get()
                 .addOnFailureListener { e ->
+                    binding.progressBar.visibility = View.GONE
                     Toast.makeText(
                         context,
                         (e as FirebaseAuthException).message.toString(),
@@ -114,6 +117,9 @@ class EditarServicioFragment : Fragment() {
                         R.layout.adapter_editar_trabajo,
                         jsonTrabajos, object : EditarTrabajoAdapter.OnItemClickListener {
                             override fun onItemClick(item: JSONObject?, editar: Boolean) {
+
+                                dialogLoading.show()
+
                                 val storageRef = storage.reference
 
                                 for (i in 0 until (item?.length()?.minus(3) ?: 0)){
@@ -124,6 +130,7 @@ class EditarServicioFragment : Fragment() {
 
                                     spaceRef.delete()
                                         .addOnFailureListener {
+                                            dialogLoading.dismiss()
                                             showAlert("Error", (it as FirebaseAuthException).message.toString()) }
                                 }
 
@@ -137,18 +144,24 @@ class EditarServicioFragment : Fragment() {
                                                 if(it.isEmpty)
                                                     eliminarServicio(false)
                                                 else{
+                                                    dialogLoading.dismiss()
                                                     eliminarTrabajo = true
                                                     showAlert("Correcto", "Se eliminó el trabajo")
                                                 }
                                             }
 
                                     }
-                                    .addOnFailureListener { e -> showAlert("Error", (e as FirebaseAuthException).message.toString()) }
+                                    .addOnFailureListener { e ->
+                                        dialogLoading.dismiss()
+                                        showAlert("Error", (e as FirebaseAuthException).message.toString()) }
                             }
                         })
 
                     binding.recyclerTrabajos.adapter = adaptador
                     binding.recyclerTrabajos.layoutManager = LinearLayoutManager(requireContext())
+
+                    binding.progressBar.visibility = View.GONE
+                    binding.layoutPrincipal.visibility = View.VISIBLE
 
                     binding.btnAgregarTrabajo.setOnClickListener {
                         val bundle = Bundle()
@@ -164,7 +177,9 @@ class EditarServicioFragment : Fragment() {
                 context,
                 "No hay registros de servicios",
                 Toast.LENGTH_SHORT
-            ).show()}
+            ).show()
+            binding.progressBar.visibility = View.GONE
+        }
     }
 
 
@@ -191,6 +206,7 @@ class EditarServicioFragment : Fragment() {
                                             "${trabajo.id}/${trabajo.get("titulo")}$i")
 
                                         .delete().addOnFailureListener {
+                                            dialogLoading.dismiss()
                                             showAlert("Error", (it as FirebaseException).message.toString())
                                         }
                                 }
@@ -214,6 +230,7 @@ class EditarServicioFragment : Fragment() {
                                                     for(document in it.result)
                                                         ref.document(document.id).delete()
 
+                                                    dialogLoading.dismiss()
                                                     showAlert("Correcto", "Se eliminó el servicio")
                                                     eliminarTrabajo = false
 
@@ -232,6 +249,7 @@ class EditarServicioFragment : Fragment() {
                                                 .get().addOnCompleteListener {
                                                     for(document in it.result)
                                                         ref.document(document.id).delete()
+                                                    dialogLoading.dismiss()
                                                     showAlert("Correcto", "Se eliminó el servicio")
                                                     eliminarTrabajo = false
                                                 }
@@ -241,6 +259,7 @@ class EditarServicioFragment : Fragment() {
                         }
 
                     }else{
+                        dialogLoading.dismiss()
                         showAlert("Error", (trabajos.exception as FirebaseException).message.toString())
                     }
 
@@ -272,7 +291,7 @@ class EditarServicioFragment : Fragment() {
 
                                                     for(document in it.result)
                                                         ref.document(document.id).delete()
-
+                                                    dialogLoading.dismiss()
                                                     showAlert("Correcto", "Se eliminó el servicio")
                                                     eliminarTrabajo = false
 
@@ -291,6 +310,7 @@ class EditarServicioFragment : Fragment() {
                                                 .get().addOnCompleteListener {
                                                     for(document in it.result)
                                                         ref.document(document.id).delete()
+                                                    dialogLoading.dismiss()
                                                     showAlert("Correcto", "Se eliminó el servicio")
                                                     eliminarTrabajo = false
                                                 }
@@ -308,21 +328,38 @@ class EditarServicioFragment : Fragment() {
     }
 
 
-    private fun showAlert(titulo : String,mensaje : String){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(titulo)
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar") { _,_ ->
+    private fun showAlert(titulo: String, mensaje: String) {
 
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.setOnDismissListener {
             if(eliminarTrabajo)
                 agregarTrabajos()
             else
-            activity?.onBackPressed()
-
+                activity?.onBackPressed()
         }
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
+
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
+        dialogAlert.show()
     }
+
+    private fun inicializarLoading() {
+        dialogLoading = Dialog(requireContext())
+        dialogLoading.setContentView(R.layout.dialog_loading)
+        dialogLoading.setCancelable(false)
+        if(dialogLoading.window!=null)
+            dialogLoading.window?.setBackgroundDrawable(ColorDrawable(0))
+    }
+
 
 
 }

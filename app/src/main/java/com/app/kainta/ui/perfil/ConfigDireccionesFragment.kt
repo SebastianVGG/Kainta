@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +40,12 @@ class ConfigDireccionesFragment : Fragment() {
 
         _binding = FragmentConfigDireccionesBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Mis direcciones"
+
 
         user = Firebase.auth
         db = Firebase.firestore

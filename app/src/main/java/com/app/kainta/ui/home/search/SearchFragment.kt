@@ -68,6 +68,8 @@ class SearchFragment : Fragment() {
         val root: View = binding.root
         setHasOptionsMenu(true)
 
+        binding.progressBar.visibility = View.VISIBLE
+
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbarSearch)
         binding.toolbarSearch.title = ""
 
@@ -296,6 +298,7 @@ class SearchFragment : Fragment() {
     private fun setup() {
 
         binding.btnLimpiar.visibility = View.INVISIBLE
+        
 
         binding.autoComplete.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -346,21 +349,22 @@ class SearchFragment : Fragment() {
                             )
                         }
                     })
-
                 binding.recyclerListaServicios.adapter = adaptadorServicios
                 binding.recyclerListaServicios.layoutManager =
                     LinearLayoutManager(requireContext())
-            } else
+                binding.progressBar.visibility = View.GONE
+
+            } else{
+                binding.progressBar.visibility = View.GONE
                 Toast.makeText(
                     context,
                     "Error al cargar destacados",
                     Toast.LENGTH_SHORT
                 ).show()
+            }
+
         }
     }
-
-
-
 
     /*
     //SE INFLAN LOS ITEMS DEL TOOLBAR

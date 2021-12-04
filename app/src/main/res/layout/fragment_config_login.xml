@@ -77,12 +77,12 @@
 
                 <Button
                     android:id="@+id/btnNombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/secondaryColor"
-                    android:hint="Modificar"
-                    android:textColorHint="@color/secondaryTextColor"
-                    android:textSize="16sp" />
+                    android:text="Modificar"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -128,12 +128,12 @@
 
                 <Button
                     android:id="@+id/btnCorreo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/secondaryColor"
-                    android:hint="Modificar"
-                    android:textColorHint="@color/secondaryTextColor"
-                    android:textSize="16sp" />
+                    android:text="Modificar"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -179,12 +179,12 @@
 
                 <Button
                     android:id="@+id/btnPass"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/secondaryColor"
-                    android:hint="Modificar"
-                    android:textColorHint="@color/secondaryTextColor"
-                    android:textSize="16sp" />
+                    android:text="Modificar"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 

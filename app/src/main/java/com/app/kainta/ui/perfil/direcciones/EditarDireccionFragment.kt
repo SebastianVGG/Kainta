@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.app.kainta.R
 import com.app.kainta.adaptadores.DireccionesAdapter
 import com.app.kainta.databinding.FragmentEditarDireccionBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -36,6 +39,11 @@ class EditarDireccionFragment : Fragment(){
         db = Firebase.firestore
 
         jsonDireccion = JSONObject(arguments?.getString("jsonDireccion").toString())
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Editar Dirección"
 
         setup()
 

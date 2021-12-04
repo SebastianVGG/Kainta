@@ -7,10 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Toast
+import android.widget.*
 import androidx.navigation.fragment.findNavController
 import com.app.kainta.R
 import com.app.kainta.adaptadores.PerfilServiciosAdapter
@@ -42,9 +39,14 @@ class AddServicioFragment : Fragment(), AdapterView.OnItemClickListener {
         user = Firebase.auth
         db = Firebase.firestore
 
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Agregar Servicio"
+
         try {
             if(arguments?.containsKey("fromPerfil") as Boolean)
-                fromPerfil = arguments?.getBoolean("fromPerfil", false)!!
+                fromPerfil = true
         }catch (e : Exception){e.printStackTrace()}
 
         setup()
@@ -68,8 +70,10 @@ class AddServicioFragment : Fragment(), AdapterView.OnItemClickListener {
         binding.btnAddTrabajo.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("servicio",servicio.lowercase())
-            bundle.putBoolean("fromAddServicio", true)
-            bundle.putBoolean("fromPerfil1", fromPerfil)
+            if(fromPerfil)
+                bundle.putBoolean("fromPerfil1", fromPerfil)
+            else
+                bundle.putBoolean("fromAddServicio", true)
             findNavController().navigate(R.id.action_addServicioFragment_to_addTrabajoFragment, bundle)
         }
 
