@@ -81,25 +81,26 @@
 
                 <Button
                     android:id="@+id/btnCardEditar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:text="Editar"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="16sp"
                     android:layout_gravity="start"
-                    android:layout_marginTop="15dp"
-                    android:backgroundTint="@color/secondaryColor"
-                    android:hint="Editar"
-                    android:textColorHint="@color/secondaryTextColor"
-                    android:textSize="16sp" />
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
 
                 <Button
                     android:id="@+id/btnCardEliminar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:text="Eliminar"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:textColor="@color/RedColor"
+                    android:textSize="16sp"
                     android:layout_gravity="end"
-                    android:layout_marginTop="15dp"
-                    android:backgroundTint="@color/secondaryColor"
-                    android:hint="Eliminar"
-                    android:textColorHint="@color/secondaryTextColor"
-                    android:textSize="16sp" />
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             </FrameLayout>
 

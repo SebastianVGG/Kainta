@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/btnServiciosSolicitados"
-        android:text="Ver servicios que has solicitado"
+        android:text="Ver las solicitudes de servicios"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_marginTop="15dp"
         android:textColor="@color/primaryTextColor"
@@ -18,7 +18,7 @@
 
     <Button
         android:id="@+id/btnServiciosRequeridos"
-        android:text="Ver servicios que te han solictado"
+        android:text="Ver las peticiones de servicios"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_marginTop="15dp"
         android:textColor="@color/primaryTextColor"

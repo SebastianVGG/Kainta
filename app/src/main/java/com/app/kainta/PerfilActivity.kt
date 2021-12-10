@@ -28,15 +28,7 @@ class PerfilActivity : AppCompatActivity() {
             finish()
         }
 
-        setup()
-
-
     }
-    private fun setup(){
-        val fromHome = intent.getBooleanExtra("fromHome", false)
-            if(fromHome){
-                findNavController(R.id.nav_host_fragment_content_perfil).navigate(R.id.action_perfilFragment_to_configServiciosFragment)
-        }
-    }
+
 
 }

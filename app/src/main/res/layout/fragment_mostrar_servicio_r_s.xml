@@ -7,123 +7,189 @@
     android:gravity="center|top"
     tools:context=".ui.home.servicios.MostrarServicioRSFragment">
 
-    <TextView
-        android:id="@+id/txtServicio"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Servicio" />
-
-    <TextView
-        android:id="@+id/txtNombre"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nombre" />
-
-    <TextView
-        android:id="@+id/txtEstado"
-        android:layout_marginTop="15dp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ESTADO" />
-
-    <TextView
-        android:id="@+id/txtTitulo"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Titulo" />
-
-    <TextView
-        android:id="@+id/txtDescripcion"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Descripción" />
-
-    <TextView
-        android:id="@+id/txtFecha"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fecha" />
-
-    <TextView
-        android:id="@+id/txtHora"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hora" />
-
-    <TextView
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="Dirección:" />
+        android:indeterminate="true"
+        android:indeterminateTint="@color/primaryDarkColor"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
+        android:id="@+id/layoutPrincipal"
+        android:gravity="center|top"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtDireccionNombre"
-            android:layout_margin="5dp"
-            android:text="Nombre"
+            android:id="@+id/txtServicio"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/txtDireccionDireccion"
-            android:layout_margin="5dp"
-            android:text="Direccion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/txtDireccionColonia"
-            android:layout_margin="5dp"
-            android:text="Colonia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/txtDireccionCP"
-            android:layout_margin="5dp"
-            android:text="CP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/txtDireccionCiudad"
-            android:layout_margin="5dp"
-            android:text="Ciudad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/txtDireccionTelefono"
-            android:layout_margin="5dp"
-            android:text="Telefono"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:hint="Servicio: "
+            android:textColorHint="@color/secondaryTextColor"
+            android:textSize="20dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:background="#EEA8A8A8" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtNombre"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="Nombre" />
+
+            <TextView
+                android:id="@+id/txtTitulo"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Titulo" />
+
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descripción" />
+
+        </LinearLayout>
 
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:background="#EEA8A8A8" />
+
+        <TextView
+            android:id="@+id/txtFecha"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha" />
+
+        <TextView
+            android:id="@+id/txtHora"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hora" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:background="#EEA8A8A8" />
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="Dirección:" />
+
+        <LinearLayout
+            android:layout_margin="20dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@drawable/linearlayout_border"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtDireccionDireccion"
+                android:layout_margin="5dp"
+                android:text="Direccion"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtDireccionColonia"
+                android:layout_margin="5dp"
+                android:text="Colonia"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtDireccionCP"
+                android:layout_margin="5dp"
+                android:text="CP"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtDireccionCiudad"
+                android:layout_margin="5dp"
+                android:text="Ciudad"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtDireccionTelefono"
+                android:layout_margin="5dp"
+                android:text="Telefono"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtEstado"
+            android:layout_margin="15dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/primaryTextColor"
+            android:text="ESTADO" />
+
+
+        <Button
+            android:id="@+id/btnAceptar"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_margin="5dp"
+            android:text="Aceptar servicio"
+            android:textColor="@color/primaryDarkColor"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnCancelar"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_margin="5dp"
+            android:textColor="#FF4D4D"
+            android:text="Cancelar"
+            android:textSize="16sp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnAceptar"
-        android:layout_marginTop="10dp"
-        android:text="Aceptar servicio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/btnCancelar"
-        android:layout_marginTop="10dp"
-        android:text="Cancelar"
-        android:textColor="@color/white"
-        android:backgroundTint="#FF4D4D"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
 </LinearLayout>

@@ -63,11 +63,13 @@
 
         <Button
             android:id="@+id/btnListaServicios"
-            android:text="Ver servicios"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="Ver servicios"
+            android:textColor="@color/primaryDarkColor"/>
 
         <TextView
             android:id="@+id/txtResultado"

@@ -79,17 +79,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <Button
                 android:id="@+id/btnSeleccionar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:text="Seleccionar"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="16sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/secondaryColor"
-                android:hint="Seleccionar"
-                android:textColorHint="@color/secondaryTextColor"
-                android:textSize="16sp" />
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         </FrameLayout>
 

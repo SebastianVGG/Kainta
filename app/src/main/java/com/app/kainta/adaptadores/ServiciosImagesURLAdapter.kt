@@ -9,13 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.kainta.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 
-class ServiciosImagesURLAdapter (
+abstract class ServiciosImagesURLAdapter(
     val context: Context,
     val layoutResource: Int,
     var listURLS: ArrayList<String>,
-    var listener : OnItemClickListener
 
 ) : RecyclerView.Adapter<ServiciosImagesURLAdapter.ServicioImageVH>() {
 
@@ -33,16 +31,31 @@ class ServiciosImagesURLAdapter (
         return listURLS.size
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(uri : String, posicion : Int)
-    }
+    abstract fun finishedGlide()
+
+    abstract fun onItemClick(uri : String, posicion : Int)
+
 
     inner class ServicioImageVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //----------------BIND--------------------------
+
         fun bind(url: String) {
 
             val image = itemView.findViewById<ImageView>(R.id.adapterImage)
+
+
+            if((adapterPosition+1) == listURLS.size){
+
+                Glide.with(image.context)
+                    .asBitmap()
+                    .load(url)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(image)
+
+                finishedGlide()
+            }else
             Glide.with(image.context)
                 .asBitmap()
                 .load(url)
@@ -51,7 +64,7 @@ class ServiciosImagesURLAdapter (
                 .into(image)
 
             image.setOnClickListener {
-                listener.onItemClick(url, adapterPosition)
+                onItemClick(url, adapterPosition)
             }
 
 

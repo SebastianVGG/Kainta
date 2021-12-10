@@ -3,7 +3,6 @@ package com.app.kainta
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-import android.R
 import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.app.PendingIntent
@@ -62,7 +61,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
         builder.setAutoCancel(true)
             .setWhen(System.currentTimeMillis())
             .setContentTitle(titulo)
-            .setSmallIcon(R.drawable.button_onoff_indicator_off)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentText(detalle)
             .setContentIntent(clicknoti())
             .setContentInfo("nuevo")

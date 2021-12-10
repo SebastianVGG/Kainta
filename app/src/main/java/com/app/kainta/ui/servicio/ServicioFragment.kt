@@ -1,6 +1,8 @@
 package com.app.kainta.ui.servicio
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -47,6 +49,7 @@ class ServicioFragment : Fragment() {
     private lateinit var serviciosArray: ArrayList<String>
     private lateinit var adaptador: PerfilServiciosAdapter
     private lateinit var progressBar: ProgressBar
+    private lateinit var dialogAlert : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -228,11 +231,29 @@ class ServicioFragment : Fragment() {
     }
 
     private fun showAlert(titulo: String, mensaje: String) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(titulo)
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar", null)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.setOnDismissListener {
+            activity?.onBackPressed()
+        }
+
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
+        dialogAlert.show()
+
     }
+
+
 }

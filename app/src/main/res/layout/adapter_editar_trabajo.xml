@@ -49,16 +49,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
                 <Button
                     android:id="@+id/btnAdapterEliminar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:text="Eliminar"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:textColor="@color/RedColor"
+                    android:textSize="16sp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:backgroundTint="@color/secondaryColor"
-                    android:hint="Eliminar"
-                    android:textColorHint="@color/secondaryTextColor"
-                    android:textSize="16sp" />
+                    android:layout_margin="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             </FrameLayout>
 

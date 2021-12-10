@@ -1,5 +1,8 @@
 package com.app.kainta.ui.home.servicios
 
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
@@ -7,7 +10,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
@@ -35,6 +42,8 @@ class MostrarServicioRSFragment : Fragment() {
     private var fecha : Long = 0
     private lateinit var user : FirebaseAuth
     private lateinit var db : FirebaseFirestore
+    private lateinit var dialogAlert : Dialog
+    private lateinit var dialogLoading : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +58,14 @@ class MostrarServicioRSFragment : Fragment() {
 
         jsonServicio = JSONObject(arguments?.getString("jsonServicio").toString())
         fecha = arguments?.getLong("fecha")!!
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+                activity?.onBackPressed()
+        }
+
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Ver servicio"
+
+        inicializarLoading()
 
         setup()
 
@@ -77,11 +94,14 @@ class MostrarServicioRSFragment : Fragment() {
 
         binding.btnAceptar.setOnClickListener {
 
+            dialogLoading.show()
+
             db.collection("usuario").document(jsonServicio.getString("correo"))
                 .get().addOnCompleteListener {
                     if(it.isSuccessful){
                         jsonUsuario = JSONObject(it.result.data)
                         cambiarEstado(0)
+                        dialogLoading.dismiss()
                     }else {
                         showAlert("Error", (it.exception as FirebaseException).message.toString())
                     }
@@ -90,6 +110,7 @@ class MostrarServicioRSFragment : Fragment() {
         }
 
         binding.btnCancelar.setOnClickListener {
+            dialogLoading.show()
 
             if(binding.btnCancelar.text == "Rechazar"){
 
@@ -98,6 +119,7 @@ class MostrarServicioRSFragment : Fragment() {
                         if(it.isSuccessful){
                             jsonUsuario = JSONObject(it.result.data)
                             cambiarEstado(1)
+                            dialogLoading.dismiss()
                         }else {
                             showAlert("Error", (it.exception as FirebaseException).message.toString())
                         }
@@ -109,6 +131,7 @@ class MostrarServicioRSFragment : Fragment() {
                         if(it.isSuccessful){
                             jsonUsuario = JSONObject(it.result.data)
                             cambiarEstado(2)
+                            dialogLoading.dismiss()
                         }else {
                             showAlert("Error", (it.exception as FirebaseException).message.toString())
                         }
@@ -116,6 +139,9 @@ class MostrarServicioRSFragment : Fragment() {
             }
 
         }
+
+        binding.progressBar.visibility= View.GONE
+        binding.layoutPrincipal.visibility = View.VISIBLE
 
     }
 
@@ -137,10 +163,8 @@ class MostrarServicioRSFragment : Fragment() {
                                 if(it.isSuccessful){
                                     enviarNotificacionAceptar()
 
-                                    showAlert("Se aceptó el servicio", """
-                                        Se aceptó el servicio de ${jsonServicio.getString("servicio").uppercase()}.
-                                        Acude en tiempo y en forma a la dirección y fecha asignada.
-                                    """.trimMargin())
+                                    showAlert("Se aceptó el servicio",
+                                        "Se aceptó el servicio de ${jsonServicio.getString("servicio").uppercase()} Acude en tiempo y en forma a la dirección y fecha asignada.")
 
                                 }else{
                                     showAlert("Error", (it.exception as FirebaseException).message.toString())
@@ -165,10 +189,8 @@ class MostrarServicioRSFragment : Fragment() {
                                 if(it.isSuccessful){
 
                                     enviarNotificacionRechazar(true)
-                                    showAlert("Se rechazó el servicio", """
-                                        Se rechazó el servicio de ${jsonServicio.getString("servicio").uppercase()}.
-                                        Se notificará a la otra persona.
-                                    """.trimMargin())
+                                    showAlert("Se rechazó el servicio",
+                                        "Se rechazó el servicio de ${jsonServicio.getString("servicio").uppercase()} Se notificará a la otra persona.")
 
                                 }else{
                                     showAlert("Error", (it.exception as FirebaseException).message.toString())
@@ -193,10 +215,8 @@ class MostrarServicioRSFragment : Fragment() {
                                 if(it.isSuccessful){
 
                                     enviarNotificacionRechazar(false)
-                                    showAlert("Se canceló el servicio", """
-                                        Se canceló el servicio de ${jsonServicio.getString("servicio").uppercase()}.
-                                        Se notificará a la otra persona.
-                                    """.trimMargin())
+                                    showAlert("Se canceló el servicio",
+                                        "Se canceló el servicio de ${jsonServicio.getString("servicio").uppercase()} Se notificará a la otra persona.")
 
                                 }else{
                                     showAlert("Error", (it.exception as FirebaseException).message.toString())
@@ -213,13 +233,41 @@ class MostrarServicioRSFragment : Fragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun llenarInformacion() {
 
-        binding.txtServicio.text = jsonServicio.getString("servicio")
-        binding.txtNombre.text = jsonServicio.getString("nombre")
-        binding.txtEstado.text = jsonServicio.getString("estado")
-        binding.txtTitulo.text = jsonServicio.getString("titulo")
-        binding.txtDescripcion.text = jsonServicio.getString("descripcion")
+        binding.txtServicio.text ="Servicio: "+ jsonServicio.getString("servicio").replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+        binding.txtNombre.text ="Nombre: "+ jsonServicio.getString("nombre").replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+
+        binding.txtEstado.text = "Estado: "+ jsonServicio.getString("estado").replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+        binding.txtTitulo.text ="Titulo: "+ jsonServicio.getString("titulo").replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+        binding.txtDescripcion.text ="Descripción: "+ jsonServicio.getString("descripcion").replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+
         fecha.let {
             try {
                 val dateFromLong = Date(it)
@@ -233,25 +281,29 @@ class MostrarServicioRSFragment : Fragment() {
 
         val jsonDireccion = jsonServicio.getJSONObject("direccion")
 
-        binding.txtDireccionNombre.text = jsonDireccion.getString("nombre")
-        binding.txtDireccionDireccion.text = jsonDireccion.getString("direccion")
-        binding.txtDireccionColonia.text = jsonDireccion.getString("colonia")
-        binding.txtDireccionCP.text = jsonDireccion.getString("cp")
-        binding.txtDireccionCiudad.text = jsonDireccion.getString("ciudad")
-        binding.txtDireccionTelefono.text = jsonDireccion.getString("telefono")
-
-    }
-
-    private fun showAlert(titulo : String,mensaje : String){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(titulo)
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar") { _,_ ->
-            activity?.onBackPressed()
+        binding.txtDireccionDireccion.text ="Dirección :"+ jsonDireccion.getString("direccion").replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
         }
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
+
+        binding.txtDireccionColonia.text ="Colonia: "+ jsonDireccion.getString("colonia").replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+        binding.txtDireccionCP.text ="CP: "+ jsonDireccion.getString("cp")
+        binding.txtDireccionCiudad.text ="Ciudad: "+ jsonDireccion.getString("ciudad").replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+        binding.txtDireccionTelefono.text ="Teléfono: "+ jsonDireccion.getString("telefono")
+
     }
+
 
 
     private fun enviarNotificacionRechazar(aux : Boolean) {
@@ -381,6 +433,38 @@ class MostrarServicioRSFragment : Fragment() {
 
     }
 
+    private fun showAlert(titulo: String, mensaje: String) {
+
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.setOnDismissListener {
+            activity?.onBackPressed()
+        }
+
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
+        dialogAlert.show()
+
+    }
+
+    private fun inicializarLoading() {
+        dialogLoading = Dialog(requireContext())
+        dialogLoading.setContentView(R.layout.dialog_loading)
+        dialogLoading.setCancelable(false)
+        if(dialogLoading.window!=null)
+            dialogLoading.window?.setBackgroundDrawable(ColorDrawable(0))
+    }
 
 
 }

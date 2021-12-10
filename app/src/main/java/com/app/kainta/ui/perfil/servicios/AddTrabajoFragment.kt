@@ -24,10 +24,7 @@ import android.media.Image
 import android.os.Build
 import android.os.Environment
 import android.view.*
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -313,6 +310,9 @@ class AddTrabajoFragment : Fragment() {
         dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
         dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
         dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
             dialogAlert.dismiss()
         }
         dialogAlert.setOnDismissListener {

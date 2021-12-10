@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -337,6 +338,9 @@ class EditarServicioFragment : Fragment() {
         dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
         dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
         dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
             dialogAlert.dismiss()
         }
         dialogAlert.setOnDismissListener {

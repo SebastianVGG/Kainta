@@ -1,9 +1,12 @@
 package com.app.kainta.ui.perfil.login
 
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -31,6 +34,7 @@ class ConfigLoginEmailPassFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var infoUser: UpdateEmailModel
     private lateinit var motivo: String
+    private lateinit var dialogAlert : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -193,15 +197,30 @@ class ConfigLoginEmailPassFragment : Fragment() {
     }
 
     private fun showAlert(titulo: String, mensaje: String) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(titulo)
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar") { _,_ ->
+
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.setOnDismissListener {
             activity?.onBackPressed()
         }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
+        dialogAlert.show()
+
     }
+
 
 
     //Colocar la vista correcta

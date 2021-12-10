@@ -1,16 +1,16 @@
 package com.app.kainta.ui.login
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.app.kainta.HomeActivity
 import com.app.kainta.ProviderType
@@ -28,6 +28,7 @@ class CreateFragment : Fragment() {
 
     private var _binding: FragmentCreateBinding? = null
     private val binding get() = _binding!!
+    private lateinit var dialogAlert : Dialog
     private val VALID_PASSWORD_REGEX =
         Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+\$).{6,}\$")
     val VALID_EMAIL_ADDRESS_REGEX =
@@ -73,9 +74,6 @@ class CreateFragment : Fragment() {
             val pass = binding.editPass.text.toString()
             val pass2 = binding.editPass2.text.toString()
 
-
-
-
                 if(
                     nombre.isNotEmpty() &&
                     telefono.isNotEmpty() &&
@@ -102,7 +100,7 @@ class CreateFragment : Fragment() {
                                                 binding.editEmail.error = "Correo electrónico en uso."
                                                 showSnackBar(binding.layoutPrincipal, "Correo electrónico en uso.")
                                             }
-                                            else -> showAlert("MENSAJE DE ERROR: " +    (it.exception as FirebaseAuthException).message.toString())
+                                            else -> showAlert("Error","MENSAJE DE ERROR: " +    (it.exception as FirebaseAuthException).message.toString())
                                         }
 
                                     }
@@ -199,7 +197,7 @@ class CreateFragment : Fragment() {
                 showHome( email , ProviderType.BASIC)
             }
             .addOnFailureListener { e ->
-                showAlert( e.toString())
+                showAlert("Error", e.toString())
             }
     }
 
@@ -217,14 +215,25 @@ class CreateFragment : Fragment() {
     }
 
     //Alerta
-    private fun showAlert(mensaje : String){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar",null)
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
+    private fun showAlert(titulo: String, mensaje: String) {
+
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
     }
+
 
     private fun showSnackBar(view: LinearLayout, text: String) {
 

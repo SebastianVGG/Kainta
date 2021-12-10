@@ -39,43 +39,40 @@
                 android:textSize="24dp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnAddDireccion"
-                android:text="Agregar una dirección nueva"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtEmptyDirecciones"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="50dp"
                 android:layout_marginBottom="5dp"
                 android:text="No hay direcciones registradas"
                 android:textColor="@color/secondaryTextColor"
-                android:textSize="32dp"
+                android:textSize="18dp"
                 android:visibility="gone"
                 android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerDirecciones"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
         </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerDirecciones"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <Button
+            android:id="@+id/btnAddDireccion"
+            android:text="Agregar una dirección nueva"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

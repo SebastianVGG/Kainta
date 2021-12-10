@@ -1,11 +1,14 @@
 package com.app.kainta.ui.perfil
 
+import android.app.Dialog
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -23,6 +26,7 @@ class ConfigLoginFragment : Fragment() {
     private var _binding: FragmentConfigLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var progressBar : ProgressBar
+    private lateinit var dialogAlert : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -108,25 +112,33 @@ class ConfigLoginFragment : Fragment() {
                     binding.layout.visibility = View.VISIBLE
 
                 } else {
-                    showAlert(
+                    showAlert("Error",
                         "No existe el documento")
                 }
             }
             .addOnFailureListener { exception ->
-                showAlert(
+                showAlert("Error",
                     (exception as FirebaseAuthException).message.toString())
             }
     }
 
-    private fun showAlert(mensaje : String){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar",null)
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
+    private fun showAlert(titulo: String, mensaje: String) {
+
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
     }
-
-
 
 }

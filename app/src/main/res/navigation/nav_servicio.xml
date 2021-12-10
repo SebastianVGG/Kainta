@@ -46,5 +46,13 @@
             app:popUpTo="@+id/servicioFragment"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/action_solicitarServicioFragment_to_nuevaDireccionFragment"
+            app:destination="@id/nuevaDireccionFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/nuevaDireccionFragment"
+        android:name="com.app.kainta.ui.perfil.direcciones.NuevaDireccionFragment"
+        android:label="fragment_nueva_direccion"
+        tools:layout="@layout/fragment_nueva_direccion" />
 </navigation>

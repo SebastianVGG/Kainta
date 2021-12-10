@@ -72,6 +72,9 @@ class MostrarTrabajoFragment : Fragment() {
 
         listURL = ArrayList()
 
+        if(jsonUsuario.getString("email") == user.currentUser?.email)
+            binding.btnSolicitarServicio.visibility = View.GONE
+
         binding.btnSolicitarServicio.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("jsonUsuario", jsonUsuario.toString())
@@ -86,21 +89,32 @@ class MostrarTrabajoFragment : Fragment() {
                 listURL.add(jsonTrabajo.getString("url$i"))
 
             //Adaptador
-            adaptador = ServiciosImagesURLAdapter(
+            adaptador =object :  ServiciosImagesURLAdapter(
                 binding.root.context,
                 R.layout.adapter_servicios_images,
-                listURL, object : ServiciosImagesURLAdapter.OnItemClickListener {
-                    override fun onItemClick(uri: String, posicion : Int) {
+                listURL){
+                override fun finishedGlide() {
+                    binding.progressBar.visibility = View.GONE
+                    binding.layoutPrincipal.alpha = 1F
+                }
+                override fun onItemClick(uri: String, posicion : Int) {
 
-                        inicializarSliderAdapter(listURL, posicion)
-                        dialogSlider.show()
-                    }
-                })
+                    inicializarSliderAdapter(listURL, posicion)
+                    dialogSlider.show()
+                }
+            }
 
             binding.recyclerImages.adapter = adaptador
             binding.recyclerImages.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            binding.progressBar.visibility = View.GONE
-            binding.layoutPrincipal.visibility = View.VISIBLE
+
+           /* viewModel.mldObserve.observe(viewLifecycleOwner,{
+                if(it){
+
+                    binding.progressBar.visibility = View.GONE
+                    binding.layoutPrincipal.visibility = View.VISIBLE
+                }
+            })*/
+
 
         }catch (e:Exception){
             showSnackBar(binding.layoutPrincipal, "Error al cargar el trabajo")

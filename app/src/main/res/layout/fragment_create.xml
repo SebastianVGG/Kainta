@@ -149,13 +149,13 @@
 
         <Button
             android:id="@+id/btnCrearCuenta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="Crear Cuenta"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
             android:layout_marginBottom="10dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:hint="Crear Cuenta"
-            android:textColorHint="@color/secondaryTextColor"
-            android:textSize="16sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

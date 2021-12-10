@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/addServicioFragment"
         android:name="com.app.kainta.ui.perfil.servicios.AddServicioFragment"
-        android:label="fragment_add_servicio"
+        android:label=""
         tools:layout="@layout/fragment_add_servicio" >
         <action
             android:id="@+id/action_addServicioFragment_to_addTrabajoFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/configServiciosFragment"
         android:name="com.app.kainta.ui.perfil.ConfigServiciosFragment"
-        android:label="fragment_config_servicios"
+        android:label=""
         tools:layout="@layout/fragment_config_servicios" >
         <action
             android:id="@+id/action_configServiciosFragment_to_addServicioFragment"
@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/addTrabajoFragment"
         android:name="com.app.kainta.ui.perfil.servicios.AddTrabajoFragment"
-        android:label="fragment_add_trabajo"
+        android:label=""
         tools:layout="@layout/fragment_add_trabajo" >
         <action
             android:id="@+id/action_addTrabajoFragment_to_configServiciosFragment"
@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/editarServicioFragment"
         android:name="com.app.kainta.ui.perfil.servicios.EditarServicioFragment"
-        android:label="fragment_editar_servicio"
+        android:label=""
         tools:layout="@layout/fragment_editar_servicio" >
         <action
             android:id="@+id/action_editarServicioFragment_to_addTrabajoFragment"

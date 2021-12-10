@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/serviciosRequeridosFragment"
         android:name="com.app.kainta.ui.home.servicios.ServiciosRequeridosFragment"
-        android:label="fragment_servicios_requeridos"
+        android:label=""
         tools:layout="@layout/fragment_servicios_requeridos" >
         <action
             android:id="@+id/action_serviciosRequeridosFragment_to_mostrarServicioRSFragment"

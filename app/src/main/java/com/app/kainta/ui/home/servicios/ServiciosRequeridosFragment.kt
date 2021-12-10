@@ -1,12 +1,17 @@
 package com.app.kainta.ui.home.servicios
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +39,7 @@ class ServiciosRequeridosFragment : Fragment() {
     private lateinit var adaptador : ServiciosRSAdapter
     private lateinit var user : FirebaseAuth
     private lateinit var db : FirebaseFirestore
+    private lateinit var dialogAlert : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +51,13 @@ class ServiciosRequeridosFragment : Fragment() {
 
         user = Firebase.auth
         db = Firebase.firestore
+
+
+        activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+                activity?.onBackPressed()
+        }
+
+        activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Peticiones de servicios"
 
         setup()
 
@@ -92,7 +105,8 @@ class ServiciosRequeridosFragment : Fragment() {
 
                     binding.recyclerRequeridos.adapter = adaptador
                     binding.recyclerRequeridos.layoutManager = LinearLayoutManager(requireContext())
-
+                    binding.progressBar.visibility = View.GONE
+                    binding.layoutPrincipal.visibility = View.VISIBLE
 
                 }else{
                     showAlert("Error", "No cuenta con servicios requeridos")
@@ -107,12 +121,27 @@ class ServiciosRequeridosFragment : Fragment() {
 
 
     private fun showAlert(titulo : String,mensaje : String){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(titulo)
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar", null)
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+
+        dialogAlert.setOnDismissListener {
+            activity?.onBackPressed()
+        }
+
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
+        dialogAlert.show()
     }
 
 }

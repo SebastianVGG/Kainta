@@ -20,6 +20,7 @@
      <style name="Theme.Kainta.NoActionBar" parent="Theme.Kainta">
          <item name="windowActionBar">false</item>
          <item name="windowNoTitle">true</item>
+         <item name="colorAccent">@color/primaryColor</item>
 
      </style>
 

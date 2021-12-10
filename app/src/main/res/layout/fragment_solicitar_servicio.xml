@@ -1,125 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.servicio.SolicitarServicioFragment">
+    tools:context=".ui.servicio.SolicitarServicioFragment"
+    >
 
-    <TextView
-        android:id="@+id/txtServicio"
-        android:text="Se solicta el servicio de "
-        android:layout_gravity="center|top"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_margin="30dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutPrincipal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editTitulo"
-            android:hint="Titulo"
+        <TextView
+            android:id="@+id/txtServicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center|top"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/editDescripcion"
-            android:hint="Descripcion"
-            android:layout_gravity="center|top"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"/>
-
-        <Button
-            android:id="@+id/btnFecha"
-            android:hint="Fecha"
-            android:layout_gravity="center|top"
-            android:layout_margin="15dp"
-            android:backgroundTint="#00453432"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/btnHora"
-            android:hint="Hora estimada"
-            android:layout_gravity="center|top"
-            android:layout_margin="15dp"
-            android:backgroundTint="#00453432"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/btnDireccion"
-            android:hint="Elige tu direccion"
-            android:textColorHint="@color/black"
-            android:layout_gravity="center|top"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:text="Se solicta el servicio de "
+            android:textSize="20dp"
+            android:layout_margin="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/layoutDireccion"
-            android:visibility="gone"
-            android:orientation="vertical"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtServicio">
+
+            <EditText
+                android:id="@+id/editTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/custom_edit"
+                android:elevation="3dp"
+                android:hint="Titulo"
+                android:inputType="text"
+                android:padding="10dp"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/editDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/custom_edit"
+                android:elevation="3dp"
+                android:hint="Descripcion"
+                android:inputType="textMultiLine"
+                android:padding="10dp" />
+
 
             <TextView
-                android:id="@+id/txtDireccionNombre"
-                android:layout_margin="5dp"
-                android:text="Nombre"
+                android:id="@+id/btnFecha"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:text="Seleccionar fecha"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="60dp"
+                android:background="#EEA8A8A8" />
+
             <TextView
-                android:id="@+id/txtDireccionDireccion"
-                android:layout_margin="5dp"
-                android:text="Direccion"
+                android:id="@+id/btnHora"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/txtDireccionColonia"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="5dp"
-                android:text="Colonia"
+                android:text="Seleccionar hora"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="16sp" />
+
+            <View
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/txtDireccionCP"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="60dp"
+                android:background="#EEA8A8A8" />
+
+
+            <Button
+                android:id="@+id/btnDireccion"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="5dp"
-                android:text="CP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:text="Selecciona tu direccion"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="16sp" />
+
+
+            <LinearLayout
+                android:id="@+id/layoutDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="vertical"
+                android:background="@drawable/linearlayout_border"
+                android:padding="10dp"
+                android:visibility="gone">
+
                 <TextView
-                android:id="@+id/txtDireccionCiudad"
-                android:layout_margin="5dp"
-                android:text="Ciudad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Dirección:"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDireccionNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:hint="Nombre"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/txtDireccionDireccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Direccion"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/txtDireccionColonia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Colonia"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/txtDireccionCP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="CP"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/txtDireccionCiudad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Ciudad"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/txtDireccionTelefono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Telefono"
+                    android:textColorHint="@color/secondaryTextColor"
+                    android:textSize="16dp" />
+
+
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center"
+                android:textColorLink="@color/primaryColor"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/txtDireccionTelefono"
-                android:layout_margin="5dp"
-                android:text="Telefono"
+                android:layout_height="wrap_content"
+                android:text="Términos y Condiciones." />
+
+            <Button
+                android:id="@+id/btnSoliciarServicio"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:layout_margin="5dp"
+                android:text="Solicitar servicio"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="16sp" />
 
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnSoliciarServicio"
-            android:hint="Solicitar servicio"
-            android:textColorHint="@color/black"
-            android:layout_gravity="center|top"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
+</ScrollView>
 
-</LinearLayout>

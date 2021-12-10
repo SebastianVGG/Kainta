@@ -22,10 +22,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.text.InputType
-import android.widget.Button
-import android.widget.CompoundButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.app.kainta.HomeActivity
 import com.app.kainta.ProviderType
 import com.app.kainta.R
@@ -41,6 +38,7 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private val GOOGLE_SING_IN = 100
     private lateinit var dialog : Dialog
+    private lateinit var dialogAlert : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -207,14 +205,25 @@ class LoginFragment : Fragment() {
 
     }
 
-    private fun showAlert(){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
-        builder.setMessage("Error de autenticación.")
-        builder.setPositiveButton("Aceptar",null)
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
+    private fun showAlert() {
+
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = "Error"
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = "Error de autenticación."
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
     }
+
 
     private fun showHome(email : String, provider : ProviderType){
 

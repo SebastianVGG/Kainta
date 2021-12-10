@@ -10,12 +10,14 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.kainta.R
 import com.app.kainta.adaptadores.DireccionesAdapter
 import com.app.kainta.adaptadores.PerfilServiciosAdapter
 import com.app.kainta.databinding.FragmentConfigServiciosBinding
+import com.app.kainta.mvc.FromHomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
@@ -36,6 +38,8 @@ class ConfigServiciosFragment : Fragment() {
     private lateinit var storage: FirebaseStorage
     private lateinit var serviciosArray : ArrayList<String>
     private lateinit var adaptador : PerfilServiciosAdapter
+    private var fromHome = false
+    private lateinit var model : FromHomeViewModel
 
 
     override fun onCreateView(
@@ -46,9 +50,23 @@ class ConfigServiciosFragment : Fragment() {
         _binding = FragmentConfigServiciosBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        model = ViewModelProvider(requireActivity()).get(FromHomeViewModel::class.java)
+
+        try {
+            model.mldFromHome.observe(viewLifecycleOwner, {
+                fromHome = it
+            })
+
+        }  catch (e : java.lang.Exception){}
+
+
         activity?.findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
+            if(fromHome)
+                activity?.finish()
+            else
             activity?.onBackPressed()
         }
+
         activity?.findViewById<TextView>(R.id.txtToolbar)?.text = "Mis Servicios"
 
 

@@ -2,6 +2,8 @@ package com.app.kainta.ui.perfil
 
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,6 +34,8 @@ class ConfigDireccionesFragment : Fragment() {
     private lateinit var adaptador : DireccionesAdapter
     private lateinit var user : FirebaseAuth
     private lateinit var db : FirebaseFirestore
+    private lateinit var dialogAlert : Dialog
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,6 +117,7 @@ class ConfigDireccionesFragment : Fragment() {
                 }else{
                     binding.txtEmptyDirecciones.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
+                    binding.recyclerDirecciones.visibility = View.GONE
                     binding.layout.visibility = View.VISIBLE
                 }
 
@@ -124,14 +129,28 @@ class ConfigDireccionesFragment : Fragment() {
 
 
     private fun showAlert(titulo : String,mensaje : String){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(titulo)
-        builder.setMessage(mensaje)
-        builder.setPositiveButton("Aceptar") { _,_ ->
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+
+        dialogAlert.setOnDismissListener {
             cargarDirecciones()
         }
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
+
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
+        dialogAlert.show()
     }
 
 }

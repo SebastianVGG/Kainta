@@ -1,12 +1,17 @@
 package com.app.kainta.ui.login
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.app.kainta.HomeActivity
 import com.app.kainta.ProviderType
@@ -23,6 +28,7 @@ class FillAccountFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var email : String
     private lateinit var provider : String
+    private lateinit var dialogAlert : Dialog
 
 
     override fun onCreateView(
@@ -58,7 +64,7 @@ class FillAccountFragment : Fragment() {
             //Colocando datos en la base de datos
             newUser(nombre,telefono,bibliografia,ciudad,email)
 
-            }else showAlert()
+            }else showAlert("Error","Se ha producido un error autenticando al usuario")
         }
 
     }
@@ -92,7 +98,7 @@ class FillAccountFragment : Fragment() {
                 showHome( email , ProviderType.BASIC)
             }
             .addOnFailureListener { e ->
-                showAlert()
+                showAlert("Error","Se ha producido un error autenticando al usuario")
             }
     }
 
@@ -110,12 +116,23 @@ class FillAccountFragment : Fragment() {
     }
 
     //Alerta
-    private fun showAlert(){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
-        builder.setMessage("Se ha producido un error autenticando al usuario")
-        builder.setPositiveButton("Aceptar",null)
-        val dialog : AlertDialog = builder.create()
-        dialog.show()
+    private fun showAlert(titulo: String, mensaje: String) {
+
+        dialogAlert = Dialog(requireContext())
+
+        dialogAlert.setContentView(R.layout.dialog_alert)
+
+        dialogAlert.findViewById<TextView>(R.id.txtTitulo).text = titulo
+        dialogAlert.findViewById<TextView>(R.id.txtMensaje).text = mensaje
+        dialogAlert.findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        dialogAlert.findViewById<Button>(R.id.btnAceptar).setOnClickListener {
+            dialogAlert.dismiss()
+        }
+        if(dialogAlert.window!=null)
+            dialogAlert.window?.setBackgroundDrawable(ColorDrawable(0))
+
     }
+
 }
